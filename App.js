@@ -3,23 +3,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import  {NavigationContainer} from  '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
-
-function HomeScreen() {
-  return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Home!</Text>
-      </View>
-  );
-}
-
-function SettingsScreen() {
-  return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Settings!</Text>
-      </View>
-  );
-}
-
+import HomeScreen from "./screens/HomeScreen";
+import RecentlyApplications from './screens/RecentlyApplications';
+import FormScreen from './screens/FormScreen';
 const Tab = createBottomTabNavigator();
 
 function MyTabs() {
@@ -46,8 +32,8 @@ function MyTabs() {
             tabBarInactiveTintColor: 'gray',
           })}>
         <Tab.Screen name="Αρχική" component={HomeScreen} />
-        <Tab.Screen name="Δημιουργία Αίτησης" component={SettingsScreen}   />
-        <Tab.Screen name="Πρόσφατες Αιτήσεις" component={SettingsScreen} options={{ tabBarBadge: 3 }} />
+        <Tab.Screen name="Δημιουργία Αίτησης" component={FormScreen}   />
+        <Tab.Screen name="Πρόσφατες Αιτήσεις" component={RecentlyApplications} options={{ tabBarBadge: 3 }} />
       </Tab.Navigator>
   );
 }
