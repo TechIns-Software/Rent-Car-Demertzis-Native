@@ -1,36 +1,31 @@
-import React, { useState } from 'react';
-import RadioGroup from 'react-native-radio-buttons-group';
-import {Text, View} from "react-native";
+import * as React from 'react';
+import {Text, View,StyleSheet} from 'react-native';
+import { RadioButton } from 'react-native-paper';
 
- function RadioButtonCustom ({label}) {
-
-    const [radioButtons, setRadioButtons] = useState([
-        {
-            id: '1', // acts as primary key, should be unique and non-empty string
-            label: 'Αποδέχομαι',
-            value: 'yes'
-        },
-        {
-            id: '2',
-            label: 'Δεν Δέχομαι',
-            value: 'no'
-        }
-    ]);
-
-    function onPressRadioButton(radioButtonsArray) {
-        setRadioButtons(radioButtonsArray);
-    }
+const RadioButtonCustom = () => {
+    const [checked, setChecked] = React.useState('first');
 
     return (
-        <View>
-            <Text> {label}</Text>
-        <RadioGroup
-            layout={'row'}
-            radioButtons={radioButtons}
-            onPress={onPressRadioButton}
-        />
+        <View style={styles.container}>
+            <Text> Αποδέχομαι</Text>
+            <RadioButton
+                value="first"
+                status={ checked === 'first' ? 'checked' : 'unchecked' }
+                onPress={() => setChecked('first')}
+            />
+            <Text> Δεν Αποδέχομαι</Text>
+            <RadioButton
+                value="second"
+                status={ checked === 'second' ? 'checked' : 'unchecked' }
+                onPress={() => setChecked('second')}
+            />
         </View>
     );
+};
 
-}
+const styles = StyleSheet.create({
+    container:{
+        flexDirection:'row'
+    }
+})
 export default RadioButtonCustom;
