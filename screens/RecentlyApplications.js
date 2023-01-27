@@ -1,21 +1,31 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
 import RecentlyBox from '../components/RecentlyBox';
+import {DUMMY_CONTNENT} from "../store/store";
+import {getFormattedDate} from "../util/date";
+
+function renderApplications(applications){
+   return <RecentlyBox
+        id={applications.item.id}
+        type={applications.item.type}
+        date={ getFormattedDate(applications.item.date)}
+        isSent={applications.item.isSent}/>
+}
+
 function RecentlyApplications(){
     return <View style={styles.container} >
-        <RecentlyBox type={'Αυτοκινήτου'} date={'01-05-2023'} isSent={true}/>
-
-        <RecentlyBox type={'Μηχανής'} date={'01-15-2023'} isSent={false}/>
-
-        <RecentlyBox type={'Μηχανής'} date={'01-05-2023'} isSent={true}/>
+        <FlatList
+            data={DUMMY_CONTNENT}
+            renderItem={renderApplications}
+            keyExtractor={(item) => item.id }
+        />
 
     </View>
 }
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
+        backgroundColor: '#e5e2e2'
     },
 });
 
