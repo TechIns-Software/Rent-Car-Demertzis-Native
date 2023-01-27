@@ -1,6 +1,7 @@
 import {Text, View, StyleSheet, Alert, ScrollView} from "react-native";
 import Input from "./input";
 import RadioButtonCustom from "./radioButton";
+import FormText from "./formText";
 
 function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
     return <View style={styles.generalContainer}>
@@ -116,6 +117,10 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
 
                 <View style={styles.inputRow}>
                    <RadioButtonCustom label={"Αποδέχεσαι C.D.W."} />
+                </View>
+
+                <View style={styles.inputRow}>
+                    <FormText/>
                 </View>
 
             </View>
