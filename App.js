@@ -1,13 +1,33 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import  {NavigationContainer} from  '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
+
 import HomeScreen from "./screens/HomeScreen";
 import RecentlyApplications from './screens/RecentlyApplications';
 import FormScreen from './screens/FormScreen';
+import LoginScreen from "./screens/LoginScreen";
+import { Colors } from './constants/styles';
+import {useState} from "react";
 const Tab = createBottomTabNavigator();
 
+const Stack = createNativeStackNavigator();
+function AuthStack() {
+    return (
+        <Stack.Navigator
+            screenOptions={{
+                headerStyle: { backgroundColor: Colors.primary500 },
+                headerTintColor: 'white',
+                contentStyle: { backgroundColor: Colors.primary100 },
+            }}
+        >
+            <Stack.Screen name="Login" component={LoginScreen} />
+        </Stack.Navigator>
+    );
+}
 function MyTabs() {
   return (
       <Tab.Navigator
@@ -38,10 +58,18 @@ function MyTabs() {
   );
 }
 
+function Root(){
+
+    const [isLogin,setIsLogin] = useState(true)
+    //// TO CHANGE FROM LOGIN SCREEN TO OTHER PAGES CHANGE  the above to TRUE
+
+    return ( isLogin == true ? <MyTabs/> : <AuthStack/> )
+}
+
 export default function App() {
   return (
       <NavigationContainer>
-        <MyTabs />
+        <Root />
       </NavigationContainer>
   );
 }
