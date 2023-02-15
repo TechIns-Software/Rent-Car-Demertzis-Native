@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import {FlatList, StyleSheet, Text, View} from 'react-native';
 import RecentlyBox from '../components/RecentlyBox';
-import {DUMMY_CONTNENT} from "../store/store";
+import {DUMMY_CONTNENT} from "../store/auth-context";
 import {getFormattedDate} from "../util/date";
 
 function renderApplications(applications){

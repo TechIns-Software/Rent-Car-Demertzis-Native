@@ -2,11 +2,11 @@ import AuthContent from '../components/Auth/AuthContent';
 import { Alert} from  'react-native';
 import {useContext, useState} from "react";
 // import  {login} from '../util/auth';
-// import {AuthContext} from "../store/auth-context";
+import {AuthContext} from "../store/auth-context";
 
 function LoginScreen() {
-    const [isAuthenticating] = useState(false);
-    // const authCtx = useContext(AuthContext);
+    const [isAuthenticating,setAuthenticating] = useState(false);
+    const authCtx = useContext(AuthContext);
     async  function  loginHandler({email,password}){
         var data = {
             username: email,
@@ -35,10 +35,10 @@ function LoginScreen() {
             })
                 .then((response) => response.json())
                 .then((response) => {
-                    console.log(response);
+                    // console.log(response);
                     if (response['success'] === 1) {
-                        //todo save in device : username given, and -> response.idAdmin, response.fullName, response.specialHash
-                        //todo change screen
+                        authCtx.authenticate(email,response.fullName,response.specialHash,response.idAdmin,true);
+
                     } else {
                         Alert.alert('Ανεπιτυχής Σύνδεση', response['status'])
                     }

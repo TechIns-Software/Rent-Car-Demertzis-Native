@@ -1,6 +1,6 @@
 import {Text, TextInput, View, StyleSheet} from "react-native";
 
-function FormTextInput({label, style, TextInputConfig}) {
+function FormTextInput({label, style, TextInputConfig,onChangeInputs}) {
 
     return <View>
         <Text style={styles.titleText}> ONE TIME OFFLINE BANK CARD CHARGE AUTHORIZATION FORM</Text>
@@ -13,13 +13,13 @@ function FormTextInput({label, style, TextInputConfig}) {
 
         <View style={[styles.inputContainer, style]}>
             <Text style={styles.label}>I am </Text>
-            <TextInput style={styles.input} {...TextInputConfig}/>
+            <TextInput style={styles.input}  {...TextInputConfig}  onChangeText={onChangeInputs.bind(this,'fullNameBank')}   />
             <Text style={styles.label}>and authorise SUPERISE MYKONOS IKE to charge offline my bank card with number and
                 expiry on or after</Text>
-            <TextInput style={styles.input} {...TextInputConfig}/>
+            <TextInput style={styles.input} {...TextInputConfig}  onChangeText={onChangeInputs.bind(this,'afterDateBank')} />
             <Text style={styles.label}>This office charge is to recover the cost of restoring the rental vehicle with
                 registration </Text>
-            <TextInput style={styles.input} {...TextInputConfig}/>
+            <TextInput style={styles.input} {...TextInputConfig}  onChangeText={onChangeInputs.bind(this,'regNumberBank')} />
             <Text style={styles.label}>in the same contidion as it was deliverd to me </Text>
         </View>
     </View>
