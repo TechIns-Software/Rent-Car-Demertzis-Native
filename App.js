@@ -16,6 +16,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import  AuthContextProvider,{AuthContext} from './store/auth-context'
 import IconButton from "./components/ui/IconButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import SignatureScreen from "./screens/SignatureScreen";
 const Tab = createBottomTabNavigator();
 
 const Stack = createNativeStackNavigator();
@@ -82,7 +83,8 @@ function MyTabs() {
                                                           onPress={authCtx.logout}
 
                 /> }} />
-          </Tab.Navigator>
+          <Tab.Screen name="Signature" component={SignatureScreen}/>
+      </Tab.Navigator>
   );
 }
 
