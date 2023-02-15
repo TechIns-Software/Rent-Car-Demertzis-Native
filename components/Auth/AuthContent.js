@@ -11,9 +11,7 @@ function AuthContent({ isLogin, onAuthenticate }) {
 
     const [credentialsInvalid, setCredentialsInvalid] = useState({
         email: false,
-        password: false,
-        confirmEmail: false,
-        confirmPassword: false,
+        password: false
     });
 
     function switchAuthModeHandler() {
@@ -30,23 +28,18 @@ function AuthContent({ isLogin, onAuthenticate }) {
         email = email.trim();
         password = password.trim();
 
-        const emailIsValid = email.includes('@');
-        const passwordIsValid = password.length > 6;
-        const emailsAreEqual = email === confirmEmail;
-        const passwordsAreEqual = password === confirmPassword;
+        const emailIsValid = email.length > 0;
+        const passwordIsValid = password.length > 0;
 
         if (
-            !emailIsValid ||
             !passwordIsValid ||
-            (!isLogin && (!emailsAreEqual || !passwordsAreEqual))
+            !emailIsValid ||
+            !isLogin
         ) {
-            Alert.alert('Invalid input', 'Please check your entered credentials.');
-            setCredentialsInvalid({
-                email: !emailIsValid,
-                confirmEmail: !emailIsValid || !emailsAreEqual,
-                password: !passwordIsValid,
-                confirmPassword: !passwordIsValid || !passwordsAreEqual,
-            });
+            Alert.alert('Ελλιπείς Στοιχεία', 'Παρακαλώ συμπληρώστε όλα τα πεδία.');
+            // setCredentialsInvalid({
+            //     password: !passwordIsValid
+            // });
             return;
         }
         onAuthenticate({ email, password });
