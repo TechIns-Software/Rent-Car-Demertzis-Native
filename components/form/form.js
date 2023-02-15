@@ -25,10 +25,37 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         renterCity :"",
         renterPhone :"",
         secondDriverFullName : "",
-        secondDriverbirthDate: "",
+        secondDriverBirthDate: "",
         secondDriverLicenceNumber: "",
+        secondDriverLicenceCountry: "",
         secondDriverLicenceDateIssue : "",
         secondDriverLicenceDateExp :"",
+        email :"",
+        registrationNumber :"",
+        typeofCar :"",
+        checkOutDate :"",
+        checkOutTime :"",
+        checkOutStation :"",
+        checkInDate :"",
+        checkInTime :"",
+        checkInStation :"",
+        extensionTo :"",
+        deliveredAt :"",
+        collectedFrom :"",
+        charges :"",
+        days :"",
+        recommendedBy :"",
+        rateCode :"",
+        subTotal :"",
+        cdw :"",
+        total :"",
+        cdwAgree :true,
+        fullNameBank :"",
+        afterDateBank :"",
+        regNumberBank :"",
+        cardHolder :"",
+        cardExpDate :"",
+        cvv :""
     })
 
     function changeHandlerInputs(inputName, inputValue) {
@@ -44,17 +71,19 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
     function checkInputs(){
         var isEmptyInput = true;
         Object.keys(formInputs).forEach(function (key){
-            isEmptyInput = formInputs[key].trim().length > 0 ;
+            isEmptyInput = formInputs[key].length > 0 ;
         })
 
-        if (!isEmptyInput){
-            Alert.alert('Πρόβλημα με τα στοιχεία','Όλα τα πεδία είναι υποχρεωτικά')
-        }
+        // if (!isEmptyInput){
+        //     Alert.alert('Πρόβλημα με τα στοιχεία','Όλα τα πεδία είναι υποχρεωτικά')
+        // }
+        console.log(formInputs)
+
     }
 
     return <View style={styles.generalContainer}>
         <ScrollView style={styles.form}>
-            <View style={styles.clientBox}>
+            <View style={[styles.clientBox,{ overflow: 'hidden'}]}>
 
                 <View style={styles.inputRow}>
                     <Input style={styles.rowInput}
@@ -111,7 +140,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 </View>
             </View>
 
-            <View style={styles.clientBox}>
+            <View  style={[styles.clientBox,{ overflow: 'hidden'}]}>
                 <View style={styles.inputRow}>
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'renter')}
@@ -141,74 +170,130 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
 
             </View>
             <View style={styles.inputRow}>
-                <Input style={styles.rowInput} label={'Ονοματεπώνυμο Επιπλέον Οδηγού'}/>
-                <Input style={styles.rowInput} label={'Ημερ Γέννησης'}/>
+                <Input
+                    style={styles.rowInput}
+                    label={'Ονοματεπώνυμο Επιπλέον Οδηγού'}
+                    onChangeText={changeHandlerInputs.bind(this, 'secondDriverFullName')}
+                />
+                <Input
+                    style={styles.rowInput}
+                    label={'Ημερ Γέννησης'}
+                    onChangeText={changeHandlerInputs.bind(this, 'secondDriverBirthDate')}
+
+                />
             </View>
             <View style={styles.inputRow}>
-                <Input style={styles.rowInput} label={'Αρ.Αδείας Επιπλέον Οδηγού'} TextInputConfig={{
+                <Input style={styles.rowInput}
+                       label={'Αρ.Αδείας Επιπλέον Οδηγού'}
+                       onChangeText={changeHandlerInputs.bind(this, 'secondDriverLicenceNumber')}
+                       TextInputConfig={{
                     keyboardType: 'decimal-pad',
                 }}/>
-                <Input style={styles.rowInput} label={'Χώρα'}/>
-                <Input style={styles.rowInput} label={'Ημερ Έκδοσης'}/>
-                <Input style={styles.rowInput} label={'Λήξη'}/>
+                <Input
+                    style={styles.rowInput}
+                    onChangeText={changeHandlerInputs.bind(this, 'secondDriverLicenceCountry')}
+                    label={'Χώρα'}/>
+                <Input style={styles.rowInput}
+                       onChangeText={changeHandlerInputs.bind(this, 'secondDriverLicenceDateIssue')}
+                       label={'Ημερ Έκδοσης'}/>
+                <Input style={styles.rowInput}
+                       onChangeText={changeHandlerInputs.bind(this, 'secondDriverLicenceDateExp')}
+                       label={'Λήξη'}/>
             </View>
-            <Input label={'Email'} TextInputConfig={{multiline: true,}}/>
+            <Input label={'Email'}
+                   onChangeText={changeHandlerInputs.bind(this, 'email')}/>
             <View style={styles.containerBorder}>
                 <Text style={styles.titleText}>Επιπλέον Πληροφορίες</Text>
                 <View style={styles.inputRow}>
-                    <Input style={styles.rowInput} label={'Αρ. Κυκλοφορίας'} TextInputConfig={{
+                    <Input style={styles.rowInput}
+                           label={'Αρ. Κυκλοφορίας'}
+                           onChangeText={changeHandlerInputs.bind(this, 'registrationNumber')}
+                           TextInputConfig={{
                         keyboardType: 'decimal-pad',
                     }}/>
-                    <Input style={styles.rowInput} label={'Τύπος'}/>
+                    <Input style={styles.rowInput}
+                           onChangeText={changeHandlerInputs.bind(this, 'typeofCar')}
+                           label={'Τύπος'}/>
                 </View>
 
                 <View style={styles.inputRow}>
-                    <Input style={styles.rowInput} label={'Hμ Παράδοσης'} TextInputConfig={{
+                    <Input style={styles.rowInput}
+                           onChangeText={changeHandlerInputs.bind(this, 'checkOutDate')}
+                           label={'Hμ Παράδοσης'}
+                           TextInputConfig={{
                         keyboardType: 'decimal-pad',
                     }}/>
-                    <Input style={styles.rowInput} label={'Ωρα'}/>
-                    <Input style={styles.rowInput} label={'Station'}/>
+                    <Input style={styles.rowInput}
+                           onChangeText={changeHandlerInputs.bind(this, 'checkOutTime')}
+                           label={'Ωρα'}/>
+                    <Input style={styles.rowInput}
+                           onChangeText={changeHandlerInputs.bind(this, 'checkOutStation')}
+                           label={'Station'}/>
                 </View>
                 <View style={styles.inputRow}>
-                    <Input style={styles.rowInput} label={'Επιστροφή'} TextInputConfig={{
-                        keyboardType: 'decimal-pad',
-                    }}/>
-                    <Input style={styles.rowInput} label={'Ωρα'}/>
-                    <Input style={styles.rowInput} label={'Station'}/>
-                </View>
-
-                <View style={styles.inputRow}>
-                    <Input style={styles.rowInput} label={'Παρετάθη διά'}/>
-                </View>
-
-                <View style={styles.inputRow}>
-                    <Input style={styles.rowInput} label={'Παρεδόθη εις'}/>
-                    <Input style={styles.rowInput} label={'Παραλαβή από'}/>
-                </View>
-
-                <View style={styles.inputRow}>
-                    <Input style={styles.rowInput} label={'Χρεώσεις €'}/>
+                    <Input style={styles.rowInput}
+                           onChangeText={changeHandlerInputs.bind(this, 'checkInDate')}
+                           label={'Επιστροφή'} />
+                    <Input style={styles.rowInput}
+                           onChangeText={changeHandlerInputs.bind(this, 'checkInTime')}
+                           label={'Ωρα'}/>
+                    <Input style={styles.rowInput}
+                           onChangeText={changeHandlerInputs.bind(this, 'checkInStation')}
+                           label={'Station'}/>
                 </View>
 
                 <View style={styles.inputRow}>
-                    <Input style={styles.rowInput} label={'Ημέρες'}/>
+                    <Input style={styles.rowInput}
+                           onChangeText={changeHandlerInputs.bind(this, 'extensionTo')}
+                           label={'Παρετάθη διά'}/>
                 </View>
 
                 <View style={styles.inputRow}>
-                    <Input style={styles.rowInput} label={'Recommended By'}/>
-                    <Input style={styles.rowInput} label={'Rate Code'}/>
+                    <Input style={styles.rowInput}
+                           onChangeText={changeHandlerInputs.bind(this, 'deliveredAt')}
+                           label={'Παρεδόθη εις'}/>
+                    <Input style={styles.rowInput}
+                           onChangeText={changeHandlerInputs.bind(this, 'collectedFrom')}
+                           label={'Παραλαβή από'}/>
                 </View>
 
                 <View style={styles.inputRow}>
-                    <Input style={styles.rowInput} label={'Sub-Total'}/>
+                    <Input style={styles.rowInput}
+                           onChangeText={changeHandlerInputs.bind(this, 'charges')}
+                           label={'Χρεώσεις €'}/>
                 </View>
 
                 <View style={styles.inputRow}>
-                    <Input style={styles.rowInput} label={'C.M.D Μερική Απαλλαγή Ζημιών'}/>
+                    <Input style={styles.rowInput}
+                           onChangeText={changeHandlerInputs.bind(this, 'days')}
+                           label={'Ημέρες'}/>
                 </View>
 
                 <View style={styles.inputRow}>
-                    <Input style={styles.rowInput} label={'TOTAL - Σύνολο'}/>
+                    <Input style={styles.rowInput}
+                           onChangeText={changeHandlerInputs.bind(this, 'recommendedBy')}
+                           label={'Recommended By'}/>
+                    <Input style={styles.rowInput}
+                           onChangeText={changeHandlerInputs.bind(this, 'rateCode')}
+                           label={'Rate Code'}/>
+                </View>
+
+                <View style={styles.inputRow}>
+                    <Input style={styles.rowInput}
+                           onChangeText={changeHandlerInputs.bind(this, 'subTotal')}
+                           label={'Sub-Total'}/>
+                </View>
+
+                <View style={styles.inputRow}>
+                    <Input style={styles.rowInput}
+                           onChangeText={changeHandlerInputs.bind(this, 'cdw')}
+                           label={'C.M.D Μερική Απαλλαγή Ζημιών'}/>
+                </View>
+
+                <View style={styles.inputRow}>
+                    <Input style={styles.rowInput}
+                           onChangeText={changeHandlerInputs.bind(this, 'total')}
+                           label={'TOTAL - Σύνολο'}/>
                 </View>
 
                 <View style={styles.inputRow}>
@@ -216,7 +301,9 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 </View>
 
                 <View style={styles.inputRow}>
-                    <FormText/>
+                    <FormText
+                        onChangeText={changeHandlerInputs}
+                    />
                 </View>
 
 
