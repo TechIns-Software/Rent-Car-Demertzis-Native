@@ -25,8 +25,8 @@ function AuthContent({ isLogin, onAuthenticate }) {
     function submitHandler(credentials) {
         let { email, confirmEmail, password, confirmPassword } = credentials;
 
-        email = email.trim();
-        password = password.trim();
+        // email = email.trim();
+        // password = password.trim();
 
         const emailIsValid = email.length > 0;
         const passwordIsValid = password.length > 0;

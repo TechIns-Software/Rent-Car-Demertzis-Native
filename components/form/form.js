@@ -58,14 +58,13 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         cvv :""
     })
 
-    function changeHandlerInputs(inputName, inputValue) {
+    function changeHandlerInputs(inputName,inputValue) {
         setFormInputs((prevValues) => {
             return {
                 ...prevValues,
                 [inputName]: inputValue
             }
         })
-
     }
 
     function checkInputs(){
@@ -77,8 +76,28 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         // if (!isEmptyInput){
         //     Alert.alert('Πρόβλημα με τα στοιχεία','Όλα τα πεδία είναι υποχρεωτικά')
         // }
-        console.log(formInputs)
+    console.log(formInputs)
+    }
 
+
+
+    function changeBankInputs(label,val){
+        setFormInputs((prevValues) => {
+            return {
+                ...prevValues,
+                [label]: val
+            }
+        })
+
+    }
+
+    function RadioPressHandler(val){
+        setFormInputs((prevValues) => {
+            return {
+                ...prevValues,
+                ['cdwAgree']: val
+            }
+        })
     }
 
     return <View style={styles.generalContainer}>
@@ -89,6 +108,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     <Input style={styles.rowInput}
                            label={'Ονοματεπώνυμο και Πατρώνυμο οδηγού'}
                            onChangeText={changeHandlerInputs.bind(this, 'fullName')}
+                           value={formInputs.fullName}
                            TextInputConfig={{}}/>
                     <Input style={styles.rowInput}
                            label={'Ημερ.Γενήσεως'}
@@ -297,12 +317,12 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 </View>
 
                 <View style={styles.inputRow}>
-                    <RadioButtonCustom label={"Αποδέχεσαι C.D.W."}/>
+                    <RadioButtonCustom onPress={RadioPressHandler}  label={"Αποδέχεσαι C.D.W."}/>
                 </View>
 
                 <View style={styles.inputRow}>
                     <FormText
-                        onChangeText={changeHandlerInputs}
+                        onChangeInputs={changeBankInputs}
                     />
                 </View>
 
