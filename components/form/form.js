@@ -61,6 +61,202 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
     })
     const [scrollEnabled, setScrollEnabled] = useState(true);
     const [modalVisible, setModalVisible] = useState(false);
+    const RULES_INPUTS = {
+        fullName: {
+            mandatory: true,
+            type: "text"
+        },
+        birthDate: {
+            mandatory: true,
+            type: "date"
+        },
+        driverAddress: {
+            mandatory: true,
+            type: "text"
+        },
+        driverCountry: {
+            mandatory: true,
+            type: "text"
+        },
+        driverPhone: {
+            mandatory: true,
+            type: "text"
+        },
+        driverPassport: {
+            mandatory: true,
+            type: "text"
+        },
+        driverPassportDateIssue: {
+            mandatory: true,
+            type: "text"
+        },
+        driverPassportDateExp: {
+            mandatory: true,
+            type: "text"
+        },
+        driverLicenceNumber: {
+            mandatory: true,
+            type: "text"
+        },
+        driverLicenceDateIssue: {
+            mandatory: true,
+            type: "text"
+        },
+        driverLicenceDateExp: {
+            mandatory: true,
+            type: "text"
+        },
+        renter : {
+            mandatory: true,
+            type: "text"
+        },
+        afm : {
+            mandatory: true,
+            type: "text"
+        },
+        doy : {
+            mandatory: true,
+            type: "text"
+        },
+        renterAddress : {
+            mandatory: true,
+            type: "text"
+        },
+        renterCity : {
+            mandatory: true,
+            type: "text"
+        },
+        renterPhone : {
+            mandatory: true,
+            type: "text"
+        },
+        secondDriverFullName :  {
+            mandatory: true,
+            type: "text"
+        },
+        secondDriverBirthDate:  {
+            mandatory: true,
+            type: "text"
+        },
+        secondDriverLicenceNumber:  {
+            mandatory: true,
+            type: "text"
+        },
+        secondDriverLicenceCountry:  {
+            mandatory: true,
+            type: "text"
+        },
+        secondDriverLicenceDateIssue :  {
+            mandatory: true,
+            type: "text"
+        },
+        secondDriverLicenceDateExp : {
+            mandatory: true,
+            type: "text"
+        },
+        email : {
+            mandatory: true,
+            type: "text"
+        },
+        registrationNumber : {
+            mandatory: true,
+            type: "text"
+        },
+        typeofCar : {
+            mandatory: true,
+            type: "text"
+        },
+        checkOutDate : {
+            mandatory: true,
+            type: "text"
+        },
+        checkOutTime : {
+            mandatory: true,
+            type: "text"
+        },
+        checkOutStation : {
+            mandatory: true,
+            type: "text"
+        },
+        checkInDate : {
+            mandatory: true,
+            type: "text"
+        },
+        checkInTime : {
+            mandatory: true,
+            type: "text"
+        },
+        checkInStation : {
+            mandatory: true,
+            type: "text"
+        },
+        extensionTo : {
+            mandatory: true,
+            type: "text"
+        },
+        deliveredAt : {
+            mandatory: true,
+            type: "text"
+        },
+        collectedFrom : {
+            mandatory: true,
+            type: "text"
+        },
+        charges : {
+            mandatory: true,
+            type: "number"
+        },
+        days : {
+            mandatory: true,
+            type: "number"
+        },
+        recommendedBy : {
+            mandatory: false,
+            type: "text"
+        },
+        rateCode : {
+            mandatory: false,
+            type: "text"
+        },
+        subTotal : {
+            mandatory: false,
+            type: "text",
+            underCondition: true,
+            fieldNameUnderCondition: "afm"
+        },
+        total : {
+            mandatory: true,
+            type: "text"
+        },
+        cdwAgree : {
+            mandatory: true,
+            type: "bool"
+        },
+        fullNameBank : {
+            mandatory: true,
+            type: "text"
+        },
+        afterDateBank : {
+            mandatory: true,
+            type: "text"
+        },
+        regNumberBank : {
+            mandatory: true,
+            type: "text"
+        },
+        cardHolder : {
+            mandatory: true,
+            type: "text"
+        },
+        cardExpDate : {
+            mandatory: true,
+            type: "text"
+        },
+        cvv : {
+            mandatory: true,
+            type: "text"
+        }
+    };
 
     function changeHandlerInputs(inputName,inputValue) {
         setFormInputs((prevValues) => {
@@ -72,15 +268,36 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
     }
 
     function checkInputs(){
-        var isEmptyInput = true;
-        Object.keys(formInputs).forEach(function (key){
-            isEmptyInput = formInputs[key].length > 0 ;
-        })
+        var everythingOk = true;
 
-        // if (!isEmptyInput){
-        //     Alert.alert('Πρόβλημα με τα στοιχεία','Όλα τα πεδία είναι υποχρεωτικά')
-        // }
-    console.log(formInputs)
+        for (const [key, value] of Object.entries(formInputs)) {
+            if (RULES_INPUTS[key]) {
+                if (RULES_INPUTS[key]['mandatory']) {
+                    //check types if we want
+                    if (value.length === 0) {
+                        everythingOk = false;
+                        //make button red
+                    }
+                } else {
+                    if (RULES_INPUTS[key]['underCondition']) { //υπο συνθηκη αναγκαστικα
+                        if (value.length === 0) {
+                            const fieldName = RULES_INPUTS[key]['fieldNameUnderCondition'];
+                            if (formInputs[fieldName].length > 0) {
+                                everythingOk = false;
+                                //make red button
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+        //todo check signatures and car as well
+        if (!everythingOk){
+            Alert.alert('Πρόβλημα με τα στοιχεία','Όλα τα πεδία είναι υποχρεωτικά')
+        }
+        console.log(formInputs);
     }
 
 
