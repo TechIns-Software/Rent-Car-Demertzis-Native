@@ -5,7 +5,7 @@ import FormText from "./formText";
 import SubmitButton from "./submitButton";
 import {useState} from "react";
 import SignatureScreen from "react-native-signature-canvas";
-import Sign from "../../screens/SignatureScreen";
+import Sign from "./SignatureScreen";
 
 function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
     const [formInputs, setFormInputs] = useState({

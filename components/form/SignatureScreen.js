@@ -20,11 +20,11 @@ const Sign = ({ onOK,setScrollTrue,setScrollfalse }) => {
     };
 
     const style = `.m-signature-pad--footer {display: none; margin: 0px;} body,html {
-              width: 500px; height: 200px;}`;
+              width:90%; height: 200px;}`;
 
     return (
         <View style={styles.container}>
-            <SignatureScreen ref={ref}  onOK={handleOK} webStyle={style} />
+            <SignatureScreen ref={ref}   onOK={handleOK} webStyle={style} />
             <View style={styles.row}>
                 <Button title="Καθαρισμός " onPress={handleClear} />
                 <Button title="Υποβολή" onPress={handleConfirm} />
