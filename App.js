@@ -83,7 +83,7 @@ function MyTabs() {
                                                           onPress={authCtx.logout}
 
                 /> }} />
-          <Tab.Screen name="Signature" component={SignatureScreen}/>
+          <Tab.Screen  name="Signature"  component={SignatureScreen}/>
       </Tab.Navigator>
   );
 }

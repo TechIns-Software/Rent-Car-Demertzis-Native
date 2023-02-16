@@ -1,9 +1,11 @@
-import {Text, View, StyleSheet, Alert, ScrollView} from "react-native";
+import {Text, View, StyleSheet, Alert, ScrollView, Button,Modal,Pressable} from "react-native";
 import Input from "./input";
 import RadioButtonCustom from "./radioButton";
 import FormText from "./formText";
 import SubmitButton from "./submitButton";
 import {useState} from "react";
+import SignatureScreen from "react-native-signature-canvas";
+import Sign from "../../screens/SignatureScreen";
 
 function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
     const [formInputs, setFormInputs] = useState({
@@ -57,6 +59,8 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         cardExpDate :"",
         cvv :""
     })
+    const [scrollEnabled, setScrollEnabled] = useState(true);
+    const [modalVisible, setModalVisible] = useState(false);
 
     function changeHandlerInputs(inputName,inputValue) {
         setFormInputs((prevValues) => {
@@ -100,8 +104,11 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         })
     }
 
+
+
     return <View style={styles.generalContainer}>
-        <ScrollView style={styles.form}>
+
+        <ScrollView style={styles.form} scrollEnabled={scrollEnabled}>
             <View style={[styles.clientBox,{ overflow: 'hidden'}]}>
 
                 <View style={styles.inputRow}>
@@ -324,15 +331,40 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     <FormText
                         onChangeInputs={changeBankInputs}
                     />
-                </View>
 
+                </View>
+                <Pressable onPress={()=>{setModalVisible(!modalVisible)}}>
+                <View style={{width:'100%'}}>
+                        <View>
+                            <Button title={' Υπογραφη'} onPress={()=>{setModalVisible(!modalVisible)}}/>
+
+                        </View>
+                </View>
+                </Pressable>
 
                 <SubmitButton onPress={checkInputs} buttonText={'Υποβολή Φόρμας'}/>
-
 
             </View>
 
         </ScrollView>
+
+        <Modal
+            animationType="slide"
+            transparent={false}
+            visible={modalVisible}
+            onRequestClose={() => {
+                setModalVisible(!modalVisible);
+            }}>
+
+                    <View >
+                        <Sign />
+                        <Pressable
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={() => setModalVisible(!modalVisible)}>
+                            <Text style={styles.textStyle}>Πίσω</Text>
+                        </Pressable>
+                    </View>
+        </Modal>
 
 
     </View>
@@ -377,7 +409,53 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2,
         borderColor: '#878787',
         borderStyle: 'dashed'
+    },
+    enteredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22,
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 35,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+    },
+    buttonOpen: {
+        backgroundColor: '#F194FF',
+    },
+    buttonClose: {
+        backgroundColor: '#2196F3',
+    },
+    textStyle: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: 'center',
+    },
+    border:{
+        borderColor:'red',
+        borderWidth:5
     }
+
 
 })
 export default expenseForm
