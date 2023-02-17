@@ -1,6 +1,6 @@
 import {Text, TextInput, View, StyleSheet} from "react-native";
 
-function FormTextInput({label, style, TextInputConfig,onChangeInputs}) {
+function FormTextInput({label, style, TextInputConfig,FullName,After,RegistrationNumber}) {
 
     return <View>
         <Text style={styles.titleText}> ONE TIME OFFLINE BANK CARD CHARGE AUTHORIZATION FORM</Text>
@@ -12,15 +12,10 @@ function FormTextInput({label, style, TextInputConfig,onChangeInputs}) {
         </Text>
 
         <View style={[styles.inputContainer, style]}>
-            <Text style={styles.label}>I am </Text>
-            <TextInput style={styles.input}  {...TextInputConfig}  onChangeText={onChangeInputs.bind(this,'fullNameBank')}   />
-            <Text style={styles.label}>and authorise SUPERISE MYKONOS IKE to charge offline my bank card with number and
-                expiry on or after</Text>
-            <TextInput style={styles.input} {...TextInputConfig}  onChangeText={onChangeInputs.bind(this,'afterDateBank')} />
-            <Text style={styles.label}>This office charge is to recover the cost of restoring the rental vehicle with
-                registration </Text>
-            <TextInput style={styles.input} {...TextInputConfig}  onChangeText={onChangeInputs.bind(this,'regNumberBank')} />
-            <Text style={styles.label}>in the same contidion as it was deliverd to me </Text>
+            <Text style={styles.label}>I am <Text style={styles.bolder}>  {FullName} </Text> and authorise SUPERISE MYKONOS IKE to charge offline my bank card with number and
+                expiry on or after <Text style={styles.bolder}>  {After} </Text>. This office charge is to recover the cost of restoring the rental vehicle with
+                registration <Text style={styles.bolder}>  {RegistrationNumber} </Text> in the same condition as it was deliverd to me </Text>
+
         </View>
     </View>
 }
@@ -61,5 +56,10 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginVertical :25
     },
+    bolder:{
+        fontWeight:'bold',
+        fontSize:16,
+        textDecorationLine:'underline'
+    }
 })
 export default FormTextInput

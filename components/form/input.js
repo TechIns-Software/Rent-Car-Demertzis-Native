@@ -1,6 +1,6 @@
 import {Text, TextInput, View,StyleSheet} from "react-native";
 
-function Input({label,style,TextInputConfig,name,onChangeText}){
+function Input({label,style,TextInputConfig,name,onChangeText,inputStyle,onSubmit,}){
 
     const inputStyles = [styles.input];
 
@@ -8,10 +8,9 @@ function Input({label,style,TextInputConfig,name,onChangeText}){
         inputStyles.push(styles.inputMultiline);
     }
 
-
     return <View style={[styles.inputContainer,style]}>
         <Text style={styles.label}>{label}</Text>
-        <TextInput style={inputStyles} name={name} onChangeText={onChangeText} {...TextInputConfig}/>
+        <TextInput   style={[inputStyles,inputStyle]} name={name} onChangeText={onChangeText} {...TextInputConfig}  />
     </View>
 }
 const  styles = StyleSheet.create({
