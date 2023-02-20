@@ -77,7 +77,6 @@ function  AuthContextProvider({children}){
         AsyncStorage.setItem('token',token);
         AsyncStorage.setItem('idAdmin',JSON.stringify(idAdmin));
         AsyncStorage.setItem('isAuthenticated',JSON.stringify(isAuthenticated));
-        console.log(authInfo)
     }
 
     function logout(){

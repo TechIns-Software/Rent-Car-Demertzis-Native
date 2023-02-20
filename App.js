@@ -16,8 +16,10 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import  AuthContextProvider,{AuthContext} from './store/auth-context'
 import IconButton from "./components/ui/IconButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import FormsContextProvider,{FormsContext} from "./store/form-context";
 
 const Tab = createBottomTabNavigator();
+
 
 const Stack = createNativeStackNavigator();
 function AuthStack() {
@@ -34,7 +36,13 @@ function AuthStack() {
     );
 }
 function MyTabs() {
-    const authCtx = useContext(AuthContext)
+    const [numberOfForms,SetNumberOfForms] = useState(0)
+    const authCtx = useContext(AuthContext);
+    const formCtx = useContext(FormsContext);
+
+    AsyncStorage.getItem("numberOfForms").then((value) => {
+        SetNumberOfForms(value);
+    })
   return (
       <Tab.Navigator
           screenOptions={({ route }) => ({
@@ -77,7 +85,7 @@ function MyTabs() {
 
                 /> }}  />
         <Tab.Screen name="Πρόσφατες Αιτήσεις" component={RecentlyApplications}               options={
-            {     headerRight:({tintColor}) =><IconButton icon={'exit'}
+            {tabBarBadge:numberOfForms,     headerRight:({tintColor}) =><IconButton icon={'exit'}
                                                           color={'red'}
                                                           size={30}
                                                           onPress={authCtx.logout}
@@ -118,9 +126,11 @@ function Root(){
 
 export default function App() {
   return (
+      <FormsContextProvider>
       <AuthContextProvider>
           <Root/>
       </AuthContextProvider>
+      </FormsContextProvider>
   );
 }
 

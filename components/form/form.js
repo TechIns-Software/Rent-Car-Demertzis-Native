@@ -3,12 +3,14 @@ import Input from "./input";
 import RadioButtonCustom from "./radioButton";
 import FormText from "./formText";
 import SubmitButton from "./submitButton";
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import SignatureScreen from "react-native-signature-canvas";
 import Sign from "./SignatureScreen";
-import DatePicker from "react-native-modern-datepicker";
+import {FormsContext} from "../../store/form-context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
+
     const [formInputs, setFormInputs] = useState({
         fullName: "",
         birthDate: "",
@@ -260,6 +262,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         }
     };
     const [everythingOk, SetEveryThingOk] = useState(true);
+    const formCtx = useContext(FormsContext) ;
 
     function changeHandlerInputs(inputName, inputValue) {
         setFormInputs((prevValues) => {
@@ -280,7 +283,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     if (value.length === 0) {
                         SetEveryThingOk(false);
                         //make button red
-                        console.log(key);
+
                     }
                 } else {
                     if (RULES_INPUTS[key]['underCondition']) { //υπο συνθηκη αναγκαστικα
@@ -302,13 +305,13 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             Alert.alert('Πρόβλημα με τα στοιχεία', 'Όλα τα πεδία είναι υποχρεωτικά')
         }
 
+        formCtx.saveLocal(0,formInputs);
+
 
     }
 
 
-    function testStyle(e) {
 
-    }
 
     function changeBankInputs(label, val) {
         setFormInputs((prevValues) => {
