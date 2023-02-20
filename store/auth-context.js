@@ -69,14 +69,14 @@ function  AuthContextProvider({children}){
             fullName:fullName,
             token :token,
             idAdmin :idAdmin,
-            isAuthenticated :true,
+            isAuthenticated :isAuthenticated,
         }));
 
         AsyncStorage.setItem('username',username);
         AsyncStorage.setItem('fullName',fullName);
         AsyncStorage.setItem('token',token);
-        AsyncStorage.setItem('idAdmin',idAdmin);
-        AsyncStorage.setItem('isAuthenticated','1');
+        AsyncStorage.setItem('idAdmin',JSON.stringify(idAdmin));
+        AsyncStorage.setItem('isAuthenticated',JSON.stringify(isAuthenticated));
         console.log(authInfo)
     }
 
@@ -86,7 +86,7 @@ function  AuthContextProvider({children}){
             fullName:'',
             token :'',
             idAdmin :'',
-            isAuthenticated :false,
+            isAuthenticated :0,
         })
         AsyncStorage.removeItem('username');
         AsyncStorage.removeItem('fullName');

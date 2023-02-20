@@ -37,7 +37,7 @@ function LoginScreen() {
                 .then((response) => {
                     // console.log(response);
                     if (response['success'] === 1) {
-                        authCtx.authenticate(email,response.fullName,response.specialHash,response.idAdmin,true);
+                        authCtx.authenticate(email,response.fullName,response.specialHash,response.idAdmin,1);
 
                     } else {
                         Alert.alert('Ανεπιτυχής Σύνδεση', response['status'])

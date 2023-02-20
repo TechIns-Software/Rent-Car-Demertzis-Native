@@ -104,7 +104,7 @@ function Root(){
         async function fetchToken(){
             const storedToken =  await AsyncStorage.getItem('token');
             if (storedToken){
-                authCtx.authenticate('','',storedToken,'');
+                authCtx.authenticate('','',storedToken,'',1);
             }
 
         }
