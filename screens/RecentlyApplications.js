@@ -3,9 +3,8 @@ import {FlatList, StyleSheet, Text, View} from 'react-native';
 import RecentlyBox from '../components/RecentlyBox';
 import {DUMMY_CONTNENT} from "../store/auth-context";
 import {getFormattedDate} from "../util/date";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-
+import {FormsContext} from "../store/form-context";
+import {useContext} from "react";
 
 function renderApplications(applications){
    return <RecentlyBox
@@ -15,8 +14,7 @@ function renderApplications(applications){
         isSent={applications.item.isSent}/>
 }
 
-function RecentlyApplications(){
-
+  function RecentlyApplications(){
     return <View style={styles.container} >
         <FlatList
             data={DUMMY_CONTNENT}

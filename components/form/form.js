@@ -55,12 +55,11 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         cdw: "",
         total: "",
         cdwAgree: true,
-        fullNameBank: "",
-        afterDateBank: "",
-        regNumberBank: "",
+        signClient:"",
         cardHolder: "",
         cardExpDate: "",
-        cvv: ""
+        cvv: "",
+        signCard: "",
     })
     const [scrollEnabled, setScrollEnabled] = useState(true);
     const [modalVisible, setModalVisible] = useState(false);
@@ -310,19 +309,6 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
 
     }
 
-
-
-
-    function changeBankInputs(label, val) {
-        setFormInputs((prevValues) => {
-            return {
-                ...prevValues,
-                [label]: val
-            }
-        })
-
-    }
-
     function RadioPressHandler(val) {
         setFormInputs((prevValues) => {
             return {
@@ -332,8 +318,10 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         })
     }
 
-    function changeDate(date) {
-        console.log(date)
+    function  clearSignature(label,value){
+
+        console.log(label)
+        console.log(value)
     }
 
 
@@ -648,7 +636,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
 
                 <View style={styles.inputRow}>
                     <FormText
-                        onChangeInputs={changeBankInputs}
+                        onChangeInputs={changeHandlerInputs}
                         FullName={formInputs.fullName}
                         After={formInputs.afterDateBank}
                         RegistrationNumber={formInputs.registrationNumber}
@@ -702,12 +690,8 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
 
             <View>
                 <Text style={styles.titleText}>Υπογραφή Πελάτη</Text>
-                <Sign/>
-                <Pressable
-                    style={[styles.button, styles.buttonClose]}
-                    onPress={() => setModalVisible(!modalVisible)}>
-                    <Text style={styles.textStyle}>Πίσω</Text>
-                </Pressable>
+                <Sign onOK={changeHandlerInputs.bind(this,'signClient')} onBack={() => setModalVisible(!modalVisible)} />
+
             </View>
         </Modal>
 
@@ -721,12 +705,8 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
 
             <View style={styles.generalContainer}>
                 <Text style={styles.titleText}>Υπογραφή Για την Κάρτα</Text>
-                <Sign/>
-                <Pressable
-                    style={[styles.button, styles.buttonClose]}
-                    onPress={() => setModalVisible2(!modalVisible2)}>
-                    <Text style={styles.textStyle}>Πίσω</Text>
-                </Pressable>
+                <Sign onOK={changeHandlerInputs.bind(this,'signCard')} onBack={() => setModalVisible2(!modalVisible2)}/>
+
             </View>
         </Modal>
 

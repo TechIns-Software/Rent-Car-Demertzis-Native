@@ -6,7 +6,8 @@ export  const FormsContext = createContext({
     numberOfForms :0,
     saveLocal : (isUploaded,data)=>{},
     upload : ()=>{},
-    previewForm :(idForm) =>{}
+    previewForm :(idForm) =>{},
+    allForms : ()=>{}
 });
 
 function  FormsContextProvider({children}){
@@ -57,21 +58,24 @@ function  FormsContextProvider({children}){
             cdw: "",
             total: "",
             cdwAgree: true,
-            fullNameBank: "",
-            afterDateBank: "",
-            regNumberBank: "",
+            signClient:"",
             cardHolder: "",
             cardExpDate: "",
-            cvv: ""
+            cvv: "",
+            signCard: "",
         }
     });
     const [numberOfForm,setNumberOfForms] = useState(0)
 
 
     async function   saveLocal(isUploaded,data){
+        const currentDate = new Date();
+        const formatedDate = currentDate.getDate()+'-'+(currentDate.getMonth()+1)+'-'+currentDate.getFullYear();
+
         setFormInfo({
             isUploaded:isUploaded,
-            data :data
+            data :data,
+            date:formatedDate
         });
 
         let lastId =  await getLastId();
@@ -79,8 +83,8 @@ function  FormsContextProvider({children}){
         await  storeData({[lastId]:formInfo},Number(lastId+1).toString());
 
         let allForms = await getAllForms();
-
         console.log(allForms)
+
     }
 
     async function storeData(obj, formNum) {
@@ -114,6 +118,7 @@ function  FormsContextProvider({children}){
 
     async function getAllForms() {
         try {
+            // this is for remove keys in local storage
             // await AsyncStorage.removeItem('userForms');
             // await AsyncStorage.removeItem('numberOfForms');
             var obj = await AsyncStorage.getItem('userForms').then((res) => {
@@ -133,7 +138,8 @@ function  FormsContextProvider({children}){
 
     const value = {
         saveLocal :saveLocal,
-        numberOfForms :numberOfForm
+        numberOfForms :numberOfForm,
+        allForms : getAllForms
     }
 
     return <FormsContext.Provider value={value}>{children}</FormsContext.Provider>
