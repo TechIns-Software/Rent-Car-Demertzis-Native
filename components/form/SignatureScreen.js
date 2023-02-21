@@ -1,5 +1,5 @@
 import React, {useRef, useState} from "react";
-import {StyleSheet, View, Button, Image, Text,Pressable} from "react-native";
+import {StyleSheet, View, Button, Image, Text, Pressable, ScrollView} from "react-native";
 import SignatureScreen from "react-native-signature-canvas";
 
 const Sign = ({ onOK,setScrollTrue,setScrollfalse,onBack }) => {
@@ -37,7 +37,7 @@ const Sign = ({ onOK,setScrollTrue,setScrollfalse,onBack }) => {
             <View style={styles.previewContainer}>
                 <Text style={styles.previewText}>Signature Preview</Text>
                 <Image
-                    resizeMode={"cover"}
+                    resizeMode={"contain"}
                     style={styles.previewImage}
                     source={{ uri: `${signature}`}}/>
             </View>
