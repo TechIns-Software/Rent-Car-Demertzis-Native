@@ -260,7 +260,56 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             type: "text"
         }
     };
-    const [everythingOk, SetEveryThingOk] = useState(true);
+    const [everythingOk, setEveryThingOk] = useState({
+        fullName: true,
+        birthDate: true,
+        driverAddress: true,
+        driverCountry: true,
+        driverPhone: true,
+        driverPassport: true,
+        driverPassportDateIssue: true,
+        driverPassportDateExp: true,
+        driverLicenceNumber: true,
+        driverLicenceDateIssue: true,
+        driverLicenceDateExp: true,
+        renter: true,
+        afm: true,
+        doy: true,
+        renterAddress: true,
+        renterCity: true,
+        renterPhone: true,
+        secondDriverFullName: true,
+        secondDriverBirthDate: true,
+        secondDriverLicenceNumber: true,
+        secondDriverLicenceCountry: true,
+        secondDriverLicenceDateIssue: true,
+        secondDriverLicenceDateExp: true,
+        email: true,
+        registrationNumber: true,
+        typeofCar: true,
+        checkOutDate: true,
+        checkOutTime: true,
+        checkOutStation: true,
+        checkInDate: true,
+        checkInTime: true,
+        checkInStation: true,
+        extensionTo: true,
+        deliveredAt: true,
+        collectedFrom: true,
+        charges: true,
+        days: true,
+        recommendedBy: true,
+        rateCode: true,
+        subTotal: true,
+        cdw: true,
+        total: true,
+        cdwAgree: true,
+        signClient:true,
+        cardHolder: true,
+        cardExpDate: true,
+        cvv: true,
+        signCard: true,
+    });
     const formCtx = useContext(FormsContext) ;
 
     function changeHandlerInputs(inputName, inputValue) {
@@ -273,15 +322,16 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
     }
 
     function checkInputs() {
-        SetEveryThingOk(true);
+        setEveryThingOk(true);
 
         for (const [key, value] of Object.entries(formInputs)) {
             if (RULES_INPUTS[key]) {
                 if (RULES_INPUTS[key]['mandatory']) {
                     //check types if we want
                     if (value.length === 0) {
-                        SetEveryThingOk(false);
+                        setEveryThingOk(false);
                         //make button red
+                        console.log("σαδ");
 
                     }
                 } else {
@@ -289,7 +339,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                         if (value.length === 0) {
                             const fieldName = RULES_INPUTS[key]['fieldNameUnderCondition'];
                             if (formInputs[fieldName].length > 0) {
-                                SetEveryThingOk(false);
+                                setEveryThingOk(false);
                                 //make red button
                             }
                         }
@@ -335,12 +385,12 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                            label={'Ονοματεπώνυμο και Πατρώνυμο οδηγού'}
                            onChangeText={changeHandlerInputs.bind(this, 'fullName')}
                            TextInputConfig={{}}
-                           inputStyle={!everythingOk && formInputs.fullName.trim() === '' ? styles.nullInput : ''}/>
+                           inputStyle={!everythingOk.fullName ? styles.nullInput : ''}/>
                     <Input style={styles.rowInput}
                            label={'Ημερ.Γεννήσεως'}
                            onChangeText={changeHandlerInputs.bind(this, 'birthDate')}
                            TextInputConfig={{placeholder: 'YYY-MM-DD', maxLength: 10,}}
-                           inputStyle={!everythingOk && formInputs.birthDate.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.birthDate ? styles.nullInput : ''}
                     />
                 </View>
                 <View style={styles.inputRow}>
@@ -348,17 +398,17 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                            label={'Διεύθυνση Κατοικίας'}
                            onChangeText={changeHandlerInputs.bind(this, 'driverAddress')}
                            TextInputConfig={{keyboardType: 'decimal-pad'}}
-                           inputStyle={!everythingOk && formInputs.driverAddress.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.driverAddress ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'driverCountry')}
                            label={'Χώρα'}
-                           inputStyle={!everythingOk && formInputs.driverCountry.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.driverCountry ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput} label={'Τηλ.'}
                            onChangeText={changeHandlerInputs.bind(this, 'driverPhone')}
                            TextInputConfig={{keyboardType: 'number-pad', placeholder: '+30 6980999416'}}
-                           inputStyle={!everythingOk && formInputs.driverPhone.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.driverPhone ? styles.nullInput : ''}
 
                     />
                 </View>
@@ -367,17 +417,17 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                            label={'Διαβ.No'}
                            onChangeText={changeHandlerInputs.bind(this, 'driverPassport')}
                            TextInputConfig={{keyboardType: 'decimal-pad',}}
-                           inputStyle={!everythingOk && formInputs.driverPassport.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.driverPassport ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'driverPassportDateIssue')}
                            label={'Ημερ Εκδοσης'}
-                           inputStyle={!everythingOk && formInputs.driverPassportDateIssue.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.driverPassportDateIssue ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'driverPassportDateExp')}
                            label={'Λήξη'}
-                           inputStyle={!everythingOk && formInputs.driverPassportDateExp.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.driverPassportDateExp ? styles.nullInput : ''}
                     />
                 </View>
                 <View style={styles.inputRow}>
@@ -385,17 +435,17 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                            onChangeText={changeHandlerInputs.bind(this, 'driverLicenceNumber')}
                            label={'Αρ.Αδείας Οδηγού'}
                            TextInputConfig={{keyboardType: 'decimal-pad',}}
-                           inputStyle={!everythingOk && formInputs.driverLicenceNumber.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.driverLicenceNumber ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'driverLicenceDateIssue')}
                            label={'Ημερ Εκδοσης'}
-                           inputStyle={!everythingOk && formInputs.driverLicenceDateIssue.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.driverLicenceDateIssue ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'driverLicenceDateExp')}
                            label={'Λήξη'}
-                           inputStyle={!everythingOk && formInputs.driverLicenceDateExp.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.driverLicenceDateExp ? styles.nullInput : ''}
                     />
                 </View>
             </View>
@@ -405,52 +455,52 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'renter')}
                            label={'Μισθωτής'}
-                           inputStyle={!everythingOk && formInputs.renter.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.renter ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'afm')}
                            label={'ΑΦΜ'}
-                           inputStyle={!everythingOk && formInputs.afm.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.afm ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'doy')}
                            label={'Δ.Ο.Υ'}
-                           inputStyle={!everythingOk && formInputs.doy.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.doy ? styles.nullInput : ''}
                     />
                 </View>
                 <View style={styles.inputRow}>
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'renterAddress')}
                            label={'Διεύθυνση Κατοικίας'}
-                           inputStyle={!everythingOk && formInputs.renterAddress.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.renterAddress ? styles.nullInput : ''}
                     />
 
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'renterCity')}
                            label={'Πόλη'}
-                           inputStyle={!everythingOk && formInputs.renterCity.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.renterCity ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'renterPhone')}
                            label={'Τηλ'}
                            TextInputConfig={{keyboardType: 'number-pad', placeholder: '+30 6980999416'}}
-                           inputStyle={!everythingOk && formInputs.renterPhone.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.renterPhone ? styles.nullInput : ''}
                     />
                 </View>
 
             </View>
-            <View style={styles.inputRow}>
+            <View style={[styles.inputRow, {marginTop: 30}]}>
                 <Input
                     style={styles.rowInput}
                     label={'Ονοματεπώνυμο Επιπλέον Οδηγού'}
                     onChangeText={changeHandlerInputs.bind(this, 'secondDriverFullName')}
-                    inputStyle={!everythingOk && formInputs.secondDriverFullName.trim() === '' ? styles.nullInput : ''}
+                    inputStyle={!everythingOk.secondDriverFullName ? styles.nullInput : ''}
                 />
                 <Input
                     style={styles.rowInput}
                     label={'Ημερ Γέννησης'}
                     onChangeText={changeHandlerInputs.bind(this, 'secondDriverBirthDate')}
-                    inputStyle={!everythingOk && formInputs.secondDriverBirthDate.trim() === '' ? styles.nullInput : ''}
+                    inputStyle={!everythingOk.secondDriverBirthDate ? styles.nullInput : ''}
                 />
             </View>
             <View style={styles.inputRow}>
@@ -458,28 +508,28 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                        label={'Αρ.Αδείας Επιπλέον Οδηγού'}
                        onChangeText={changeHandlerInputs.bind(this, 'secondDriverLicenceNumber')}
                        TextInputConfig={{keyboardType: 'decimal-pad',}}
-                       inputStyle={!everythingOk && formInputs.secondDriverLicenceNumber.trim() === '' ? styles.nullInput : ''}
+                       inputStyle={!everythingOk.secondDriverLicenceNumber ? styles.nullInput : ''}
                 />
                 <Input
                     style={styles.rowInput}
                     onChangeText={changeHandlerInputs.bind(this, 'secondDriverLicenceCountry')}
                     label={'Χώρα'}
-                    inputStyle={!everythingOk && formInputs.secondDriverLicenceCountry.trim() === '' ? styles.nullInput : ''}
+                    inputStyle={!everythingOk.secondDriverLicenceCountry ? styles.nullInput : ''}
                 />
                 <Input style={styles.rowInput}
                        onChangeText={changeHandlerInputs.bind(this, 'secondDriverLicenceDateIssue')}
                        label={'Ημερ Έκδοσης'}
-                       inputStyle={!everythingOk && formInputs.secondDriverLicenceDateIssue.trim() === '' ? styles.nullInput : ''}
+                       inputStyle={!everythingOk.secondDriverLicenceDateIssue ? styles.nullInput : ''}
                 />
                 <Input style={styles.rowInput}
                        onChangeText={changeHandlerInputs.bind(this, 'secondDriverLicenceDateExp')}
                        label={'Λήξη'}
-                       inputStyle={!everythingOk && formInputs.secondDriverLicenceDateExp.trim() === '' ? styles.nullInput : ''}
+                       inputStyle={!everythingOk.secondDriverLicenceDateExp ? styles.nullInput : ''}
                 />
             </View>
             <Input label={'Email'}
                    onChangeText={changeHandlerInputs.bind(this, 'email')}
-                   inputStyle={!everythingOk && formInputs.email.trim() === '' ? styles.nullInput : ''}
+                   inputStyle={!everythingOk.email ? styles.nullInput : ''}
             />
             <View style={styles.containerBorder}>
                 <Text style={styles.titleText}>Επιπλέον Πληροφορίες</Text>
@@ -488,12 +538,12 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                            label={'Αρ. Κυκλοφορίας'}
                            onChangeText={changeHandlerInputs.bind(this, 'registrationNumber')}
                            TextInputConfig={{keyboardType: 'decimal-pad',}}
-                           inputStyle={!everythingOk && formInputs.registrationNumber.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.registrationNumber ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'typeofCar')}
                            label={'Τύπος'}
-                           inputStyle={!everythingOk && formInputs.typeofCar.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.typeofCar ? styles.nullInput : ''}
                     />
                 </View>
 
@@ -502,105 +552,107 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                            onChangeText={changeHandlerInputs.bind(this, 'checkOutDate')}
                            label={'Hμ Παράδοσης'}
                            TextInputConfig={{keyboardType: 'decimal-pad',}}
-                           inputStyle={!everythingOk && formInputs.checkOutDate.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.checkOutDate ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'checkOutTime')}
                            label={'Ωρα'}
-                           inputStyle={!everythingOk && formInputs.checkOutTime.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.checkOutTime ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'checkOutStation')}
                            label={'Station'}
-                           inputStyle={!everythingOk && formInputs.checkOutStation.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.checkOutStation ? styles.nullInput : ''}
                     />
                 </View>
                 <View style={styles.inputRow}>
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'checkInDate')}
                            label={'Επιστροφή'}
-                           inputStyle={!everythingOk && formInputs.checkInDate.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.checkInDate ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'checkInTime')}
                            label={'Ωρα'}
-                           inputStyle={!everythingOk && formInputs.checkInTime.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.checkInTime ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'checkInStation')}
                            label={'Station'}
-                           inputStyle={!everythingOk && formInputs.checkInStation.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.checkInStation ? styles.nullInput : ''}
                     />
                 </View>
 
-                <View style={styles.inputRow}>
+                <View style={[styles.inputRow, {marginTop: 40}]}>
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'deliveredAt')}
                            label={'Παρεδόθη εις'}
-                           inputStyle={!everythingOk && formInputs.deliveredAt.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.deliveredAt ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'collectedFrom')}
                            label={'Παραλαβή από'}
-                           inputStyle={!everythingOk && formInputs.collectedFrom.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.collectedFrom ? styles.nullInput : ''}
                     />
                 </View>
 
+                <View style={[styles.inputRow, {marginBottom: 60}]}>
+                    <Input style={styles.rowInput}
+                           onChangeText={changeHandlerInputs.bind(this, 'recommendedBy')}
+                           label={'Recommended By'}
+                           inputStyle={!everythingOk.recommendedBy ? styles.nullInput : ''}
+                    />
+                    <Input style={styles.rowInput}
+                           onChangeText={changeHandlerInputs.bind(this, 'rateCode')}
+                           label={'Rate Code'}
+                           inputStyle={!everythingOk.rateCode ? styles.nullInput : ''}
+                    />
+                </View>
+                <View style={styles.inputRow}>
+                    <View style={{minWidth: '50%'}}></View>
+                    <View style={styles.rowInput}>
+                        <RadioButtonCustom onPress={RadioPressHandler} label={"Αποδέχεσαι C.D.W."}/>
+                    </View>
+                </View>
                 <View style={styles.inputRow}>
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'charges')}
                            label={'Χρεώσεις €'}
-                           inputStyle={!everythingOk && formInputs.charges.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.charges ? styles.nullInput : ''}
+                    />
+                    <Input style={styles.rowInput}
+                           onChangeText={changeHandlerInputs.bind(this, 'subTotal')}
+                           label={'Sub-Total'}
+                           editable = {false}
+                           inputStyle={!everythingOk.subTotal ? styles.nullInput : ''}
                     />
                 </View>
 
                 <View style={styles.inputRow}>
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'days')}
+                           editable = {false}
                            label={'Ημέρες'}
-                           inputStyle={!everythingOk && formInputs.days.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.days ? styles.nullInput : ''}
                     />
-                </View>
 
-                <View style={styles.inputRow}>
-                    <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'recommendedBy')}
-                           label={'Recommended By'}
-                           inputStyle={!everythingOk && formInputs.recommendedBy.trim() === '' ? styles.nullInput : ''}
-                    />
-                    <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'rateCode')}
-                           label={'Rate Code'}
-                           inputStyle={!everythingOk && formInputs.rateCode.trim() === '' ? styles.nullInput : ''}
-                    />
-                </View>
+                    <View style={styles.rowInput}>
+                        <Input style={styles.rowInput}
+                               onChangeText={changeHandlerInputs.bind(this, 'cdw')}
+                               label={'C.M.D Μερική Απαλλαγή Ζημιών'}
+                               inputStyle={!everythingOk.cdw ? styles.nullInput : ''}
+                        />
+                    </View>
 
-                <View style={styles.inputRow}>
-                    <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'subTotal')}
-                           label={'Sub-Total'}
-                           inputStyle={!everythingOk && formInputs.subTotal.trim() === '' ? styles.nullInput : ''}
-                    />
                 </View>
-
                 <View style={styles.inputRow}>
-                    <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'cdw')}
-                           label={'C.M.D Μερική Απαλλαγή Ζημιών'}
-                           inputStyle={!everythingOk && formInputs.cdw.trim() === '' ? styles.nullInput : ''}
-                    />
-                </View>
-
-                <View style={styles.inputRow}>
-                    <Input style={styles.rowInput}
+                    <View style={{minWidth: '50%'}}></View>
+                    <Input style={[styles.rowInput, {}]}
                            onChangeText={changeHandlerInputs.bind(this, 'total')}
                            label={'TOTAL - Σύνολο'}
-                           inputStyle={!everythingOk && formInputs.total.trim() === '' ? styles.nullInput : ''}
+                           editable = {false}
+                           inputStyle={!everythingOk.total ? styles.nullInput : ''}
                     />
-                </View>
-
-                <View style={styles.inputRow}>
-                    <RadioButtonCustom onPress={RadioPressHandler} label={"Αποδέχεσαι C.D.W."}/>
                 </View>
                 <Text style={styles.bolder}> COLLISION DAMAGE INSURANCE </Text>
                 <View style={styles.inputRow}>
@@ -647,20 +699,20 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'cardHolder')}
                            label={'Card Holder'}
-                           inputStyle={!everythingOk && formInputs.cardHolder.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.cardHolder ? styles.nullInput : ''}
                     />
                 </View>
                 <View style={styles.inputRow}>
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'cardExpDate')}
                            label={'EXP.'}
-                           inputStyle={!everythingOk && formInputs.cardExpDate.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.cardExpDate ? styles.nullInput : ''}
                     />
 
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'cvv')}
                            label={'CVV'}
-                           inputStyle={!everythingOk && formInputs.cvv.trim() === '' ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.cvv ? styles.nullInput : ''}
                     />
                 </View>
 

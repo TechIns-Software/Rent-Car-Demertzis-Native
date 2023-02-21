@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import Form from "../components/form/form";
+// import {black} from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 function FormScreen(){
     return <View style={styles.container}>
         <Text style={styles.title} >Δημιουργία Αίτησης </Text>
@@ -16,7 +17,10 @@ const styles = StyleSheet.create({
     },
     title:{
         fontWeight :'bold',
-        fontSize : 25
+        fontSize : 25,
+        borderColor: 'orange',
+        borderWidth: 4,
+        borderStyle: 'solid'
     }
 })
 

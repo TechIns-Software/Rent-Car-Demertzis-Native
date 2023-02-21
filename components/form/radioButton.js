@@ -2,11 +2,12 @@ import * as React from 'react';
 import {Text, View,StyleSheet} from 'react-native';
 import { RadioButton } from 'react-native-paper';
 
-const RadioButtonCustom = ({onPress}) => {
-    const [checked, setChecked] = React.useState(true);
+const RadioButtonCustom = ({onPress, label}) => {
+    const [checked, setChecked] = React.useState(false);
 
     return (
         <View style={styles.container}>
+            <Text style={styles.label}>{label}</Text>
             <View style={styles.radioRow}>
             <Text> Αποδέχομαι</Text>
             <RadioButton
@@ -42,6 +43,10 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         alignItems:'center',
         paddingVertical:10
+    },
+    label: {
+        fontWeight: "bold",
+        marginBottom: 10
     }
 })
 export default RadioButtonCustom;
