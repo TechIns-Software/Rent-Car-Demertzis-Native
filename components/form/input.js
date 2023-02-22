@@ -1,4 +1,5 @@
 import {Text, TextInput, View,StyleSheet} from "react-native";
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
 function Input({label,style,TextInputConfig,name,onChangeText,inputStyle,onSubmit,editable=true,value}){
 
@@ -20,7 +21,7 @@ const  styles = StyleSheet.create({
 
     },
     label :{
-        fontSize : 14,
+        fontSize: RFPercentage(1.4),
         color:'#000000',
         fontWeight :'bold',
         marginBottom :4

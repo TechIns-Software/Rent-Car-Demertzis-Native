@@ -4,7 +4,6 @@ import Form from "../components/form/form";
 // import {black} from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 function FormScreen(){
     return <View style={styles.container}>
-        <Text style={styles.title} >Δημιουργία Αίτησης </Text>
         <Form/>
 
     </View>

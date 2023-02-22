@@ -1,11 +1,14 @@
 import {Text, View, StyleSheet, Button, Modal, Platform} from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {useState} from "react";
+import {RFPercentage} from "react-native-responsive-fontsize";
 
 
 function  CustomDatePicker({ customOnChange, label,style,objectKey,type='date'}){
     const todayDate = new Date();
-    const timeNow = todayDate.getHours()+':'+todayDate.getMinutes();
+    const minutes = String(todayDate.getMinutes()).padStart(2, '0');
+    const hours = String(todayDate.getHours()).padStart(2, '0');
+    const timeNow = hours+':'+minutes;
 
 
     const [date, setDate] = useState(todayDate);
@@ -21,7 +24,10 @@ function  CustomDatePicker({ customOnChange, label,style,objectKey,type='date'})
             const formatTodayDate = (currentDate.getFullYear()+'-'+String(date.getMonth() + 1).padStart(2, '0')+'-'+String(date.getDate() ).padStart(2, '0')).toString();
             customOnChange(objectKey,formatTodayDate)
         }else{
-            const time24 = currentDate.getHours()+':'+currentDate.getMinutes()
+
+            const timemin = String(currentDate.getMinutes()).padStart(2, '0');
+            const timeHour = String(currentDate.getHours()).padStart(2, '0');
+            const time24 = timeHour+':'+timemin;
             setTime(time24.toString());
             customOnChange(objectKey,time24)
         }
@@ -50,15 +56,14 @@ function  CustomDatePicker({ customOnChange, label,style,objectKey,type='date'})
     return (
         <View style={[styles.inputContainer,style]}>
             <Text style={styles.label}>{label}</Text>
-            <View>
-                { type == 'date' ?<Button color={'#2f77d5'}  onPress={showDatepicker} title={date.toDateString()} />:
+            <View style={styles.buttonContainer}>
+                { type == 'date' ?<Button   color={'#2f77d5'}  onPress={showDatepicker} title={ (date.getFullYear()+'-'+String(date.getMonth() + 1).padStart(2, '0')+'-'+String(date.getDate() ).padStart(2, '0')).toString()} />:
                     <Button onPress={showTimepicker} title={time.toString()}/>            }
 
             </View>
             {/*<Text>selected: {date.toLocaleString()}</Text>*/}
             {show && (<DateTimePicker
                     style={{backgroundColor:'#2f77d5',flex: 1}}
-
                     testID="dateTimePicker"
                     value={date}
                     mode={mode}
@@ -76,10 +81,14 @@ const  styles = StyleSheet.create({
 
     },
     label :{
-        fontSize : 14,
+        fontSize: RFPercentage(1.4),
         color:'#000000',
         fontWeight :'bold',
         marginBottom :4
+    },
+    buttonContainer:{
+        fontSize:10,
+        maxHeight:50
     }
 })
 
