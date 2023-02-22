@@ -361,12 +361,21 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         updateCalculatedDependentValues(inputName, inputValue);
     }
     function updateCalculatedDependentValues(inputName, inputValue) {
+        var tempChange = 0;
         if (inputName === 'days' || inputName == 'charges') {
             if (inputName === 'days') {
-                formInputs['total'] = inputValue * Number(formInputs['charges']);
+
+                tempChange = (inputValue * Number(formInputs['charges'])).toString();
             } else {
-                formInputs['total'] = formInputs['days'] * Number(inputValue);
+                tempChange = (formInputs['days'] * Number(inputValue)).toString();
             }
+
+            setFormInputs((prevValues) => {
+                return {
+                    ...prevValues,
+                    ['total']: tempChange
+                }
+            });
         }
 
     }
