@@ -83,7 +83,7 @@ function  FormsContextProvider({children}){
         await  storeData({[lastId]:formInfo},Number(lastId+1).toString());
 
         let allForms = await getAllForms();
-        console.log(allForms)
+        // console.log(allForms)
 
     }
 

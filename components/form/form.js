@@ -54,7 +54,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         subTotal: "",
         cdw: "",
         total: "",
-        cdwAgree: true,
+        cdwAgree: false,
         signClient:"",
         cardHolder: "",
         cardExpDate: "",
@@ -134,28 +134,38 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             type: "text"
         },
         secondDriverFullName: {
-            mandatory: true,
+            mandatory: false,
             type: "text"
         },
         secondDriverBirthDate: {
-            mandatory: true,
-            type: "text"
+            mandatory: false,
+            type: "text",
+            underCondition: true,
+            fieldNameUnderCondition: "secondDriverFullName"
         },
         secondDriverLicenceNumber: {
-            mandatory: true,
-            type: "text"
+            mandatory: false,
+            type: "text",
+            underCondition: true,
+            fieldNameUnderCondition: "secondDriverFullName"
         },
         secondDriverLicenceCountry: {
-            mandatory: true,
-            type: "text"
+            mandatory: false,
+            type: "text",
+            underCondition: true,
+            fieldNameUnderCondition: "secondDriverFullName"
         },
         secondDriverLicenceDateIssue: {
-            mandatory: true,
-            type: "text"
+            mandatory: false,
+            type: "text",
+            underCondition: true,
+            fieldNameUnderCondition: "secondDriverFullName"
         },
         secondDriverLicenceDateExp: {
-            mandatory: true,
-            type: "text"
+            mandatory: false,
+            type: "text",
+            underCondition: true,
+            fieldNameUnderCondition: "secondDriverFullName"
         },
         email: {
             mandatory: true,
@@ -231,9 +241,10 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             mandatory: true,
             type: "text"
         },
-        cdwAgree: {
+        cdw: {
             mandatory: true,
-            type: "bool"
+            type: "bool",
+            radioToCheckOn: "cdwAgree"
         },
         fullNameBank: {
             mandatory: true,
@@ -261,54 +272,54 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         }
     };
     const [everythingOk, setEveryThingOk] = useState({
-        fullName: true,
-        birthDate: true,
-        driverAddress: true,
-        driverCountry: true,
-        driverPhone: true,
-        driverPassport: true,
-        driverPassportDateIssue: true,
-        driverPassportDateExp: true,
-        driverLicenceNumber: true,
-        driverLicenceDateIssue: true,
-        driverLicenceDateExp: true,
-        renter: true,
-        afm: true,
-        doy: true,
-        renterAddress: true,
-        renterCity: true,
-        renterPhone: true,
+        fullName: false,
+        birthDate: false,
+        driverAddress: false,
+        driverCountry: false,
+        driverPhone: false,
+        driverPassport: false,
+        driverPassportDateIssue: false,
+        driverPassportDateExp: false,
+        driverLicenceNumber: false,
+        driverLicenceDateIssue: false,
+        driverLicenceDateExp: false,
+        renter: false,
+        afm: false,
+        doy: false,
+        renterAddress: false,
+        renterCity: false,
+        renterPhone: false,
         secondDriverFullName: true,
         secondDriverBirthDate: true,
         secondDriverLicenceNumber: true,
         secondDriverLicenceCountry: true,
         secondDriverLicenceDateIssue: true,
         secondDriverLicenceDateExp: true,
-        email: true,
-        registrationNumber: true,
-        typeofCar: true,
-        checkOutDate: true,
-        checkOutTime: true,
-        checkOutStation: true,
-        checkInDate: true,
-        checkInTime: true,
-        checkInStation: true,
+        email: false,
+        registrationNumber: false,
+        typeofCar: false,
+        checkOutDate: false,
+        checkOutTime: false,
+        checkOutStation: false,
+        checkInDate: false,
+        checkInTime: false,
+        checkInStation: false,
         extensionTo: true,
-        deliveredAt: true,
-        collectedFrom: true,
-        charges: true,
-        days: true,
+        deliveredAt: false,
+        collectedFrom: false,
+        charges: false,
+        days: false,
         recommendedBy: true,
         rateCode: true,
-        subTotal: true,
+        subTotal: false,
         cdw: true,
-        total: true,
+        total: false,
         cdwAgree: true,
-        signClient:true,
-        cardHolder: true,
-        cardExpDate: true,
-        cvv: true,
-        signCard: true,
+        signClient:false,
+        cardHolder: false,
+        cardExpDate: false,
+        cvv: false,
+        signCard: false,
     });
     const formCtx = useContext(FormsContext) ;
 
@@ -322,16 +333,36 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
     }
 
     function checkInputs() {
-        setEveryThingOk(true);
-
+        //todo: fill out dependent fields
+        setEveryThingOk((oldValues) => {
+            const setTrueObj = {};
+            for (const [key, value] of Object.entries(oldValues)) {
+                setTrueObj[key] = true;
+            }
+            return {
+                ...setTrueObj
+            }
+        });
         for (const [key, value] of Object.entries(formInputs)) {
             if (RULES_INPUTS[key]) {
+                //check types if we want
                 if (RULES_INPUTS[key]['mandatory']) {
-                    //check types if we want
+                    if (RULES_INPUTS[key]['type'] === 'bool') {
+
+                        setEveryThingOk((oldValues) => {
+                            return {
+                                ...oldValues, [key]: !formInputs[RULES_INPUTS[key]['radioToCheckOn']]
+                            }
+                        });
+                        continue;
+                    }
+
                     if (value.length === 0) {
-                        setEveryThingOk(false);
-                        //make button red
-                        console.log("σαδ");
+                        setEveryThingOk((oldValues) => {
+                            return {
+                                ...oldValues, [key]: false
+                            }
+                        });
 
                     }
                 } else {
@@ -339,8 +370,11 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                         if (value.length === 0) {
                             const fieldName = RULES_INPUTS[key]['fieldNameUnderCondition'];
                             if (formInputs[fieldName].length > 0) {
-                                setEveryThingOk(false);
-                                //make red button
+                                setEveryThingOk((oldValues) => {
+                                    return {
+                                        ...oldValues, [key]: false
+                                    }
+                                });
                             }
                         }
                     }
@@ -348,13 +382,21 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             }
 
         }
-
-        //todo check signatures and car as well
-        if (!everythingOk) {
-            Alert.alert('Πρόβλημα με τα στοιχεία', 'Όλα τα πεδία είναι υποχρεωτικά')
+        console.log(formInputs);
+        console.log(everythingOk);
+        let flag = true;
+        for (const [key, value] of Object.entries(everythingOk)) {
+            if (!value) {
+                flag = false;
+                break;
+            }
         }
-
-        formCtx.saveLocal(0,formInputs);
+        //todo check signatures and car as well
+        if (!flag) {
+            Alert.alert('Πρόβλημα με τα στοιχεία', 'Πρέπει να συμπληρώσετε ορισμένα πεδία')
+        } else {
+            formCtx.saveLocal(0,formInputs);
+        }
 
 
     }
