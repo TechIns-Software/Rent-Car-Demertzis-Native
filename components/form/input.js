@@ -1,8 +1,8 @@
 import {Text, TextInput, View,StyleSheet} from "react-native";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
-function Input({label,style,TextInputConfig,name,onChangeText,inputStyle,onSubmit,editable=true,value}){
-
+function Input({label,style,TextInputConfig,name,onChangeText,inputStyle,onSubmit,editable=true,value=''}){
+    console.log(value);
     const inputStyles = [styles.input];
 
     if (TextInputConfig && TextInputConfig.multiline ){

@@ -1,4 +1,14 @@
-import {Text, View, StyleSheet, Alert, ScrollView, Button, Modal, Pressable} from "react-native";
+import {
+    Text,
+    View,
+    StyleSheet,
+    Alert,
+    ScrollView,
+    Button,
+    Modal,
+    Pressable,
+    Platform
+} from "react-native";
 import Input from "./input";
 import RadioButtonCustom from "./radioButton";
 import FormText from "./formText";
@@ -337,7 +347,9 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 ...prevValues,
                 [inputName]: inputValue
             }
-        })
+        });
+        updateCalculatedDependentValues(inputName, inputValue);
+        console.log(formInputs);
     }
     function changeHandlerDatePicher(inputName, inputValue) {
         setFormInputs((prevValues) => {
@@ -345,14 +357,23 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 ...prevValues,
                 [inputName]: inputValue
             }
-        })
+        });
+        updateCalculatedDependentValues(inputName, inputValue);
+    }
+    function updateCalculatedDependentValues(inputName, inputValue) {
+        if (inputName === 'days' || inputName == 'charges') {
+            if (inputName === 'days') {
+                formInputs['total'] = inputValue * Number(formInputs['charges']);
+            } else {
+                formInputs['total'] = formInputs['days'] * Number(inputValue);
+            }
+        }
+
     }
 
     function checkInputs() {
-        //todo: fill out dependent fields
-        formInputs['total'] = formInputs['days'] * Number(formInputs['charges']);
 
-        //todo-> update elements values in front as well
+
         /////////////////
         setEveryThingOk((oldValues) => {
             const setTrueObj = {};
@@ -416,7 +437,10 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         if (formInputs['checkInDate'] && formInputs['checkOutDate']) {
             var date1 = new Date(formInputs['checkInDate']);
             var date2 = new Date(formInputs['checkOutDate']);
-            const daysDifference = new Date(date2.getTime() - date1.getTime()).getUTCDate() - 1;
+            var daysDifference = new Date(date2.getTime() - date1.getTime()).getUTCDate() - 1;
+            if (Platform.OS == "ios") {
+                daysDifference += 1;
+            }
             if (daysDifference != formInputs['days'] && (daysDifference + 1) != formInputs['days']) {
                 flagDays = true;
                 Alert.alert('Πρόβλημα με την ημερομηνία', 'Ο Υπολογισμός των ημερών φαίνεται λάθος με βάση τις ημερομηνίες που δόθηκαν')
@@ -440,7 +464,8 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 ...prevValues,
                 ['cdwAgree']: val
             }
-        })
+        });
+        updateCalculatedDependentValues(inputName, inputValue);
     }
 
     function  clearSignature(label,value){
@@ -464,6 +489,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                            label={'Ονοματεπώνυμο και Πατρώνυμο οδηγού'}
                            onChangeText={changeHandlerInputs.bind(this, 'fullName')}
                            TextInputConfig={{}}
+                           value={formInputs['fullName']}
                            inputStyle={!everythingOk.fullName ? styles.nullInput : ''}/>
                     {/*<Input style={styles.rowInput}*/}
                     {/*       label={'Ημερ.Γεννήσεως'}*/}
@@ -478,16 +504,19 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                            label={'Διεύθυνση Κατοικίας'}
                            onChangeText={changeHandlerInputs.bind(this, 'driverAddress')}
                            TextInputConfig={{keyboardType: 'decimal-pad'}}
+                           value={formInputs['driverAddress']}
                            inputStyle={!everythingOk.driverAddress ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'driverCountry')}
                            label={'Χώρα'}
+                           value={formInputs['driverCountry']}
                            inputStyle={!everythingOk.driverCountry ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput} label={'Τηλ.'}
                            onChangeText={changeHandlerInputs.bind(this, 'driverPhone')}
                            TextInputConfig={{keyboardType: 'number-pad', placeholder: '+30 6980999416'}}
+                           value={formInputs['driverPhone']}
                            inputStyle={!everythingOk.driverPhone ? styles.nullInput : ''}
 
                     />
@@ -497,6 +526,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                            label={'Διαβ.No'}
                            onChangeText={changeHandlerInputs.bind(this, 'driverPassport')}
                            TextInputConfig={{keyboardType: 'decimal-pad',}}
+                           value={formInputs['driverPassport']}
                            inputStyle={!everythingOk.driverPassport ? styles.nullInput : ''}
                     />
                     {/*<Input style={styles.rowInput}*/}
@@ -508,6 +538,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'driverPassportDateExp')}
                            label={'Λήξη'}
+                           value={formInputs['driverPassportDateExp']}
                            inputStyle={!everythingOk.driverPassportDateExp ? styles.nullInput : ''}
                     />
                 </View>
@@ -515,6 +546,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'driverLicenceNumber')}
                            label={'Αρ.Αδείας Οδηγού'}
+                           value={formInputs['driverLicenceNumber']}
                            TextInputConfig={{keyboardType: 'decimal-pad',}}
                            inputStyle={!everythingOk.driverLicenceNumber ? styles.nullInput : ''}
                     />
@@ -527,6 +559,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'driverLicenceDateExp')}
                            label={'Λήξη'}
+                           value={formInputs['driverLicenceDateExp']}
                            inputStyle={!everythingOk.driverLicenceDateExp ? styles.nullInput : ''}
                     />
                 </View>
@@ -537,16 +570,19 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'renter')}
                            label={'Μισθωτής'}
+                           value={formInputs['renter']}
                            inputStyle={!everythingOk.renter ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'afm')}
                            label={'ΑΦΜ'}
+                           value={formInputs['afm']}
                            inputStyle={!everythingOk.afm ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'doy')}
                            label={'Δ.Ο.Υ'}
+                           value={formInputs['doy']}
                            inputStyle={!everythingOk.doy ? styles.nullInput : ''}
                     />
                 </View>
@@ -554,17 +590,20 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'renterAddress')}
                            label={'Διεύθυνση Κατοικίας'}
+                           value={formInputs['renterAddress']}
                            inputStyle={!everythingOk.renterAddress ? styles.nullInput : ''}
                     />
 
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'renterCity')}
                            label={'Πόλη'}
+                           value={formInputs['renterCity']}
                            inputStyle={!everythingOk.renterCity ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'renterPhone')}
                            label={'Τηλ'}
+                           value={formInputs['renterPhone']}
                            TextInputConfig={{keyboardType: 'number-pad', placeholder: '+30 6980999416'}}
                            inputStyle={!everythingOk.renterPhone ? styles.nullInput : ''}
                     />
@@ -576,6 +615,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     style={styles.rowInput}
                     label={'Ονοματεπώνυμο Επιπλέον Οδηγού'}
                     onChangeText={changeHandlerInputs.bind(this, 'secondDriverFullName')}
+                    value={formInputs['secondDriverFullName']}
                     inputStyle={!everythingOk.secondDriverFullName ? styles.nullInput : ''}
                 />
                 {/*<Input*/}
@@ -592,11 +632,13 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                        onChangeText={changeHandlerInputs.bind(this, 'secondDriverLicenceNumber')}
                        TextInputConfig={{keyboardType: 'decimal-pad',}}
                        inputStyle={!everythingOk.secondDriverLicenceNumber ? styles.nullInput : ''}
+                       value={formInputs['secondDriverLicenceNumber']}
                 />
                 <Input
                     style={styles.rowInput}
                     onChangeText={changeHandlerInputs.bind(this, 'secondDriverLicenceCountry')}
                     label={'Χώρα'}
+                    value={formInputs['secondDriverLicenceCountry']}
                     inputStyle={!everythingOk.secondDriverLicenceCountry ? styles.nullInput : ''}
                 />
                 {/*<Input style={styles.rowInput}*/}
@@ -608,24 +650,28 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 <Input style={styles.rowInput}
                        onChangeText={changeHandlerInputs.bind(this, 'secondDriverLicenceDateExp')}
                        label={'Λήξη'}
+                       value={formInputs['secondDriverLicenceDateExp']}
                        inputStyle={!everythingOk.secondDriverLicenceDateExp ? styles.nullInput : ''}
                 />
             </View>
             <Input label={'Email'}
                    onChangeText={changeHandlerInputs.bind(this, 'email')}
                    inputStyle={!everythingOk.email ? styles.nullInput : ''}
+                   value={formInputs['email']}
             />
             <View style={styles.containerBorder}>
                 <Text style={styles.titleText}>Επιπλέον Πληροφορίες</Text>
                 <View style={styles.inputRow}>
                     <Input style={styles.rowInput}
                            label={'Αρ. Κυκλοφορίας'}
+                           value={formInputs['registrationNumber']}
                            onChangeText={changeHandlerInputs.bind(this, 'registrationNumber')}
                            TextInputConfig={{keyboardType: 'decimal-pad',}}
                            inputStyle={!everythingOk.registrationNumber ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'typeofCar')}
+                           value={formInputs['typeofCar']}
                            label={'Τύπος'}
                            inputStyle={!everythingOk.typeofCar ? styles.nullInput : ''}
                     />
@@ -650,6 +696,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'checkInStation')}
                            label={'Station'}
+                           value={formInputs['checkInStation']}
                            inputStyle={!everythingOk.checkOutStation ? styles.nullInput : ''}
                     />
                 </View>
@@ -670,6 +717,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'checkOutStation')}
                            label={'Station'}
+                           value={formInputs['checkOutStation']}
                            inputStyle={!everythingOk.checkInStation ? styles.nullInput : ''}
                     />
                 </View>
@@ -678,10 +726,12 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'collectedFrom')}
                            label={'Παρεδόθη εις'}
+                           value={formInputs['collectedFrom']}
                            inputStyle={!everythingOk.deliveredAt ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'deliveredAt')}
+                           value={formInputs['deliveredAt']}
                            label={'Παραλαβή από'}
                            inputStyle={!everythingOk.collectedFrom ? styles.nullInput : ''}
                     />
@@ -691,11 +741,13 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'recommendedBy')}
                            label={'Recommended By'}
+                           value={formInputs['recommendedBy']}
                            inputStyle={!everythingOk.recommendedBy ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'rateCode')}
                            label={'Rate Code'}
+                           value={formInputs['rateCode']}
                            inputStyle={!everythingOk.rateCode ? styles.nullInput : ''}
                     />
                 </View>
@@ -709,11 +761,13 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'charges')}
                            label={'Χρεώσεις €'}
+                           value={formInputs['charges']}
                            inputStyle={!everythingOk.charges ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'subTotal')}
                            label={'Sub-Total'}
+                           value={formInputs['subTotal']}
                            editable = {false}
                            inputStyle={!everythingOk.subTotal ? styles.nullInput : ''}
                     />
@@ -723,12 +777,13 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'days')}
                            label={'Ημέρες'}
-                            value={formInputs.days.toString()}
+                           value={formInputs.days.toString()}
                            inputStyle={!everythingOk.days ? styles.nullInput : ''}
                     />
 
                     <View style={styles.rowInput}>
                         <Input style={styles.rowInput}
+                               value={formInputs['cdw']}
                                onChangeText={changeHandlerInputs.bind(this, 'cdw')}
                                label={'C.M.D Μερική Απαλλαγή Ζημιών'}
                                inputStyle={!everythingOk.cdw ? styles.nullInput : ''}
@@ -738,6 +793,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 </View>
                 <View style={[styles.inputRow, {width: '50%'}]}>
                     <Input style={styles.rowInput}
+                           value={formInputs['liabilityAmount']}
                            onChangeText={changeHandlerInputs.bind(this, 'liabilityAmount')}
                            editable = {false}
                            label={'Απαλαγή'}
@@ -748,9 +804,10 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 <View style={styles.inputRow}>
                     <View style={{minWidth: '50%'}}></View>
                     <Input style={[styles.rowInput, {}]}
+                           value={formInputs.total}
                            onChangeText={changeHandlerInputs.bind(this, 'total')}
                            label={'TOTAL - Σύνολο'}
-                           editable = {false}
+                           // editable = {false}
                            inputStyle={!everythingOk.total ? styles.nullInput : ''}
                     />
                 </View>
@@ -799,6 +856,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'cardHolder')}
                            label={'Card Holder'}
+                           value={formInputs['cardHolder']}
                            inputStyle={!everythingOk.cardHolder ? styles.nullInput : ''}
                     />
                 </View>
@@ -806,12 +864,14 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'cardExpDate')}
                            label={'EXP.'}
+                           value={formInputs['cardExpDate']}
                            inputStyle={!everythingOk.cardExpDate ? styles.nullInput : ''}
                     />
 
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'cvv')}
                            label={'CVV'}
+                           value={formInputs['cvv']}
                            inputStyle={!everythingOk.cvv ? styles.nullInput : ''}
                     />
                 </View>
