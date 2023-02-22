@@ -29,12 +29,13 @@ function  CustomDatePicker({ customOnChange, label,style,objectKey,type='date'})
     };
 
     const showMode = (currentMode) => {
-        if (Platform.OS === 'android') {
-            setShow(true);
-            // for iOS, add a button that closes the picker
-        }else  if(Platform.OS === 'ios'){
-            setShow(true);
-        }
+        // if (Platform.OS === 'android') {
+        //     setShow(true);
+        //     // for iOS, add a button that closes the picker
+        // }else  if(Platform.OS === 'ios'){
+        //
+        // }
+        setShow(true);
         setMode(currentMode);
     };
 
@@ -56,6 +57,7 @@ function  CustomDatePicker({ customOnChange, label,style,objectKey,type='date'})
             </View>
             {/*<Text>selected: {date.toLocaleString()}</Text>*/}
             {show && (<DateTimePicker
+                    style={{backgroundColor:'#2f77d5',flex: 1}}
 
                     testID="dateTimePicker"
                     value={date}
