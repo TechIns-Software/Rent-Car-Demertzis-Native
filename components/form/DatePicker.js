@@ -32,6 +32,8 @@ function  CustomDatePicker({ customOnChange, label,style,objectKey,type='date'})
         if (Platform.OS === 'android') {
             setShow(true);
             // for iOS, add a button that closes the picker
+        }else  if(Platform.OS === 'ios'){
+            setShow(true);
         }
         setMode(currentMode);
     };
