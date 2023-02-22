@@ -53,6 +53,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         rateCode: "",
         subTotal: "",
         cdw: "",
+        liabilityAmount: "",
         total: "",
         cdwAgree: false,
         signClient:"",
@@ -246,6 +247,11 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             type: "bool",
             radioToCheckOn: "cdwAgree"
         },
+        liabilityAmount: {
+            mandatory: true,
+            type: "bool",
+            radioToCheckOn: "cdwAgree"
+        },
         fullNameBank: {
             mandatory: true,
             type: "text"
@@ -315,6 +321,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         cdw: true,
         total: false,
         cdwAgree: true,
+        liabilityAmount: true,
         signClient:false,
         cardHolder: false,
         cardExpDate: false,
@@ -334,6 +341,10 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
 
     function checkInputs() {
         //todo: fill out dependent fields
+        formInputs['days'] = 1;//calculate from days difference
+        formInputs['total'] = formInputs['days'] * Number(formInputs['charges']);
+        //todo-> update elements values in front as well
+        /////////////////
         setEveryThingOk((oldValues) => {
             const setTrueObj = {};
             for (const [key, value] of Object.entries(oldValues)) {
@@ -685,6 +696,15 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                                inputStyle={!everythingOk.cdw ? styles.nullInput : ''}
                         />
                     </View>
+
+                </View>
+                <View style={[styles.inputRow, {width: '50%'}]}>
+                    <Input style={styles.rowInput}
+                           onChangeText={changeHandlerInputs.bind(this, 'liabilityAmount')}
+                           editable = {false}
+                           label={'Απαλαγή'}
+                           inputStyle={!everythingOk.liabilityAmount ? styles.nullInput : ''}
+                    />
 
                 </View>
                 <View style={styles.inputRow}>

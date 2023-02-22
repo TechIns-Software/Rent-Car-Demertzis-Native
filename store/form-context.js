@@ -56,6 +56,7 @@ function  FormsContextProvider({children}){
             rateCode: "",
             subTotal: "",
             cdw: "",
+            liabilityAmount: "",
             total: "",
             cdwAgree: true,
             signClient:"",
