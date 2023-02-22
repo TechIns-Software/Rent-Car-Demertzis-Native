@@ -5,28 +5,27 @@ import {RFPercentage} from "react-native-responsive-fontsize";
 
 
 function  CustomDatePicker({ customOnChange, label,style,objectKey,type='date'}){
-    const todayDate = new Date();
-    const minutes = String(todayDate.getMinutes()).padStart(2, '0');
-    const hours = String(todayDate.getHours()).padStart(2, '0');
-    const timeNow = hours+':'+minutes;
+    // const todayDate = new Date();
+    // const minutes = String(todayDate.getMinutes()).padStart(2, '0');
+    // const hours = String(todayDate.getHours()).padStart(2, '0');
+    // const timeNow = hours+':'+minutes;
 
 
-    const [date, setDate] = useState(todayDate);
-    const [time, setTime] = useState(timeNow);
+    const [date, setDate] = useState(null);
+    // const [date, setDate] = useState(todayDate);
+    // const [time, setTime] = useState(timeNow);
+    const [time, setTime] = useState(null);
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
 
     const onChange = (event, selectedDate) => {
-        const currentDate = selectedDate;
         setShow(false);
         if (type == 'date'){
-            setDate(currentDate);
-            const formatTodayDate = (currentDate.getFullYear()+'-'+String(date.getMonth() + 1).padStart(2, '0')+'-'+String(date.getDate() ).padStart(2, '0')).toString();
-            customOnChange(objectKey,formatTodayDate)
-        }else{
-
-            const timemin = String(currentDate.getMinutes()).padStart(2, '0');
-            const timeHour = String(currentDate.getHours()).padStart(2, '0');
+            setDate(selectedDate);
+            customOnChange(objectKey,selectedDate);
+        } else {
+            const timemin = String(selectedDate.getMinutes()).padStart(2, '0');
+            const timeHour = String(selectedDate.getHours()).padStart(2, '0');
             const time24 = timeHour+':'+timemin;
             setTime(time24.toString());
             customOnChange(objectKey,time24)
@@ -57,15 +56,15 @@ function  CustomDatePicker({ customOnChange, label,style,objectKey,type='date'})
         <View style={[styles.inputContainer,style]}>
             <Text style={styles.label}>{label}</Text>
             <View style={styles.buttonContainer}>
-                { type == 'date' ?<Button   color={'#2f77d5'}  onPress={showDatepicker} title={ (date.getFullYear()+'-'+String(date.getMonth() + 1).padStart(2, '0')+'-'+String(date.getDate() ).padStart(2, '0')).toString()} />:
-                    <Button onPress={showTimepicker} title={time.toString()}/>            }
+                { type == 'date' ?<Button   color={'#2f77d5'}  onPress={showDatepicker} title={ date ? (date.getFullYear()+'-'+String(date.getMonth() + 1).padStart(2, '0')+'-'+String(date.getDate() ).padStart(2, '0')).toString() : '----'} />:
+                    <Button onPress={showTimepicker} title={time ? time.toString() : '----'}/>            }
 
             </View>
             {/*<Text>selected: {date.toLocaleString()}</Text>*/}
             {show && (<DateTimePicker
                     style={{backgroundColor:'#2f77d5',flex: 1}}
                     testID="dateTimePicker"
-                    value={date}
+                    value={(date ?? new Date())}
                     mode={mode}
                     is24Hour={true}
                     onChange={onChange}  />

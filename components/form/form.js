@@ -339,11 +339,19 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             }
         })
     }
+    function changeHandlerDatePicher(inputName, inputValue) {
+        setFormInputs((prevValues) => {
+            return {
+                ...prevValues,
+                [inputName]: inputValue
+            }
+        })
+    }
 
     function checkInputs() {
         //todo: fill out dependent fields
-        formInputs['days'] = 1;//calculate from days difference
         formInputs['total'] = formInputs['days'] * Number(formInputs['charges']);
+
         //todo-> update elements values in front as well
         /////////////////
         setEveryThingOk((oldValues) => {
@@ -404,11 +412,24 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             }
         }
         //todo check signatures and car as well
-        if (!flag) {
-            Alert.alert('Πρόβλημα με τα στοιχεία', 'Πρέπει να συμπληρώσετε ορισμένα πεδία')
-        } else {
-            formCtx.saveLocal(0,formInputs);
+        var flagDays = false;
+        if (formInputs['checkInDate'] && formInputs['checkOutDate']) {
+            var date1 = new Date(formInputs['checkInDate']);
+            var date2 = new Date(formInputs['checkOutDate']);
+            const daysDifference = new Date(date2.getTime() - date1.getTime()).getUTCDate() - 1;
+            if (daysDifference != formInputs['days'] && (daysDifference + 1) != formInputs['days']) {
+                flagDays = true;
+                Alert.alert('Πρόβλημα με την ημερομηνία', 'Ο Υπολογισμός των ημερών φαίνεται λάθος με βάση τις ημερομηνίες που δόθηκαν')
+            }
         }
+        if (!flagDays) {
+            if (!flag) {
+                Alert.alert('Πρόβλημα με τα στοιχεία', 'Πρέπει να συμπληρώσετε ορισμένα πεδία')
+            } else {
+                formCtx.saveLocal(0,formInputs);
+            }
+        }
+
 
 
     }
@@ -432,19 +453,6 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         console.log(label)
         console.log(selectedDate)
     }
-    useEffect(()=>{
-        console.log('im rendering')
-        var date1 = new Date(formInputs.checkInDate);
-        var date2 = new Date(formInputs.checkOutDate);
-
-        var Difference_In_Time = date2.getTime() - date1.getTime();
-
-        // To calculate the no. of days between two dates
-        var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-        console.log(Difference_In_Days)
-
-    },[formInputs.checkOutDate,formInputs.checkInDate])
-
 
     return <View style={styles.generalContainer}>
 
@@ -463,7 +471,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     {/*       TextInputConfig={{placeholder: 'YYY-MM-DD', maxLength: 10,}}*/}
                     {/*       inputStyle={!everythingOk.birthDate ? styles.nullInput : ''}*/}
                     {/*/>*/}
-                   <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerInputs} objectKey={'birthDate'} label={'Ημερ.Γεννήσεως'} />
+                   <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'birthDate'} label={'Ημερ.Γεννήσεως'} />
                 </View>
                 <View style={styles.inputRow}>
                     <Input style={styles.rowInput}
@@ -496,7 +504,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     {/*       label={'Ημερ Εκδοσης'}*/}
                     {/*       inputStyle={!everythingOk.driverPassportDateIssue ? styles.nullInput : ''}*/}
                     {/*/>*/}
-                    <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerInputs} objectKey={'driverPassportDateIssue'} label={'Ημερ Εκδοσης'} />
+                    <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'driverPassportDateIssue'} label={'Ημερ Εκδοσης'} />
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'driverPassportDateExp')}
                            label={'Λήξη'}
@@ -515,7 +523,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     {/*       label={'Ημερ Εκδοσης'}*/}
                     {/*       inputStyle={!everythingOk.driverLicenceDateIssue ? styles.nullInput : ''}*/}
                     {/*/>*/}
-                    <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerInputs} objectKey={'driverLicenceDateIssue'} label={'Ημερ Εκδοσης'} />
+                    <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'driverLicenceDateIssue'} label={'Ημερ Εκδοσης'} />
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'driverLicenceDateExp')}
                            label={'Λήξη'}
@@ -576,7 +584,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 {/*    onChangeText={changeHandlerInputs.bind(this, 'secondDriverBirthDate')}*/}
                 {/*    inputStyle={!everythingOk.secondDriverBirthDate ? styles.nullInput : ''}*/}
                 {/*/>*/}
-                <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerInputs} objectKey={'secondDriverBirthDate'} label={'Ημερ Εκδοσης'} />
+                <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'secondDriverBirthDate'} label={'Ημερ Εκδοσης'} />
             </View>
             <View style={styles.inputRow}>
                 <Input style={styles.rowInput}
@@ -596,7 +604,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 {/*       label={'Ημερ Έκδοσης'}*/}
                 {/*       inputStyle={!everythingOk.secondDriverLicenceDateIssue ? styles.nullInput : ''}*/}
                 {/*/>*/}
-                <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerInputs} objectKey={'secondDriverLicenceDateIssue'} label={'Ημερ Εκδοσης'} />
+                <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'secondDriverLicenceDateIssue'} label={'Ημερ Εκδοσης'} />
                 <Input style={styles.rowInput}
                        onChangeText={changeHandlerInputs.bind(this, 'secondDriverLicenceDateExp')}
                        label={'Λήξη'}
@@ -630,9 +638,9 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     {/*       TextInputConfig={{keyboardType: 'decimal-pad',}}*/}
                     {/*       inputStyle={!everythingOk.checkOutDate ? styles.nullInput : ''}*/}
                     {/*/>*/}
-                    <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerInputs} objectKey={'checkOutDate'} label={'Hμ Παράδοσης'} />
+                    <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerInputs} objectKey={'checkInDate'} label={'Hμ Παράδοσης'} />
 
-                    <CustomDatePicker style={[styles.rowInput]} type={'time'} customOnChange={changeHandlerInputs} objectKey={'checkOutTime'} label={'Ωρα Παράδοσης'} />
+                    <CustomDatePicker style={[styles.rowInput]} type={'time'} customOnChange={changeHandlerInputs} objectKey={'checkInTime'} label={'Ωρα Παράδοσης'} />
 
                     {/*<Input style={styles.rowInput}*/}
                     {/*       onChangeText={changeHandlerInputs.bind(this, 'checkOutTime')}*/}
@@ -640,7 +648,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     {/*       inputStyle={!everythingOk.checkOutTime ? styles.nullInput : ''}*/}
                     {/*/>*/}
                     <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'checkOutStation')}
+                           onChangeText={changeHandlerInputs.bind(this, 'checkInStation')}
                            label={'Station'}
                            inputStyle={!everythingOk.checkOutStation ? styles.nullInput : ''}
                     />
@@ -657,10 +665,10 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     {/*       inputStyle={!everythingOk.checkInTime ? styles.nullInput : ''}*/}
                     {/*/>*/}
 
-                    <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerInputs} objectKey={'checkInDate'} label={'Hμ Επιστροφής'} />
-                    <CustomDatePicker style={[styles.rowInput]} type={'time'} customOnChange={changeHandlerInputs} objectKey={'checkInTime'} label={'Ωρα Επιστροφής'} />
+                    <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerInputs} objectKey={'checkOutDate'} label={'Hμ Επιστροφής'} />
+                    <CustomDatePicker style={[styles.rowInput]} type={'time'} customOnChange={changeHandlerInputs} objectKey={'checkOutDate'} label={'Ωρα Επιστροφής'} />
                     <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'checkInStation')}
+                           onChangeText={changeHandlerInputs.bind(this, 'checkOutStation')}
                            label={'Station'}
                            inputStyle={!everythingOk.checkInStation ? styles.nullInput : ''}
                     />
@@ -668,12 +676,12 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
 
                 <View style={[styles.inputRow, {marginTop: 40}]}>
                     <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'deliveredAt')}
+                           onChangeText={changeHandlerInputs.bind(this, 'collectedFrom')}
                            label={'Παρεδόθη εις'}
                            inputStyle={!everythingOk.deliveredAt ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'collectedFrom')}
+                           onChangeText={changeHandlerInputs.bind(this, 'deliveredAt')}
                            label={'Παραλαβή από'}
                            inputStyle={!everythingOk.collectedFrom ? styles.nullInput : ''}
                     />
@@ -714,7 +722,6 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 <View style={styles.inputRow}>
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'days')}
-                           editable = {false}
                            label={'Ημέρες'}
                             value={formInputs.days.toString()}
                            inputStyle={!everythingOk.days ? styles.nullInput : ''}
