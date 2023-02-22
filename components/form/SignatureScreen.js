@@ -2,7 +2,7 @@ import React, {useRef, useState} from "react";
 import {StyleSheet, View, Button, Image, Text, Pressable, ScrollView} from "react-native";
 import SignatureScreen from "react-native-signature-canvas";
 
-const Sign = ({ onOK,setScrollTrue,setScrollfalse,onBack }) => {
+const Sign = ({ onOK,setScrollTrue,setScrollfalse,onBack,value="." }) => {
     const ref = useRef();
     const [signature,setSignature] = useState('.')
 
@@ -39,7 +39,7 @@ const Sign = ({ onOK,setScrollTrue,setScrollfalse,onBack }) => {
                 <Image
                     resizeMode={"contain"}
                     style={styles.previewImage}
-                    source={{ uri: `${signature}`}}/>
+                    source={{ uri: `${value}`}}/>
             </View>
             <View style={styles.buttonContainer}>
                 <Pressable onPress={onBack} style={[styles.button, styles.buttonClose]}>
