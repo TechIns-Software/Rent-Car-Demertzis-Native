@@ -71,6 +71,7 @@ function  FormsContextProvider({children}){
     async function saveLocal(isUploaded,data){
         const currentDate = new Date();
         const formatedDate = currentDate.getFullYear()+'-'+currentDate.getDate()+'-'+(currentDate.getMonth()+1);
+        let lastId =  await getLastId();
 
         setFormInfo({
             isUploaded:isUploaded,
@@ -78,7 +79,6 @@ function  FormsContextProvider({children}){
             date:formatedDate
         });
         //todo change that
-        let lastId =  await getLastId();
 
         await  storeData({[lastId + 1]:formInfo},Number(lastId+1).toString());
         // console.log(allForms)

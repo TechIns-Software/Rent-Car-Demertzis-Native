@@ -8,24 +8,32 @@ import {FormsContext} from "../store/form-context";
 
 
 function renderApplications(applications){
-    // console.log('=======================')
-    // console.log(applications)
-    // return <RecentlyBox
-    //     id={applications.item.id}
-    //     // type={applications.item.data.vehicleType}
-    //     date={'2022-02-11'}
-    //     // date={ getFormattedDate(applications.item.date)}
-    //     isSent={applications.item.isSent}/>
+
+    return <RecentlyBox
+        id={applications.index}
+        // type={applications.item.data.vehicleType}
+        date={applications.item.date.toString()}
+        // date={ getFormattedDate(applications.item.date)}
+        isSent={applications.item.isSent}/>
 }
 
 function RecentlyApplications(){
-    const [allFormsSaved, setAllFormsSaved] = useState([]);
+    const [allFormsSaved, setAllFormsSaved] = useState(DUMMY_CONTNENT);
     const formsCtx = useContext(FormsContext);
     useEffect(()=>{
         function  getAllForms(){
         formsCtx.allForms().then((res) => {
             if (res == null){
-                setAllFormsSaved([]);
+                setAllFormsSaved([    {
+                    id : -55,
+                    data : {
+                        driverFullName: 'sad',
+                        vehicleType : 'sad'
+                    },
+                    isSent: 1,
+                    date : new Date('2022-11-19'),
+
+                },]);
             } else {
                 const newObj = [];
                 var alreadyKeys = [];
@@ -65,7 +73,7 @@ function RecentlyApplications(){
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#e5e2e2'
+
     },
 });
 
