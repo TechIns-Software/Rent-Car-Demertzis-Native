@@ -23,40 +23,40 @@ import CustomDatePicker from "./DatePicker";
 function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
 
     const [formInputs, setFormInputs] = useState({
-        fullName: "",
-        birthDate: "",
+        driverFullName: "",
+        driverDateOfBirth: "",
         driverAddress: "",
         driverCountry: "",
         driverPhone: "",
-        driverPassport: "",
+        driverPassportNumber: "",
+        driverPassportCountry: "",
         driverPassportDateIssue: "",
-        driverPassportDateExp: "",
-        driverLicenceNumber: "",
-        driverLicenceDateIssue: "",
-        driverLicenceDateExp: "",
-        renter: "",
-        afm: "",
-        doy: "",
+        driverPassportExpirationDate: "",
+        driverRegistrationNumber: "",
+        driverRegistrationCountry: "",
+        driverRegistrationDateIssue: "",
+        driverRegistrationExpirationDate: "",
+        renterName: "",
+        renderAFM: "",
+        renderDOY: "",
         renterAddress: "",
         renterCity: "",
         renterPhone: "",
         secondDriverFullName: "",
         secondDriverBirthDate: "",
-        secondDriverLicenceNumber: "",
-        secondDriverLicenceCountry: "",
-        secondDriverLicenceDateIssue: "",
-        secondDriverLicenceDateExp: "",
+        secondDriverRegistrationNumber: "",
+        secondDriverRegistrationCountry: "",
+        secondDriverRegistrationDateIssue: "",
+        secondDriverRegistrationExpirationDate : "",
         email: "",
         registrationNumber: "",
-        typeofCar: "",
+        vehicleType: "",
         checkOutDate: "",
         checkOutTime: "",
         checkOutStation: "",
         checkInDate: "",
         checkInTime: "",
         checkInStation: "",
-        deliveredAt: "",
-        collectedFrom: "",
         charges: "",
         days: "",
         recommendedBy: "",
@@ -67,8 +67,8 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         total: "",
         cdwAgree: false,
         signClient:".",
-        cardHolder: "",
-        cardExpDate: "",
+        cardHolderName: "",
+        cardExpirationDate : "",
         cvv: "",
         signCard: ".",
     })
@@ -76,11 +76,11 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
     const [modalVisible, setModalVisible] = useState(false);
     const [modalVisible2, setModalVisible2] = useState(false);
     const RULES_INPUTS = {
-        fullName: {
+        driverFullName: {
             mandatory: true,
             type: "text"
         },
-        birthDate: {
+        driverDateOfBirth: {
             mandatory: true,
             type: "date"
         },
@@ -96,39 +96,49 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             mandatory: true,
             type: "text"
         },
-        driverPassport: {
+        driverPassportNumber: {
             mandatory: true,
             type: "text"
         },
+        driverPassportCountry: {
+            mandatory: true,
+            type: "text"
+        },
+
         driverPassportDateIssue: {
             mandatory: true,
             type: "text"
         },
-        driverPassportDateExp: {
+
+        driverPassportExpirationDate: {
             mandatory: true,
             type: "text"
         },
-        driverLicenceNumber: {
+        driverRegistrationNumber: {
             mandatory: true,
             type: "text"
         },
-        driverLicenceDateIssue: {
+        driverRegistrationCountry: {
             mandatory: true,
             type: "text"
         },
-        driverLicenceDateExp: {
+        driverRegistrationDateIssue: {
             mandatory: true,
             type: "text"
         },
-        renter: {
+        driverRegistrationExpirationDate: {
             mandatory: true,
             type: "text"
         },
-        afm: {
+        renterName: {
             mandatory: true,
             type: "text"
         },
-        doy: {
+        renderAFM: {
+            mandatory: true,
+            type: "text"
+        },
+        renderDOY: {
             mandatory: true,
             type: "text"
         },
@@ -154,25 +164,25 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             underCondition: true,
             fieldNameUnderCondition: "secondDriverFullName"
         },
-        secondDriverLicenceNumber: {
+        secondDriverRegistrationNumber: {
             mandatory: false,
             type: "text",
             underCondition: true,
             fieldNameUnderCondition: "secondDriverFullName"
         },
-        secondDriverLicenceCountry: {
+        secondDriverRegistrationCountry: {
             mandatory: false,
             type: "text",
             underCondition: true,
             fieldNameUnderCondition: "secondDriverFullName"
         },
-        secondDriverLicenceDateIssue: {
+        secondDriverRegistrationDateIssue: {
             mandatory: false,
             type: "text",
             underCondition: true,
             fieldNameUnderCondition: "secondDriverFullName"
         },
-        secondDriverLicenceDateExp: {
+        secondDriverRegistrationExpirationDate : {
             mandatory: false,
             type: "text",
             underCondition: true,
@@ -186,7 +196,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             mandatory: true,
             type: "text"
         },
-        typeofCar: {
+        vehicleType: {
             mandatory: true,
             type: "text"
         },
@@ -214,14 +224,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             mandatory: true,
             type: "text"
         },
-        deliveredAt: {
-            mandatory: true,
-            type: "text"
-        },
-        collectedFrom: {
-            mandatory: true,
-            type: "text"
-        },
+
         charges: {
             mandatory: true,
             type: "number"
@@ -242,7 +245,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             mandatory: false,
             type: "text",
             underCondition: true,
-            fieldNameUnderCondition: "afm"
+            fieldNameUnderCondition: "renderAFM"
         },
         total: {
             mandatory: true,
@@ -270,11 +273,11 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             mandatory: true,
             type: "text"
         },
-        cardHolder: {
+        cardHolderName: {
             mandatory: true,
             type: "text"
         },
-        cardExpDate: {
+        cardExpirationDate : {
             mandatory: true,
             type: "text"
         },
@@ -284,40 +287,42 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         }
     };
     const [everythingOk, setEveryThingOk] = useState({
-        fullName: false,
-        birthDate: false,
+        driverFullName: false,
+        driverDateOfBirth: false,
         driverAddress: false,
         driverCountry: false,
         driverPhone: false,
-        driverPassport: false,
+        driverPassportNumber: false,
+        driverPassportCountry: false,
         driverPassportDateIssue: false,
-        driverPassportDateExp: false,
-        driverLicenceNumber: false,
-        driverLicenceDateIssue: false,
-        driverLicenceDateExp: false,
-        renter: false,
-        afm: false,
-        doy: false,
+        driverPassportExpirationDate: false,
+        driverRegistrationNumber: false,
+        driverRegistrationCountry:false,
+        driverRegistrationDateIssue: false,
+        driverRegistrationExpirationDate: false,
+        renterName: false,
+        renderAFM: false,
+        renderDOY: false,
         renterAddress: false,
         renterCity: false,
         renterPhone: false,
         secondDriverFullName: true,
         secondDriverBirthDate: true,
-        secondDriverLicenceNumber: true,
-        secondDriverLicenceCountry: true,
-        secondDriverLicenceDateIssue: true,
-        secondDriverLicenceDateExp: true,
+        secondDriverRegistrationNumber: true,
+        secondDriverRegistrationCountry: true,
+        secondDriverRegistrationDateIssue: true,
+        secondDriverRegistrationExpirationDate : true,
         email: false,
         registrationNumber: false,
-        typeofCar: false,
+        vehicleType: false,
         checkOutDate: false,
         checkOutTime: false,
         checkOutStation: false,
         checkInDate: false,
         checkInTime: false,
         checkInStation: false,
-        deliveredAt: false,
-        collectedFrom: false,
+
+
         charges: false,
         days: false,
         recommendedBy: true,
@@ -328,8 +333,8 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         cdwAgree: true,
         liabilityAmount: true,
         signClient:false,
-        cardHolder: false,
-        cardExpDate: false,
+        cardHolderName: false,
+        cardExpirationDate : false,
         cvv: false,
         signCard: false,
     });
@@ -505,17 +510,17 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 <View style={styles.inputRow}>
                     <Input style={styles.rowInput}
                            label={'Ονοματεπώνυμο και Πατρώνυμο οδηγού'}
-                           onChangeText={changeHandlerInputs.bind(this, 'fullName')}
+                           onChangeText={changeHandlerInputs.bind(this, 'driverFullName')}
                            TextInputConfig={{}}
-                           value={formInputs['fullName']}
-                           inputStyle={!everythingOk.fullName ? styles.nullInput : ''}/>
+                           value={formInputs['driverFullName']}
+                           inputStyle={!everythingOk.driverFullName? styles.nullInput : ''}/>
                     {/*<Input style={styles.rowInput}*/}
                     {/*       label={'Ημερ.Γεννήσεως'}*/}
-                    {/*       onChangeText={changeHandlerInputs.bind(this, 'birthDate')}*/}
+                    {/*       onChangeText={changeHandlerInputs.bind(this, 'driverDateOfBirth')}*/}
                     {/*       TextInputConfig={{placeholder: 'YYY-MM-DD', maxLength: 10,}}*/}
-                    {/*       inputStyle={!everythingOk.birthDate ? styles.nullInput : ''}*/}
+                    {/*       inputStyle={!everythingOk.driverDateOfBirth ? styles.nullInput : ''}*/}
                     {/*/>*/}
-                   <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'birthDate'} label={'Ημερ.Γεννήσεως'} />
+                   <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'driverDateOfBirth'} label={'Ημερ.Γεννήσεως'} />
                 </View>
                 <View style={styles.inputRow}>
                     <Input style={styles.rowInput}
@@ -541,9 +546,16 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 <View style={styles.inputRow}>
                     <Input style={styles.rowInput}
                            label={'Διαβ.No'}
-                           onChangeText={changeHandlerInputs.bind(this, 'driverPassport')}
-                           value={formInputs['driverPassport']}
-                           inputStyle={!everythingOk.driverPassport ? styles.nullInput : ''}
+                           onChangeText={changeHandlerInputs.bind(this, 'driverPassportNumber')}
+                           value={formInputs['driverPassportNumber']}
+                           inputStyle={!everythingOk.driverPassportNumber? styles.nullInput : ''}
+                    />
+
+                    <Input style={styles.rowInput}
+                           label={'Χώρα'}
+                           onChangeText={changeHandlerInputs.bind(this, 'driverPassportCountry')}
+                           value={formInputs['driverPassportCountry']}
+                           inputStyle={!everythingOk.driverPassportCountry? styles.nullInput : ''}
                     />
                     {/*<Input style={styles.rowInput}*/}
                     {/*       onChangeText={changeHandlerInputs.bind(this, 'driverPassportDateIssue')}*/}
@@ -552,30 +564,37 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     {/*/>*/}
                     <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'driverPassportDateIssue'} label={'Ημερ Εκδοσης'} />
                     <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'driverPassportDateExp')}
+                           onChangeText={changeHandlerInputs.bind(this, 'driverPassportExpirationDate')}
                            label={'Λήξη'}
-                           value={formInputs['driverPassportDateExp']}
-                           inputStyle={!everythingOk.driverPassportDateExp ? styles.nullInput : ''}
+                           value={formInputs['driverPassportExpirationDate']}
+                           inputStyle={!everythingOk.driverPassportExpirationDate ? styles.nullInput : ''}
                     />
                 </View>
                 <View style={styles.inputRow}>
                     <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'driverLicenceNumber')}
+                           onChangeText={changeHandlerInputs.bind(this, 'driverRegistrationNumber')}
                            label={'Αρ.Αδείας Οδηγού'}
-                           value={formInputs['driverLicenceNumber']}
-                           inputStyle={!everythingOk.driverLicenceNumber ? styles.nullInput : ''}
+                           value={formInputs['driverRegistrationNumber']}
+                           inputStyle={!everythingOk.driverRegistrationNumber ? styles.nullInput : ''}
+                    />
+
+                    <Input style={styles.rowInput}
+                           onChangeText={changeHandlerInputs.bind(this, 'driverRegistrationCountry')}
+                           label={'Χώρα'}
+                           value={formInputs['driverRegistrationCountry']}
+                           inputStyle={!everythingOk.driverRegistrationCountry ? styles.nullInput : ''}
                     />
                     {/*<Input style={styles.rowInput}*/}
-                    {/*       onChangeText={changeHandlerInputs.bind(this, 'driverLicenceDateIssue')}*/}
+                    {/*       onChangeText={changeHandlerInputs.bind(this, 'driverRegistrationDateIssue')}*/}
                     {/*       label={'Ημερ Εκδοσης'}*/}
-                    {/*       inputStyle={!everythingOk.driverLicenceDateIssue ? styles.nullInput : ''}*/}
+                    {/*       inputStyle={!everythingOk.driverRegistrationDateIssue ? styles.nullInput : ''}*/}
                     {/*/>*/}
-                    <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'driverLicenceDateIssue'} label={'Ημερ Εκδοσης'} />
+                    <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'driverRegistrationDateIssue'} label={'Ημερ Εκδοσης'} />
                     <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'driverLicenceDateExp')}
+                           onChangeText={changeHandlerInputs.bind(this, 'driverRegistrationExpirationDate')}
                            label={'Λήξη'}
-                           value={formInputs['driverLicenceDateExp']}
-                           inputStyle={!everythingOk.driverLicenceDateExp ? styles.nullInput : ''}
+                           value={formInputs['driverRegistrationExpirationDate']}
+                           inputStyle={!everythingOk.driverRegistrationExpirationDate? styles.nullInput : ''}
                     />
                 </View>
             </View>
@@ -583,22 +602,22 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             <View style={[styles.clientBox, {overflow: 'hidden'}]}>
                 <View style={styles.inputRow}>
                     <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'renter')}
+                           onChangeText={changeHandlerInputs.bind(this, 'renterName')}
                            label={'Μισθωτής'}
-                           value={formInputs['renter']}
-                           inputStyle={!everythingOk.renter ? styles.nullInput : ''}
+                           value={formInputs['renterName']}
+                           inputStyle={!everythingOk.renterName ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'afm')}
+                           onChangeText={changeHandlerInputs.bind(this, 'renderAFM')}
                            label={'ΑΦΜ'}
-                           value={formInputs['afm']}
-                           inputStyle={!everythingOk.afm ? styles.nullInput : ''}
+                           value={formInputs['renderAFM']}
+                           inputStyle={!everythingOk.renderAFM ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'doy')}
+                           onChangeText={changeHandlerInputs.bind(this, 'renderDOY')}
                            label={'Δ.Ο.Υ'}
-                           value={formInputs['doy']}
-                           inputStyle={!everythingOk.doy ? styles.nullInput : ''}
+                           value={formInputs['renderDOY']}
+                           inputStyle={!everythingOk.renderDOY ? styles.nullInput : ''}
                     />
                 </View>
                 <View style={styles.inputRow}>
@@ -644,29 +663,29 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             <View style={styles.inputRow}>
                 <Input style={styles.rowInput}
                        label={'Αρ.Αδείας Επιπλέον Οδηγού'}
-                       onChangeText={changeHandlerInputs.bind(this, 'secondDriverLicenceNumber')}
+                       onChangeText={changeHandlerInputs.bind(this, 'secondDriverRegistrationNumber')}
                        TextInputConfig={{keyboardType: 'decimal-pad',}}
-                       inputStyle={!everythingOk.secondDriverLicenceNumber ? styles.nullInput : ''}
-                       value={formInputs['secondDriverLicenceNumber']}
+                       inputStyle={!everythingOk.secondDriverRegistrationNumber ? styles.nullInput : ''}
+                       value={formInputs['secondDriverRegistrationNumber']}
                 />
                 <Input
                     style={styles.rowInput}
-                    onChangeText={changeHandlerInputs.bind(this, 'secondDriverLicenceCountry')}
+                    onChangeText={changeHandlerInputs.bind(this, 'secondDriverRegistrationCountry')}
                     label={'Χώρα'}
-                    value={formInputs['secondDriverLicenceCountry']}
-                    inputStyle={!everythingOk.secondDriverLicenceCountry ? styles.nullInput : ''}
+                    value={formInputs['secondDriverRegistrationCountry']}
+                    inputStyle={!everythingOk.secondDriverRegistrationCountry ? styles.nullInput : ''}
                 />
                 {/*<Input style={styles.rowInput}*/}
-                {/*       onChangeText={changeHandlerInputs.bind(this, 'secondDriverLicenceDateIssue')}*/}
+                {/*       onChangeText={changeHandlerInputs.bind(this, 'secondDriverRegistrationDateIssue')}*/}
                 {/*       label={'Ημερ Έκδοσης'}*/}
-                {/*       inputStyle={!everythingOk.secondDriverLicenceDateIssue ? styles.nullInput : ''}*/}
+                {/*       inputStyle={!everythingOk.secondDriverRegistrationDateIssue ? styles.nullInput : ''}*/}
                 {/*/>*/}
-                <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'secondDriverLicenceDateIssue'} label={'Ημερ Εκδοσης'} />
+                <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'secondDriverRegistrationDateIssue'} label={'Ημερ Εκδοσης'} />
                 <Input style={styles.rowInput}
-                       onChangeText={changeHandlerInputs.bind(this, 'secondDriverLicenceDateExp')}
+                       onChangeText={changeHandlerInputs.bind(this, 'secondDriverRegistrationExpirationDate ')}
                        label={'Λήξη'}
-                       value={formInputs['secondDriverLicenceDateExp']}
-                       inputStyle={!everythingOk.secondDriverLicenceDateExp ? styles.nullInput : ''}
+                       value={formInputs['secondDriverRegistrationExpirationDate ']}
+                       inputStyle={!everythingOk.secondDriverRegistrationExpirationDate  ? styles.nullInput : ''}
                 />
             </View>
             <Input label={'Email'}
@@ -684,10 +703,10 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                            inputStyle={!everythingOk.registrationNumber ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'typeofCar')}
-                           value={formInputs['typeofCar']}
+                           onChangeText={changeHandlerInputs.bind(this, 'vehicleType')}
+                           value={formInputs['vehicleType']}
                            label={'Τύπος'}
-                           inputStyle={!everythingOk.typeofCar ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.vehicleType ? styles.nullInput : ''}
                     />
                 </View>
 
@@ -737,18 +756,8 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 </View>
 
                 <View style={[styles.inputRow, {marginTop: 40}]}>
-                    <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'collectedFrom')}
-                           label={'Παρεδόθη εις'}
-                           value={formInputs['collectedFrom']}
-                           inputStyle={!everythingOk.deliveredAt ? styles.nullInput : ''}
-                    />
-                    <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'deliveredAt')}
-                           value={formInputs['deliveredAt']}
-                           label={'Παραλαβή από'}
-                           inputStyle={!everythingOk.collectedFrom ? styles.nullInput : ''}
-                    />
+
+
                 </View>
 
                 <View style={[styles.inputRow, {marginBottom: 60}]}>
@@ -859,7 +868,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 <View style={styles.inputRow}>
                     <FormText
                         onChangeInputs={changeHandlerInputs}
-                        FullName={formInputs.fullName}
+                        driverFullName={formInputs.driverFullName}
                         After={formInputs.afterDateBank}
                         RegistrationNumber={formInputs.registrationNumber}
                     />
@@ -867,18 +876,18 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 </View>
                 <View style={styles.inputRow}>
                     <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'cardHolder')}
+                           onChangeText={changeHandlerInputs.bind(this, 'cardHolderName')}
                            label={'Card Holder'}
-                           value={formInputs['cardHolder']}
-                           inputStyle={!everythingOk.cardHolder ? styles.nullInput : ''}
+                           value={formInputs['cardHolderName']}
+                           inputStyle={!everythingOk.cardHolderName ? styles.nullInput : ''}
                     />
                 </View>
                 <View style={styles.inputRow}>
                     <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'cardExpDate')}
+                           onChangeText={changeHandlerInputs.bind(this, 'cardExpirationDate ')}
                            label={'EXP.'}
-                           value={formInputs['cardExpDate']}
-                           inputStyle={!everythingOk.cardExpDate ? styles.nullInput : ''}
+                           value={formInputs['cardExpirationDate ']}
+                           inputStyle={!everythingOk.cardExpirationDate  ? styles.nullInput : ''}
                     />
 
                     <Input style={styles.rowInput}

@@ -6,8 +6,8 @@ export  const DUMMY_CONTNENT = [
     {
         id : 1,
         data : {
-            fullName : 'sad',
-            typeofCar : 'sad'
+            driverFullName: 'sad',
+            vehicleType : 'sad'
         },
         isSent: 1,
         date : new Date('2022-11-19'),
@@ -16,8 +16,8 @@ export  const DUMMY_CONTNENT = [
     {
         id : 2,
         data : {
-            fullName : 'sad',
-            typeofCar : 'sad'
+            driverFullName: 'sad',
+            vehicleType : 'sad'
         },
         isSent: 1,
         date : new Date('2022-11-19'),
@@ -29,35 +29,35 @@ export  const DUMMY_CONTNENT = [
 
 export  const AuthContext = createContext({
     username:'',
-    fullName:'',
+    driverFullName:'',
     token :'',
     idAdmin :'',
     isAuthenticated :false,
-    authenticate :(username,fullName,token,idAdmin,isAuthenticated) =>{},
+    authenticate :(username,driverFullName,token,idAdmin,isAuthenticated) =>{},
     logout :() =>{},
 });
 
 function  AuthContextProvider({children}){
     const [authInfo,setAuthToken] = useState({
         username:'',
-        fullName:'',
+        driverFullName:'',
         token :'',
         idAdmin :'',
         isAuthenticated :false,
     });
 
-    function authenticate(username,fullName,token,idAdmin,isAuthenticated){
+    function authenticate(username,driverFullName,token,idAdmin,isAuthenticated){
 
         setAuthToken(prevState => ({
             username:username,
-            fullName:fullName,
+            driverFullName:driverFullName,
             token :token,
             idAdmin :idAdmin,
             isAuthenticated :isAuthenticated,
         }));
 
         AsyncStorage.setItem('username',username);
-        AsyncStorage.setItem('fullName',fullName);
+        AsyncStorage.setItem('driverFullName',driverFullName);
         AsyncStorage.setItem('token',token);
         AsyncStorage.setItem('idAdmin',JSON.stringify(idAdmin));
         AsyncStorage.setItem('isAuthenticated',JSON.stringify(isAuthenticated));
@@ -66,13 +66,13 @@ function  AuthContextProvider({children}){
     function logout(){
         setAuthToken({
             username:'',
-            fullName:'',
+            driverFullName:'',
             token :'',
             idAdmin :'',
             isAuthenticated :0,
         })
         AsyncStorage.removeItem('username');
-        AsyncStorage.removeItem('fullName');
+        AsyncStorage.removeItem('driverFullName');
         AsyncStorage.removeItem('token');
         AsyncStorage.removeItem('idAdmin');
         AsyncStorage.removeItem('isAuthenticated');
