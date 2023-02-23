@@ -55,7 +55,6 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         checkInDate: "",
         checkInTime: "",
         checkInStation: "",
-        extensionTo: "",
         deliveredAt: "",
         collectedFrom: "",
         charges: "",
@@ -215,10 +214,6 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             mandatory: true,
             type: "text"
         },
-        extensionTo: {
-            mandatory: true,
-            type: "text"
-        },
         deliveredAt: {
             mandatory: true,
             type: "text"
@@ -321,7 +316,6 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         checkInDate: false,
         checkInTime: false,
         checkInStation: false,
-        extensionTo: true,
         deliveredAt: false,
         collectedFrom: false,
         charges: false,
@@ -349,7 +343,6 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             }
         });
         updateCalculatedDependentValues(inputName, inputValue);
-        console.log(formInputs);
     }
     function changeHandlerDatePicher(inputName, inputValue) {
         setFormInputs((prevValues) => {
@@ -361,26 +354,32 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         updateCalculatedDependentValues(inputName, inputValue);
     }
     function updateCalculatedDependentValues(inputName, inputValue) {
-        var tempChange = 0;
-        if (inputName === 'days' || inputName == 'charges') {
+        var _total = 0;
+        var _subTotal = 0;
+        if (inputName === 'days' || inputName === 'charges' || inputName === "cdw") {
             if (inputName === 'days') {
-
-                tempChange = (inputValue * Number(formInputs['charges'])).toString();
-            } else {
-                tempChange = (formInputs['days'] * Number(inputValue)).toString();
+                _total = (inputValue * Number(formInputs['charges']) + Number(formInputs['cdw'])).toString();
+                _subTotal = (inputValue * Number(formInputs['charges'])).toString();
+            } else if (inputName === 'charges') {
+                _total = (formInputs['days'] * Number(inputValue) + Number(formInputs['cdw'])).toString();
+                _subTotal = (formInputs['days'] * Number(inputValue)).toString();
+            } else if (inputName === "cdw") {
+                _total = (formInputs['days'] * Number(formInputs['charges']) + Number(inputValue)).toString();
+                _subTotal = (formInputs['days'] * Number(formInputs['charges'])).toString();
             }
 
             setFormInputs((prevValues) => {
                 return {
                     ...prevValues,
-                    ['total']: tempChange
+                    ['total']: _total,
+                    ['subTotal']: _subTotal
                 }
             });
         }
 
     }
 
-    function checkInputs() {
+    async function checkInputs() {
 
 
         /////////////////
@@ -393,6 +392,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 ...setTrueObj
             }
         });
+        let flag = true;
         for (const [key, value] of Object.entries(formInputs)) {
             if (RULES_INPUTS[key]) {
                 //check types if we want
@@ -404,6 +404,9 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                                 ...oldValues, [key]: !formInputs[RULES_INPUTS[key]['radioToCheckOn']]
                             }
                         });
+                        if (formInputs[RULES_INPUTS[key]['radioToCheckOn']]) {
+                            flag = false;
+                        }
                         continue;
                     }
 
@@ -413,6 +416,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                                 ...oldValues, [key]: false
                             }
                         });
+                        flag = false;
 
                     }
                 } else {
@@ -425,6 +429,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                                         ...oldValues, [key]: false
                                     }
                                 });
+                                flag = false;
                             }
                         }
                     }
@@ -434,9 +439,12 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         }
         console.log(formInputs);
         // console.log(everythingOk);
-        let flag = true;
+
         for (const [key, value] of Object.entries(everythingOk)) {
+            console.log(key, value);
             if (!value) {
+                console.log(key, value);
+                console.log(everythingOk);
                 flag = false;
                 break;
             }
@@ -447,7 +455,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             var date1 = new Date(formInputs['checkInDate']);
             var date2 = new Date(formInputs['checkOutDate']);
             var daysDifference = new Date(date2.getTime() - date1.getTime()).getUTCDate() - 1;
-            if (Platform.OS == "ios") {
+            if (Platform.OS == "ios") {//todo check πρωτα αν εβαζα το τελος, ή την αρχη αντιστοιχα αν εφταιγε αυτο
                 daysDifference += 1;
             }
             if (daysDifference != formInputs['days'] && (daysDifference + 1) != formInputs['days']) {
@@ -459,7 +467,8 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             if (!flag) {
                 Alert.alert('Πρόβλημα με τα στοιχεία', 'Πρέπει να συμπληρώσετε ορισμένα πεδία')
             } else {
-                formCtx.saveLocal(0,formInputs);
+                const answer = await formCtx.saveLocal(0,formInputs);
+                Alert.alert('Υποβολή Φόρμας', answer)
             }
         }
 
@@ -474,7 +483,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 ['cdwAgree']: val
             }
         });
-        updateCalculatedDependentValues(inputName, inputValue);
+        updateCalculatedDependentValues('cdwAgree', val);
     }
 
     function  clearSignature(label,value){
@@ -512,7 +521,6 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     <Input style={styles.rowInput}
                            label={'Διεύθυνση Κατοικίας'}
                            onChangeText={changeHandlerInputs.bind(this, 'driverAddress')}
-                           TextInputConfig={{keyboardType: 'decimal-pad'}}
                            value={formInputs['driverAddress']}
                            inputStyle={!everythingOk.driverAddress ? styles.nullInput : ''}
                     />
@@ -534,7 +542,6 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     <Input style={styles.rowInput}
                            label={'Διαβ.No'}
                            onChangeText={changeHandlerInputs.bind(this, 'driverPassport')}
-                           TextInputConfig={{keyboardType: 'decimal-pad',}}
                            value={formInputs['driverPassport']}
                            inputStyle={!everythingOk.driverPassport ? styles.nullInput : ''}
                     />
@@ -556,7 +563,6 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                            onChangeText={changeHandlerInputs.bind(this, 'driverLicenceNumber')}
                            label={'Αρ.Αδείας Οδηγού'}
                            value={formInputs['driverLicenceNumber']}
-                           TextInputConfig={{keyboardType: 'decimal-pad',}}
                            inputStyle={!everythingOk.driverLicenceNumber ? styles.nullInput : ''}
                     />
                     {/*<Input style={styles.rowInput}*/}
@@ -675,7 +681,6 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                            label={'Αρ. Κυκλοφορίας'}
                            value={formInputs['registrationNumber']}
                            onChangeText={changeHandlerInputs.bind(this, 'registrationNumber')}
-                           TextInputConfig={{keyboardType: 'decimal-pad',}}
                            inputStyle={!everythingOk.registrationNumber ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
@@ -722,7 +727,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     {/*/>*/}
 
                     <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerInputs} objectKey={'checkOutDate'} label={'Hμ Επιστροφής'} />
-                    <CustomDatePicker style={[styles.rowInput]} type={'time'} customOnChange={changeHandlerInputs} objectKey={'checkOutDate'} label={'Ωρα Επιστροφής'} />
+                    <CustomDatePicker style={[styles.rowInput]} type={'time'} customOnChange={changeHandlerInputs} objectKey={'checkOutTime'} label={'Ωρα Επιστροφής'} />
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'checkOutStation')}
                            label={'Station'}
@@ -804,8 +809,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     <Input style={styles.rowInput}
                            value={formInputs['liabilityAmount']}
                            onChangeText={changeHandlerInputs.bind(this, 'liabilityAmount')}
-                           editable = {false}
-                           label={'Απαλαγή'}
+                           label={'Απαλλαγή'}
                            inputStyle={!everythingOk.liabilityAmount ? styles.nullInput : ''}
                     />
 
@@ -816,7 +820,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                            value={formInputs.total}
                            onChangeText={changeHandlerInputs.bind(this, 'total')}
                            label={'TOTAL - Σύνολο'}
-                           // editable = {false}
+                           editable = {false}
                            inputStyle={!everythingOk.total ? styles.nullInput : ''}
                     />
                 </View>

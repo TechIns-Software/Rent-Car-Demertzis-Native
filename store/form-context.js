@@ -1,4 +1,4 @@
-import {createContext,useState} from "react";
+import {createContext, useContext, useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
@@ -47,7 +47,6 @@ function  FormsContextProvider({children}){
             checkInDate: "",
             checkInTime: "",
             checkInStation: "",
-            extensionTo: "",
             deliveredAt: "",
             collectedFrom: "",
             charges: "",
@@ -69,21 +68,19 @@ function  FormsContextProvider({children}){
     const [numberOfForm,setNumberOfForms] = useState(0)
 
 
-    async function   saveLocal(isUploaded,data){
+    async function saveLocal(isUploaded,data){
         const currentDate = new Date();
-        const formatedDate = currentDate.getDate()+'-'+(currentDate.getMonth()+1)+'-'+currentDate.getFullYear();
+        const formatedDate = currentDate.getFullYear()+'-'+currentDate.getDate()+'-'+(currentDate.getMonth()+1);
 
         setFormInfo({
             isUploaded:isUploaded,
             data :data,
             date:formatedDate
         });
-
+        //todo change that
         let lastId =  await getLastId();
 
-        await  storeData({[lastId]:formInfo},Number(lastId+1).toString());
-
-        let allForms = await getAllForms();
+        await  storeData({[lastId + 1]:formInfo},Number(lastId+1).toString());
         // console.log(allForms)
 
     }
@@ -107,7 +104,7 @@ function  FormsContextProvider({children}){
                 return JSON.parse(res);
             })
             if (value == null){
-                value = 1;
+                value = 0;
             }
             setNumberOfForms(value)
 
@@ -118,21 +115,12 @@ function  FormsContextProvider({children}){
     }
 
     async function getAllForms() {
-        try {
-            // this is for remove keys in local storage
-            // await AsyncStorage.removeItem('userForms');
-            // await AsyncStorage.removeItem('numberOfForms');
-            var obj = await AsyncStorage.getItem('userForms').then((res) => {
-                return JSON.parse(res);
-            })
-            if (obj == null){
-                obj = [];
-            }
-
-            return obj;
-        } catch (e) {
-            // error reading value
-        }
+        // this is for remove keys in local storage
+        // await AsyncStorage.removeItem('numberOfForms');
+        // await AsyncStorage.removeItem('userForms');
+        return AsyncStorage.getItem('userForms').then((res) => {
+            return JSON.parse(res);
+        });
     }
 
 
