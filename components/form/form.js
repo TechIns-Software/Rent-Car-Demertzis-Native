@@ -68,7 +68,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         cdwAgree: false,
         signClient:".",
         cardHolderName: "",
-        cardExpirationDate : "",
+        cardExpirationDate: "",
         cvv: "",
         signCard: ".",
     })
@@ -334,7 +334,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         liabilityAmount: true,
         signClient:false,
         cardHolderName: false,
-        cardExpirationDate : false,
+        cardExpirationDate: false,
         cvv: false,
         signCard: false,
     });
@@ -442,14 +442,13 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             }
 
         }
-        console.log(formInputs);
+        // console.log(formInputs);
         // console.log(everythingOk);
 
         for (const [key, value] of Object.entries(everythingOk)) {
-            console.log(key, value);
             if (!value) {
-                console.log(key, value);
                 console.log(everythingOk);
+                console.log(formInputs);
                 flag = false;
                 break;
             }
@@ -884,9 +883,9 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 </View>
                 <View style={styles.inputRow}>
                     <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'cardExpirationDate ')}
+                           onChangeText={changeHandlerInputs.bind(this, 'cardExpirationDate')}
                            label={'EXP.'}
-                           value={formInputs['cardExpirationDate ']}
+                           value={formInputs['cardExpirationDate']}
                            inputStyle={!everythingOk.cardExpirationDate  ? styles.nullInput : ''}
                     />
 

@@ -78,36 +78,6 @@ function  AuthContextProvider({children}){
         AsyncStorage.removeItem('isAuthenticated');
     }
 
-    function sendForm(formInputs) {
-        formInputs.action = "uploadForm";
-        const toUrlEncoded = (obj) => {
-            return Object
-                .keys(obj)
-                .map(
-                    k => encodeURIComponent(k) + '=' + encodeURIComponent(obj[k]))
-                .join('&');
-        }
-        const data = toUrlEncoded(formInputs);
-        var myHeaders = new Headers();
-        myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
-        myHeaders.append('Accept', 'application/json');
-
-        try {
-            fetch('https://a-omega.com.gr/admin/request/', {
-                method: 'POST',
-                mode: 'cors', // no-cors, *cors, same-origin
-                cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached
-                headers: myHeaders,
-                body: data.toString() // body data type must match "Content-Type" header
-            })
-                .then((response) => response.json())
-                .then((response) => {
-                    //todo handle response
-                });
-        } catch (error){
-            Alert.alert('Something Went wrong','error')
-        }
-    }
 
     const value = {
         authInformation:authInfo,

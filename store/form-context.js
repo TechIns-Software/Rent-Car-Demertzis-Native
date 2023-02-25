@@ -1,5 +1,6 @@
 import {createContext, useContext, useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {Alert} from "react-native";
 
 
 export  const FormsContext = createContext({
@@ -79,7 +80,9 @@ function  FormsContextProvider({children}){
             date:formatedDate
         });
         //todo change that
-
+        const answer = await sendForm(data);
+        console.log(answer);
+        return;
         await  storeData({[lastId + 1]:formInfo},Number(lastId+1).toString());
         // console.log(allForms)
 
@@ -123,7 +126,60 @@ function  FormsContextProvider({children}){
         });
     }
 
+    async function sendForm(formInputs) {
+        //todo find idAdmin, uniqueHash
+        const idAdmin = 1;
+        const uniqueHash = (Math.random() + 1).toString(36);
+        const digest = "sadsad";
+        const timeUploaded = "2022-02-23";
+        formInputs.action = "uploadForm";
+        formInputs.idAdmin = idAdmin;
+        formInputs.digest = digest;
+        formInputs.uniqueHash = uniqueHash;
+        formInputs.timeUploaded = timeUploaded;
+        // console.log(formInputs);
+        const toUrlEncoded = (obj) => {
+            return Object
+                .keys(obj)
+                .map(
+                    k => encodeURIComponent(k) + '=' + encodeURIComponent(obj[k]))
+                .join('&');
+        }
 
+        const data = toUrlEncoded(formInputs);
+        var myHeaders = new Headers();
+        myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+        myHeaders.append('Accept', 'application/json');
+        var answer = ";sadsa43g";
+        try {
+            answer = fetch('https://a-omega.com.gr/admin/request/', {
+                method: 'POST',
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached
+                headers: myHeaders,
+                body: data.toString() // body data type must match "Content-Type" header
+            })
+                .then((res) => {
+                    if(!res.ok) {
+                        return res.text().then(text => { throw new Error(text) })
+                    }
+                    else {
+                        return res.json();
+                    }
+                })
+                .then((response) => {
+                    console.log(JSON.stringify(response));
+                    console.log(response);
+                    return response;
+                }).catch(error => {
+                    console.log(JSON.stringify(error));
+                    console.log(error);
+                });;
+        } catch (error){
+            Alert.alert('Something Went wrong','error')
+        }
+        return answer;
+    }
 
     const value = {
         saveLocal :saveLocal,
