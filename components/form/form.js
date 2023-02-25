@@ -25,23 +25,11 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
     const [formInputs, setFormInputs] = useState({
         driverFullName: "",
         driverDateOfBirth: "",
-        driverAddress: "",
-        driverCountry: "",
         driverPhone: "",
-        driverPassportNumber: "",
-        driverPassportCountry: "",
-        driverPassportDateIssue: "",
-        driverPassportExpirationDate: "",
         driverRegistrationNumber: "",
         driverRegistrationCountry: "",
         driverRegistrationDateIssue: "",
         driverRegistrationExpirationDate: "",
-        renterName: "",
-        renderAFM: "",
-        renderDOY: "",
-        renterAddress: "",
-        renterCity: "",
-        renterPhone: "",
         secondDriverFullName: "",
         secondDriverBirthDate: "",
         secondDriverRegistrationNumber: "",
@@ -84,33 +72,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             mandatory: true,
             type: "date"
         },
-        driverAddress: {
-            mandatory: true,
-            type: "text"
-        },
-        driverCountry: {
-            mandatory: true,
-            type: "text"
-        },
         driverPhone: {
-            mandatory: true,
-            type: "text"
-        },
-        driverPassportNumber: {
-            mandatory: true,
-            type: "text"
-        },
-        driverPassportCountry: {
-            mandatory: true,
-            type: "text"
-        },
-
-        driverPassportDateIssue: {
-            mandatory: true,
-            type: "text"
-        },
-
-        driverPassportExpirationDate: {
             mandatory: true,
             type: "text"
         },
@@ -127,30 +89,6 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             type: "text"
         },
         driverRegistrationExpirationDate: {
-            mandatory: true,
-            type: "text"
-        },
-        renterName: {
-            mandatory: true,
-            type: "text"
-        },
-        renderAFM: {
-            mandatory: true,
-            type: "text"
-        },
-        renderDOY: {
-            mandatory: true,
-            type: "text"
-        },
-        renterAddress: {
-            mandatory: true,
-            type: "text"
-        },
-        renterCity: {
-            mandatory: true,
-            type: "text"
-        },
-        renterPhone: {
             mandatory: true,
             type: "text"
         },
@@ -244,8 +182,6 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         subTotal: {
             mandatory: false,
             type: "text",
-            underCondition: true,
-            fieldNameUnderCondition: "renderAFM"
         },
         total: {
             mandatory: true,
@@ -289,23 +225,11 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
     const [everythingOk, setEveryThingOk] = useState({
         driverFullName: false,
         driverDateOfBirth: false,
-        driverAddress: false,
-        driverCountry: false,
         driverPhone: false,
-        driverPassportNumber: false,
-        driverPassportCountry: false,
-        driverPassportDateIssue: false,
-        driverPassportExpirationDate: false,
         driverRegistrationNumber: false,
         driverRegistrationCountry:false,
         driverRegistrationDateIssue: false,
         driverRegistrationExpirationDate: false,
-        renterName: false,
-        renderAFM: false,
-        renderDOY: false,
-        renterAddress: false,
-        renterCity: false,
-        renterPhone: false,
         secondDriverFullName: true,
         secondDriverBirthDate: true,
         secondDriverRegistrationNumber: true,
@@ -522,51 +446,12 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                    <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'driverDateOfBirth'} label={'Ημερ.Γεννήσεως'} />
                 </View>
                 <View style={styles.inputRow}>
-                    <Input style={styles.rowInput}
-                           label={'Διεύθυνση Κατοικίας'}
-                           onChangeText={changeHandlerInputs.bind(this, 'driverAddress')}
-                           value={formInputs['driverAddress']}
-                           inputStyle={!everythingOk.driverAddress ? styles.nullInput : ''}
-                    />
-                    <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'driverCountry')}
-                           label={'Χώρα'}
-                           value={formInputs['driverCountry']}
-                           inputStyle={!everythingOk.driverCountry ? styles.nullInput : ''}
-                    />
                     <Input style={styles.rowInput} label={'Τηλ.'}
                            onChangeText={changeHandlerInputs.bind(this, 'driverPhone')}
                            TextInputConfig={{keyboardType: 'number-pad', placeholder: '+30 6980999416'}}
                            value={formInputs['driverPhone']}
                            inputStyle={!everythingOk.driverPhone ? styles.nullInput : ''}
 
-                    />
-                </View>
-                <View style={styles.inputRow}>
-                    <Input style={styles.rowInput}
-                           label={'Διαβ.No'}
-                           onChangeText={changeHandlerInputs.bind(this, 'driverPassportNumber')}
-                           value={formInputs['driverPassportNumber']}
-                           inputStyle={!everythingOk.driverPassportNumber? styles.nullInput : ''}
-                    />
-
-                    <Input style={styles.rowInput}
-                           label={'Χώρα'}
-                           onChangeText={changeHandlerInputs.bind(this, 'driverPassportCountry')}
-                           value={formInputs['driverPassportCountry']}
-                           inputStyle={!everythingOk.driverPassportCountry? styles.nullInput : ''}
-                    />
-                    {/*<Input style={styles.rowInput}*/}
-                    {/*       onChangeText={changeHandlerInputs.bind(this, 'driverPassportDateIssue')}*/}
-                    {/*       label={'Ημερ Εκδοσης'}*/}
-                    {/*       inputStyle={!everythingOk.driverPassportDateIssue ? styles.nullInput : ''}*/}
-                    {/*/>*/}
-                    <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'driverPassportDateIssue'} label={'Ημερ Εκδοσης'} />
-                    <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'driverPassportExpirationDate')}
-                           label={'Λήξη'}
-                           value={formInputs['driverPassportExpirationDate']}
-                           inputStyle={!everythingOk.driverPassportExpirationDate ? styles.nullInput : ''}
                     />
                 </View>
                 <View style={styles.inputRow}>
@@ -598,51 +483,10 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 </View>
             </View>
 
-            <View style={[styles.clientBox, {overflow: 'hidden'}]}>
-                <View style={styles.inputRow}>
-                    <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'renterName')}
-                           label={'Μισθωτής'}
-                           value={formInputs['renterName']}
-                           inputStyle={!everythingOk.renterName ? styles.nullInput : ''}
-                    />
-                    <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'renderAFM')}
-                           label={'ΑΦΜ'}
-                           value={formInputs['renderAFM']}
-                           inputStyle={!everythingOk.renderAFM ? styles.nullInput : ''}
-                    />
-                    <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'renderDOY')}
-                           label={'Δ.Ο.Υ'}
-                           value={formInputs['renderDOY']}
-                           inputStyle={!everythingOk.renderDOY ? styles.nullInput : ''}
-                    />
-                </View>
-                <View style={styles.inputRow}>
-                    <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'renterAddress')}
-                           label={'Διεύθυνση Κατοικίας'}
-                           value={formInputs['renterAddress']}
-                           inputStyle={!everythingOk.renterAddress ? styles.nullInput : ''}
-                    />
+            {/*<View style={[styles.clientBox, {overflow: 'hidden'}]}>*/}
+            {/*    */}
 
-                    <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'renterCity')}
-                           label={'Πόλη'}
-                           value={formInputs['renterCity']}
-                           inputStyle={!everythingOk.renterCity ? styles.nullInput : ''}
-                    />
-                    <Input style={styles.rowInput}
-                           onChangeText={changeHandlerInputs.bind(this, 'renterPhone')}
-                           label={'Τηλ'}
-                           value={formInputs['renterPhone']}
-                           TextInputConfig={{keyboardType: 'number-pad', placeholder: '+30 6980999416'}}
-                           inputStyle={!everythingOk.renterPhone ? styles.nullInput : ''}
-                    />
-                </View>
-
-            </View>
+            {/*</View>*/}
             <View style={[styles.inputRow, {marginTop: 30}]}>
                 <Input
                     style={styles.rowInput}
