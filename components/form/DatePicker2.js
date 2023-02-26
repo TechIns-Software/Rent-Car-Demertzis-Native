@@ -51,7 +51,7 @@ const Example = ({style,label,type,customOnChange,objectKey}) => {
                 mode={type}
                 onConfirm={handleConfirm}
                 onCancel={hideDatePicker}
-                pickerStyleIOS={styles.styleIosPicker}
+                isDarkModeEnabled={true}
             />
         </View>
     );
