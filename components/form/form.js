@@ -474,7 +474,8 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     {/*       TextInputConfig={{placeholder: 'YYY-MM-DD'}}*/}
                     {/*       inputStyle={!everythingOk.driverDateOfBirth ? styles.nullInput : ''}*/}
                     {/*/>*/}
-                    <Example/>
+                    <Example style={styles.rowInput} objectKey={'driverDateOfBirth'} objectKey={'driverDateOfBirth'} label={'Ημερ.Γεννήσεως'} type={'date'}/>
+
                    {/*<CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'driverDateOfBirth'} label={'Ημερ.Γεννήσεως'} />*/}
                 </View>
                 <View style={styles.inputRow}>
@@ -834,7 +835,8 @@ const styles = StyleSheet.create({
     },
     inputRow: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        alignItems:'center'
     },
     rowInput: {
         flex: 1
@@ -861,8 +863,7 @@ const styles = StyleSheet.create({
     },
     clientBox: {
         borderBottomWidth: 2,
-        borderColor: '#878787',
-        borderStyle: 'dashed'
+
     },
     enteredView: {
         flex: 1,
