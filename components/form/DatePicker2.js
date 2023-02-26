@@ -31,7 +31,7 @@ const Example = ({style,label,type,customOnChange,objectKey}) => {
             const timeHour = String(date.getHours()).padStart(2, '0');
             const time24 = timeHour+':'+timemin;
             setTime(time24);
-            customOnChange(objectKey,time24)
+            customOnChange(objectKey,time24);
         }
 
 
@@ -51,7 +51,7 @@ const Example = ({style,label,type,customOnChange,objectKey}) => {
                 mode={type}
                 onConfirm={handleConfirm}
                 onCancel={hideDatePicker}
-
+                pickerStyleIOS={styles.styleIosPicker}
             />
         </View>
     );
@@ -71,6 +71,9 @@ const  styles = StyleSheet.create({
     buttonContainer:{
         fontSize:10,
         maxHeight:50
+    },
+    styleIosPicker:{
+        color:'black'
     }
 })
 

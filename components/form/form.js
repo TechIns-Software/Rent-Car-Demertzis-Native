@@ -275,7 +275,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         });
         updateCalculatedDependentValuesAndChangeCriteria(inputName, inputValue);
     }
-    function changeHandlerDatePicher(inputName, inputValue) {
+    function changeHandlerDatePicker(inputName, inputValue) {
         setFormInputs((prevValues) => {
             return {
                 ...prevValues,
@@ -474,9 +474,9 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     {/*       TextInputConfig={{placeholder: 'YYY-MM-DD'}}*/}
                     {/*       inputStyle={!everythingOk.driverDateOfBirth ? styles.nullInput : ''}*/}
                     {/*/>*/}
-                    <Example style={styles.rowInput} objectKey={'driverDateOfBirth'} objectKey={'driverDateOfBirth'} label={'Ημερ.Γεννήσεως'} type={'date'}/>
+                    <Example style={styles.rowInput} objectKey={'driverDateOfBirth'} objectKey={'driverDateOfBirth'} customOnChange={changeHandlerDatePicker}  label={'Ημερ.Γεννήσεως'} type={'date'}/>
 
-                   {/*<CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'driverDateOfBirth'} label={'Ημερ.Γεννήσεως'} />*/}
+                   {/*<CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicker} objectKey={'driverDateOfBirth'} label={'Ημερ.Γεννήσεως'} />*/}
                 </View>
                 <View style={styles.inputRow}>
                     <Input style={styles.rowInput} label={'Τηλ.'}
@@ -507,7 +507,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                            label={'Ημερ Εκδοσης'}
                            inputStyle={!everythingOk.driverRegistrationDateIssue ? styles.nullInput : ''}
                     />
-                    {/*<CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'driverRegistrationDateIssue'} label={'Ημερ Εκδοσης'} />*/}
+                    {/*<CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicker} objectKey={'driverRegistrationDateIssue'} label={'Ημερ Εκδοσης'} />*/}
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'driverRegistrationExpirationDate')}
                            label={'Λήξη'}
@@ -535,7 +535,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     onChangeText={changeHandlerInputs.bind(this, 'secondDriverBirthDate')}
                     inputStyle={!everythingOk.secondDriverBirthDate ? styles.nullInput : ''}
                 />
-                {/*<CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'secondDriverBirthDate'} label={'Ημερ Εκδοσης'} />*/}
+                {/*<CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicker} objectKey={'secondDriverBirthDate'} label={'Ημερ Εκδοσης'} />*/}
             </View>
             <View style={styles.inputRow}>
                 <Input style={styles.rowInput}
@@ -557,7 +557,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                        label={'Ημερ Έκδοσης'}
                        inputStyle={!everythingOk.secondDriverRegistrationDateIssue ? styles.nullInput : ''}
                 />
-                {/*<CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'secondDriverRegistrationDateIssue'} label={'Ημερ Εκδοσης'} />*/}
+                {/*<CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicker} objectKey={'secondDriverRegistrationDateIssue'} label={'Ημερ Εκδοσης'} />*/}
                 <Input style={styles.rowInput}
                        onChangeText={changeHandlerInputs.bind(this, 'secondDriverRegistrationExpirationDate ')}
                        label={'Λήξη'}
