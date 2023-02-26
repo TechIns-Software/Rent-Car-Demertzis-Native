@@ -1,6 +1,7 @@
 import {createContext, useContext, useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {Alert} from "react-native";
+import {AuthContext} from "./auth-context";
 
 
 export  const FormsContext = createContext({
@@ -57,22 +58,19 @@ function  FormsContextProvider({children}){
     const [numberOfForm,setNumberOfForms] = useState(0)
 
 
-    async function saveLocal(isUploaded,data){
+    async function saveLocal(data, authCtx){
         const currentDate = new Date();
-        const formatedDate = currentDate.getFullYear()+'-'+currentDate.getDate()+'-'+(currentDate.getMonth()+1);
-        let lastId =  await getLastId();
+        const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth()+1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')} ${String(currentDate.getHours()).padStart(2, '0')}:${String(currentDate.getMinutes()).padStart(2, '0')}:${String(currentDate.getSeconds()).padStart(2, '0')}`;
+        const answer = await sendForm(data, formattedDate, authCtx);
 
         setFormInfo({
-            isUploaded:isUploaded,
+            isUploaded: answer.uploadedOk ?? 0,
             data :data,
-            date:formatedDate
+            date:formattedDate
         });
-        //todo change that
-        const answer = await sendForm(data);
-        console.log(answer);
-        return;
-        await  storeData({[lastId + 1]:formInfo},Number(lastId+1).toString());
-        // console.log(allForms)
+        let lastId = await getLastId();
+        await storeData({[lastId + 1]:formInfo},Number(lastId+1).toString());
+        return answer;
 
     }
 
@@ -90,19 +88,20 @@ function  FormsContextProvider({children}){
         }
     }
     async function getLastId() {
+        var value = 0;
         try {
-            var value = await AsyncStorage.getItem('numberOfForms').then((res) => {
+            value = await AsyncStorage.getItem('numberOfForms').then((res) => {
                 return JSON.parse(res);
             })
             if (value == null){
                 value = 0;
             }
-            setNumberOfForms(value)
-
-            return Number(value);
         } catch (e) {
             // error reading value
         }
+
+        setNumberOfForms(value)
+        return Number(value);
     }
 
     async function getAllForms() {
@@ -114,12 +113,14 @@ function  FormsContextProvider({children}){
         });
     }
 
-    async function sendForm(formInputs) {
-        //todo find idAdmin, uniqueHash
-        const idAdmin = 1;
-        const uniqueHash = (Math.random() + 1).toString(36);
+    async function sendForm(formInputs, date, authCtx) {
+        console.log(authCtx);
+        const idAdmin = authCtx['idAdmin'];
+        const uniqueHash = Date.now() + (Math.random() + 1).toString(36) + String(idAdmin).padStart(3, '0');
+        //todo calculate digest
+        const hashToken = authCtx['token'];
         const digest = "sadsad";
-        const timeUploaded = "2022-02-23";
+        const timeUploaded = date;
         formInputs.action = "uploadForm";
         formInputs.idAdmin = idAdmin;
         formInputs.digest = digest;
@@ -138,7 +139,7 @@ function  FormsContextProvider({children}){
         var myHeaders = new Headers();
         myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
         myHeaders.append('Accept', 'application/json');
-        var answer = ";sadsa43g";
+        var answer = 0;
         try {
             answer = fetch('https://a-omega.com.gr/admin/request/', {
                 method: 'POST',
@@ -156,15 +157,18 @@ function  FormsContextProvider({children}){
                     }
                 })
                 .then((response) => {
-                    console.log(JSON.stringify(response));
+                    console.log("returned the below");
                     console.log(response);
                     return response;
                 }).catch(error => {
                     console.log(JSON.stringify(error));
                     console.log(error);
-                });;
+                }).then(errorResponse => errorResponse);
         } catch (error){
-            Alert.alert('Something Went wrong','error')
+            const ans = {
+                "no-network": "1"
+            };
+            return ans
         }
         return answer;
     }

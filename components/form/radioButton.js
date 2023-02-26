@@ -2,9 +2,7 @@ import * as React from 'react';
 import {Text, View,StyleSheet} from 'react-native';
 import { RadioButton } from 'react-native-paper';
 
-const RadioButtonCustom = ({onPress, label}) => {
-    const [checked, setChecked] = React.useState(false);
-
+const RadioButtonCustom = ({onPress, label, value}) => {
     return (
         <View style={styles.container}>
             <Text style={styles.label}>{label}</Text>
@@ -12,10 +10,9 @@ const RadioButtonCustom = ({onPress, label}) => {
             <Text> Αποδέχομαι</Text>
             <RadioButton
                 value="true"
-                status={ checked  ? 'checked' : 'unchecked' }
+                status={ value  ? 'checked' : 'unchecked' }
                 onPress={() =>{
-                    setChecked(true),
-                        onPress(true)
+                    onPress(true)
                 }}
 
             />
@@ -24,9 +21,9 @@ const RadioButtonCustom = ({onPress, label}) => {
             <Text> Δεν Αποδέχομαι</Text>
             <RadioButton
                 value="false"
-                status={ !checked  ? 'checked' : 'unchecked' }
+                status={ !value  ? 'checked' : 'unchecked' }
                 onPress={() =>{
-                    setChecked(false),onPress(false)
+                    onPress(false)
                 }}
 
             />

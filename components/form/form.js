@@ -19,6 +19,7 @@ import Sign from "./SignatureScreen";
 import {FormsContext} from "../../store/form-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomDatePicker from "./DatePicker";
+import {AuthContext} from "../../store/auth-context";
 
 function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
 
@@ -172,11 +173,11 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             type: "number"
         },
         recommendedBy: {
-            mandatory: false,
+            mandatory: true,
             type: "text"
         },
         rateCode: {
-            mandatory: false,
+            mandatory: true,
             type: "text"
         },
         subTotal: {
@@ -184,17 +185,17 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             type: "text",
         },
         total: {
-            mandatory: true,
+            mandatory: false,
             type: "text"
         },
         cdw: {
             mandatory: true,
-            type: "bool",
+            type: "bool-influenced",
             radioToCheckOn: "cdwAgree"
         },
         liabilityAmount: {
             mandatory: true,
-            type: "bool",
+            type: "bool-influenced",
             radioToCheckOn: "cdwAgree"
         },
         fullNameBank: {
@@ -249,11 +250,11 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
 
         charges: false,
         days: false,
-        recommendedBy: true,
-        rateCode: true,
-        subTotal: false,
+        recommendedBy: false,
+        rateCode: false,
+        subTotal: true,
         cdw: true,
-        total: false,
+        total: true,
         cdwAgree: true,
         liabilityAmount: true,
         signClient:false,
@@ -263,7 +264,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         signCard: false,
     });
     const formCtx = useContext(FormsContext) ;
-
+    const authCtx = useContext(AuthContext);
     function changeHandlerInputs(inputName, inputValue) {
         setFormInputs((prevValues) => {
             return {
@@ -271,7 +272,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 [inputName]: inputValue
             }
         });
-        updateCalculatedDependentValues(inputName, inputValue);
+        updateCalculatedDependentValuesAndChangeCriteria(inputName, inputValue);
     }
     function changeHandlerDatePicher(inputName, inputValue) {
         setFormInputs((prevValues) => {
@@ -280,20 +281,27 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 [inputName]: inputValue
             }
         });
-        updateCalculatedDependentValues(inputName, inputValue);
+        updateCalculatedDependentValuesAndChangeCriteria(inputName, inputValue);
     }
-    function updateCalculatedDependentValues(inputName, inputValue) {
+    function updateCalculatedDependentValuesAndChangeCriteria(inputName, inputValue) {
         var _total = 0;
         var _subTotal = 0;
-        if (inputName === 'days' || inputName === 'charges' || inputName === "cdw") {
+        if (inputName === 'days' || inputName === 'charges' || inputName === "cdw" || inputName === 'cdwAgree') {
+            var _ = 0;
+            if (formInputs['cdwAgree'] == '1') {
+                _ = 1;
+            }
             if (inputName === 'days') {
-                _total = (inputValue * Number(formInputs['charges']) + Number(formInputs['cdw'])).toString();
+                _total = (inputValue * Number(formInputs['charges']) + _ * Number(formInputs['cdw'])).toString();
                 _subTotal = (inputValue * Number(formInputs['charges'])).toString();
             } else if (inputName === 'charges') {
-                _total = (formInputs['days'] * Number(inputValue) + Number(formInputs['cdw'])).toString();
+                _total = (formInputs['days'] * Number(inputValue) + _ * Number(formInputs['cdw'])).toString();
                 _subTotal = (formInputs['days'] * Number(inputValue)).toString();
             } else if (inputName === "cdw") {
-                _total = (formInputs['days'] * Number(formInputs['charges']) + Number(inputValue)).toString();
+                _total = (formInputs['days'] * Number(formInputs['charges']) + _ * Number(inputValue)).toString();
+                _subTotal = (formInputs['days'] * Number(formInputs['charges'])).toString();
+            } else if (inputName === "cdwAgree") {
+                _total = (formInputs['days'] * Number(formInputs['charges']) + inputValue * Number(formInputs['cdw'])).toString();
                 _subTotal = (formInputs['days'] * Number(formInputs['charges'])).toString();
             }
 
@@ -305,13 +313,10 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 }
             });
         }
-
+        changeStateOfEverythingOk(inputName, inputValue);
     }
 
-    async function checkInputs() {
-
-
-        /////////////////
+    function changeStateOfEverythingOk(inputName = null, inputValue = null) {
         setEveryThingOk((oldValues) => {
             const setTrueObj = {};
             for (const [key, value] of Object.entries(oldValues)) {
@@ -321,21 +326,34 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 ...setTrueObj
             }
         });
+        if (inputName) {
+            formInputs[inputName] = inputValue;
+        }
         let flag = true;
         for (const [key, value] of Object.entries(formInputs)) {
             if (RULES_INPUTS[key]) {
                 //check types if we want
                 if (RULES_INPUTS[key]['mandatory']) {
-                    if (RULES_INPUTS[key]['type'] === 'bool') {
+                    if (RULES_INPUTS[key]['type'] === 'bool-influenced') {
+                        if (formInputs[RULES_INPUTS[key]['radioToCheckOn']]) {
+                            setEveryThingOk((oldValues) => {
+                                return {
+                                    ...oldValues, [key]: value.length !== 0
+                                }
+                            });
+                            if (value.length === 0) {
+                                flag = false;
+                            }
+                        }
 
+                        continue;
+                    }
+                    if (RULES_INPUTS[key]['type'] === 'bool') {
                         setEveryThingOk((oldValues) => {
                             return {
-                                ...oldValues, [key]: !formInputs[RULES_INPUTS[key]['radioToCheckOn']]
+                                ...oldValues, [key]: value
                             }
                         });
-                        if (formInputs[RULES_INPUTS[key]['radioToCheckOn']]) {
-                            flag = false;
-                        }
                         continue;
                     }
 
@@ -364,11 +382,14 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     }
                 }
             }
-
         }
+        return flag;
+    }
+
+    async function checkInputs() {
         // console.log(formInputs);
         // console.log(everythingOk);
-
+        let flag = changeStateOfEverythingOk();
         for (const [key, value] of Object.entries(everythingOk)) {
             if (!value) {
                 console.log(everythingOk);
@@ -388,15 +409,24 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             }
             if (daysDifference != formInputs['days'] && (daysDifference + 1) != formInputs['days']) {
                 flagDays = true;
-                Alert.alert('Πρόβλημα με την ημερομηνία', 'Ο Υπολογισμός των ημερών φαίνεται λάθος με βάση τις ημερομηνίες που δόθηκαν')
+                Alert.alert('Πρόβλημα με τις ημέρες που ορίσατε', 'Ο Υπολογισμός των ημερών φαίνεται λάθος με βάση τις ημερομηνίες που δόθηκαν')
             }
         }
         if (!flagDays) {
             if (!flag) {
                 Alert.alert('Πρόβλημα με τα στοιχεία', 'Πρέπει να συμπληρώσετε ορισμένα πεδία')
             } else {
-                const answer = await formCtx.saveLocal(0,formInputs);
-                Alert.alert('Υποβολή Φόρμας', answer)
+                console.log(authCtx);
+                const answer = await formCtx.saveLocal(formInputs, authCtx);
+                if (answer['uploadedOk']) {
+                    if (answer['uploadedOk'] == '1') {
+                        Alert.alert('Υποβολή Φόρμας', "Επιτυχής Υποβολή")
+                    } else {
+                        Alert.alert('Υποβολή Φόρμας', "Επιτυχής Υποβολή")
+                    }
+                } else {
+                    Alert.alert('Υποβολή Φόρμας', "Δεν ήταν δυνατή η υποβολή στο ίντερνετ, αλλά αποθηκεύτηκε τοπικά")
+                }
             }
         }
 
@@ -411,7 +441,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 ['cdwAgree']: val
             }
         });
-        updateCalculatedDependentValues('cdwAgree', val);
+        updateCalculatedDependentValuesAndChangeCriteria('cdwAgree', val);
     }
 
     function  clearSignature(label,value){
@@ -437,30 +467,31 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                            TextInputConfig={{}}
                            value={formInputs['driverFullName']}
                            inputStyle={!everythingOk.driverFullName? styles.nullInput : ''}/>
-                    {/*<Input style={styles.rowInput}*/}
-                    {/*       label={'Ημερ.Γεννήσεως'}*/}
-                    {/*       onChangeText={changeHandlerInputs.bind(this, 'driverDateOfBirth')}*/}
-                    {/*       TextInputConfig={{placeholder: 'YYY-MM-DD', maxLength: 10,}}*/}
-                    {/*       inputStyle={!everythingOk.driverDateOfBirth ? styles.nullInput : ''}*/}
-                    {/*/>*/}
-                   <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'driverDateOfBirth'} label={'Ημερ.Γεννήσεως'} />
+                    <Input style={styles.rowInput}
+                           label={'Ημερ.Γεννήσεως'}
+                           onChangeText={changeHandlerInputs.bind(this, 'driverDateOfBirth')}
+                           TextInputConfig={{placeholder: 'YYY-MM-DD'}}
+                           inputStyle={!everythingOk.driverDateOfBirth ? styles.nullInput : ''}
+                    />
+                   {/*<CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'driverDateOfBirth'} label={'Ημερ.Γεννήσεως'} />*/}
                 </View>
                 <View style={styles.inputRow}>
                     <Input style={styles.rowInput} label={'Τηλ.'}
                            onChangeText={changeHandlerInputs.bind(this, 'driverPhone')}
-                           TextInputConfig={{keyboardType: 'number-pad', placeholder: '+30 6980999416'}}
+                           TextInputConfig={{keyboardType: 'phone-pad', placeholder: '+30 6980999416'}}
                            value={formInputs['driverPhone']}
                            inputStyle={!everythingOk.driverPhone ? styles.nullInput : ''}
 
                     />
-                </View>
-                <View style={styles.inputRow}>
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'driverRegistrationNumber')}
                            label={'Αρ.Αδείας Οδηγού'}
                            value={formInputs['driverRegistrationNumber']}
                            inputStyle={!everythingOk.driverRegistrationNumber ? styles.nullInput : ''}
                     />
+                </View>
+                <View style={styles.inputRow}>
+
 
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'driverRegistrationCountry')}
@@ -468,12 +499,12 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                            value={formInputs['driverRegistrationCountry']}
                            inputStyle={!everythingOk.driverRegistrationCountry ? styles.nullInput : ''}
                     />
-                    {/*<Input style={styles.rowInput}*/}
-                    {/*       onChangeText={changeHandlerInputs.bind(this, 'driverRegistrationDateIssue')}*/}
-                    {/*       label={'Ημερ Εκδοσης'}*/}
-                    {/*       inputStyle={!everythingOk.driverRegistrationDateIssue ? styles.nullInput : ''}*/}
-                    {/*/>*/}
-                    <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'driverRegistrationDateIssue'} label={'Ημερ Εκδοσης'} />
+                    <Input style={styles.rowInput}
+                           onChangeText={changeHandlerInputs.bind(this, 'driverRegistrationDateIssue')}
+                           label={'Ημερ Εκδοσης'}
+                           inputStyle={!everythingOk.driverRegistrationDateIssue ? styles.nullInput : ''}
+                    />
+                    {/*<CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'driverRegistrationDateIssue'} label={'Ημερ Εκδοσης'} />*/}
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'driverRegistrationExpirationDate')}
                            label={'Λήξη'}
@@ -495,19 +526,19 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     value={formInputs['secondDriverFullName']}
                     inputStyle={!everythingOk.secondDriverFullName ? styles.nullInput : ''}
                 />
-                {/*<Input*/}
-                {/*    style={styles.rowInput}*/}
-                {/*    label={'Ημερ Γέννησης'}*/}
-                {/*    onChangeText={changeHandlerInputs.bind(this, 'secondDriverBirthDate')}*/}
-                {/*    inputStyle={!everythingOk.secondDriverBirthDate ? styles.nullInput : ''}*/}
-                {/*/>*/}
-                <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'secondDriverBirthDate'} label={'Ημερ Εκδοσης'} />
+                <Input
+                    style={styles.rowInput}
+                    label={'Ημερ Γέννησης'}
+                    onChangeText={changeHandlerInputs.bind(this, 'secondDriverBirthDate')}
+                    inputStyle={!everythingOk.secondDriverBirthDate ? styles.nullInput : ''}
+                />
+                {/*<CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'secondDriverBirthDate'} label={'Ημερ Εκδοσης'} />*/}
             </View>
             <View style={styles.inputRow}>
                 <Input style={styles.rowInput}
                        label={'Αρ.Αδείας Επιπλέον Οδηγού'}
                        onChangeText={changeHandlerInputs.bind(this, 'secondDriverRegistrationNumber')}
-                       TextInputConfig={{keyboardType: 'decimal-pad',}}
+                       TextInputConfig={{keyboardType: 'phone-pad',}}
                        inputStyle={!everythingOk.secondDriverRegistrationNumber ? styles.nullInput : ''}
                        value={formInputs['secondDriverRegistrationNumber']}
                 />
@@ -518,12 +549,12 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     value={formInputs['secondDriverRegistrationCountry']}
                     inputStyle={!everythingOk.secondDriverRegistrationCountry ? styles.nullInput : ''}
                 />
-                {/*<Input style={styles.rowInput}*/}
-                {/*       onChangeText={changeHandlerInputs.bind(this, 'secondDriverRegistrationDateIssue')}*/}
-                {/*       label={'Ημερ Έκδοσης'}*/}
-                {/*       inputStyle={!everythingOk.secondDriverRegistrationDateIssue ? styles.nullInput : ''}*/}
-                {/*/>*/}
-                <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'secondDriverRegistrationDateIssue'} label={'Ημερ Εκδοσης'} />
+                <Input style={styles.rowInput}
+                       onChangeText={changeHandlerInputs.bind(this, 'secondDriverRegistrationDateIssue')}
+                       label={'Ημερ Έκδοσης'}
+                       inputStyle={!everythingOk.secondDriverRegistrationDateIssue ? styles.nullInput : ''}
+                />
+                {/*<CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'secondDriverRegistrationDateIssue'} label={'Ημερ Εκδοσης'} />*/}
                 <Input style={styles.rowInput}
                        onChangeText={changeHandlerInputs.bind(this, 'secondDriverRegistrationExpirationDate ')}
                        label={'Λήξη'}
@@ -557,7 +588,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     {/*<Input style={styles.rowInput}*/}
                     {/*       onChangeText={changeHandlerInputs.bind(this, 'checkOutDate')}*/}
                     {/*       label={'Hμ Παράδοσης'}*/}
-                    {/*       TextInputConfig={{keyboardType: 'decimal-pad',}}*/}
+                    {/*       TextInputConfig={{keyboardType: 'phone-pad',}}*/}
                     {/*       inputStyle={!everythingOk.checkOutDate ? styles.nullInput : ''}*/}
                     {/*/>*/}
                     <CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerInputs} objectKey={'checkInDate'} label={'Hμ Παράδοσης'} />
@@ -573,7 +604,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                            onChangeText={changeHandlerInputs.bind(this, 'checkInStation')}
                            label={'Station'}
                            value={formInputs['checkInStation']}
-                           inputStyle={!everythingOk.checkOutStation ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.checkInStation ? styles.nullInput : ''}
                     />
                 </View>
                 <View style={styles.inputRow}>
@@ -594,7 +625,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                            onChangeText={changeHandlerInputs.bind(this, 'checkOutStation')}
                            label={'Station'}
                            value={formInputs['checkOutStation']}
-                           inputStyle={!everythingOk.checkInStation ? styles.nullInput : ''}
+                           inputStyle={!everythingOk.checkOutStation ? styles.nullInput : ''}
                     />
                 </View>
 
@@ -620,7 +651,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 <View style={styles.inputRow}>
                     <View style={{minWidth: '50%'}}></View>
                     <View style={styles.rowInput}>
-                        <RadioButtonCustom onPress={RadioPressHandler} label={"Αποδέχεσαι C.D.W."}/>
+                        <RadioButtonCustom value={formInputs['cdwAgree']} onPress={RadioPressHandler} label={"Αποδέχεσαι C.D.W."}/>
                     </View>
                 </View>
                 <View style={styles.inputRow}>
@@ -695,7 +726,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                         Ο πελάτης - μισθωτής ευθύνεται για οποιαδήποτε ζημία κατά τη διάρκεια της μίσθωσης ανεξαρτήτου
                         υπαιτιότητας. Εάν όμως δεχτεί με σημείωση στο ανάλογο πεδίο να καταβάλει ημερησίως ποσό που
                         προβλέπει ο ισχύων τιμοκατάλογος η ευθύνη του περιορίζεται ανά ζημιά στο ανώτερο ποσό των
-                        €{formInputs.liabilityAmount}ή με σημείωση στο ανάλογο πεδίο να καταβάλει πρόσθετο ποσόν που καλύπτει πλήρη
+                        €{formInputs.liabilityAmount} ή με σημείωση στο ανάλογο πεδίο να καταβάλει πρόσθετο ποσόν που καλύπτει πλήρη
                         απαλλαγή ζημιών.
                         Ζημιές σε ελαστικά, τζάμια και στο κάτω μέρος του αυτοκινήτου δεν καλύπτονται
                     </Text>

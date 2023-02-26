@@ -55,7 +55,7 @@ function MyTabs() {
                     : 'ios-information-circle-outline';
               } else if (route.name === 'Δημιουργία Αίτησης') {
                 iconName = focused ? 'ios-list' : 'ios-list-outline';
-              }else  if (route.name === 'Πρόσφατες Αιτήσεις'){
+              }else  if (route.name === 'Αιτήσεις στην Συσκευή'){
                 iconName = focused ? 'ios-folder' : 'ios-folder-outline';
               }else  if (route.name === 'Αποσύνδεση'){
                   iconName = focused ? 'ios-exit' : 'ios-exit-outline';
@@ -84,7 +84,7 @@ function MyTabs() {
                                                           onPress={authCtx.logout}
 
                 /> }}  />
-        <Tab.Screen name="Πρόσφατες Αιτήσεις" component={RecentlyApplications}               options={
+        <Tab.Screen name="Αιτήσεις στην Συσκευή" component={RecentlyApplications}               options={
             {tabBarBadge:numberOfForms,     headerRight:({tintColor}) =><IconButton icon={'exit'}
                                                           color={'red'}
                                                           size={30}
