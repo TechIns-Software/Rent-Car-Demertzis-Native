@@ -19,7 +19,7 @@ function  CustomDatePicker({ customOnChange, label,style,objectKey,type='date'})
     const [show, setShow] = useState(false);
 
     const onChange = (event, selectedDate) => {
-        setShow(false);
+        setShow(Platform.OS === 'ios');
         if (type == 'date'){
             setDate(selectedDate);
             customOnChange(objectKey,selectedDate);
@@ -35,7 +35,7 @@ function  CustomDatePicker({ customOnChange, label,style,objectKey,type='date'})
 
     const showMode = (currentMode) => {
         // if (Platform.OS === 'android') {
-        //     setShow(true);
+        //     setShow(false);
         //     // for iOS, add a button that closes the picker
         // }else  if(Platform.OS === 'ios'){
         //
@@ -67,7 +67,7 @@ function  CustomDatePicker({ customOnChange, label,style,objectKey,type='date'})
                     value={(date ?? new Date())}
                     mode={mode}
                     is24Hour={true}
-                    onChange={onChange}  />
+                    onChange={onChange}   />
 
             )}
         </View>
