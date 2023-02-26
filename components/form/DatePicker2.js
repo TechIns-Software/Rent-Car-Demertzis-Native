@@ -3,7 +3,7 @@ import {Button, View, Text, StyleSheet} from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {RFPercentage} from "react-native-responsive-fontsize";
 
-const Example = ({style,label,type,customOnChange,objectKey}) => {
+const DatePicker2 = ({style,label,type,customOnChange,objectKey}) => {
     const newDate = new Date();
 
     const [time,setTime] = useState('-------')
@@ -57,10 +57,9 @@ const Example = ({style,label,type,customOnChange,objectKey}) => {
     );
 };
 const  styles = StyleSheet.create({
-    inputContainer :{
-        marginHorizontal :4,
-        marginVertical : 16,
-
+    border :{
+      borderColor:'black',
+        borderWidth:1
     },
     label :{
         fontSize: RFPercentage(1.4),
@@ -77,4 +76,4 @@ const  styles = StyleSheet.create({
     }
 })
 
-export default Example;
+export default DatePicker2;
