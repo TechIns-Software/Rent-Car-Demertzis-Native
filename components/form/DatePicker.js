@@ -19,7 +19,7 @@ function  CustomDatePicker({ customOnChange, label,style,objectKey,type='date'})
     const [show, setShow] = useState(false);
 
     const onChange = (event, selectedDate) => {
-        setShow(Platform.OS === 'ios');
+        setShow(true);
         if (type == 'date'){
             setDate(selectedDate);
             customOnChange(objectKey,selectedDate);
@@ -57,7 +57,7 @@ function  CustomDatePicker({ customOnChange, label,style,objectKey,type='date'})
             <Text style={styles.label}>{label}</Text>
             <View style={styles.buttonContainer}>
                 { type == 'date' ?<Button   color={'#2f77d5'}  onPress={showDatepicker} title={ date ? (date.getFullYear()+'-'+String(date.getMonth() + 1).padStart(2, '0')+'-'+String(date.getDate() ).padStart(2, '0')).toString() : '----'} />:
-                    <Button onPress={showTimepicker} title={time ? time.toString() : '----'}/>            }
+                    <Button onPress={showTimepicker} title={time ? time.toString() : '----'}/> }
 
             </View>
             {/*<Text>selected: {date.toLocaleString()}</Text>*/}
@@ -67,6 +67,7 @@ function  CustomDatePicker({ customOnChange, label,style,objectKey,type='date'})
                     value={(date ?? new Date())}
                     mode={mode}
                     is24Hour={true}
+                    display={Platform.OS === 'ios'?'spinner':'default'}
                     onChange={onChange}   />
 
             )}

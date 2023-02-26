@@ -20,6 +20,7 @@ import {FormsContext} from "../../store/form-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomDatePicker from "./DatePicker";
 import {AuthContext} from "../../store/auth-context";
+import Example from "./DatePicker2";
 
 function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
 
@@ -467,12 +468,13 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                            TextInputConfig={{}}
                            value={formInputs['driverFullName']}
                            inputStyle={!everythingOk.driverFullName? styles.nullInput : ''}/>
-                    <Input style={styles.rowInput}
-                           label={'Ημερ.Γεννήσεως'}
-                           onChangeText={changeHandlerInputs.bind(this, 'driverDateOfBirth')}
-                           TextInputConfig={{placeholder: 'YYY-MM-DD'}}
-                           inputStyle={!everythingOk.driverDateOfBirth ? styles.nullInput : ''}
-                    />
+                    {/*<Input style={styles.rowInput}*/}
+                    {/*       label={'Ημερ.Γεννήσεως'}*/}
+                    {/*       onChangeText={changeHandlerInputs.bind(this, 'driverDateOfBirth')}*/}
+                    {/*       TextInputConfig={{placeholder: 'YYY-MM-DD'}}*/}
+                    {/*       inputStyle={!everythingOk.driverDateOfBirth ? styles.nullInput : ''}*/}
+                    {/*/>*/}
+                    <Example/>
                    {/*<CustomDatePicker style={[styles.rowInput]} customOnChange={changeHandlerDatePicher} objectKey={'driverDateOfBirth'} label={'Ημερ.Γεννήσεως'} />*/}
                 </View>
                 <View style={styles.inputRow}>
