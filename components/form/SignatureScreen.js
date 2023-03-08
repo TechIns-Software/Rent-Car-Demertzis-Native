@@ -1,8 +1,8 @@
 import React, {useRef, useState} from "react";
-import {StyleSheet, View, Button, Image, Text, Pressable, ScrollView} from "react-native";
+import {StyleSheet, View, Button, Image, Text, Pressable, ScrollView, ImageBackground} from "react-native";
 import SignatureScreen from "react-native-signature-canvas";
 
-const Sign = ({ onOK,setScrollTrue,setScrollfalse,onBack,value="." }) => {
+const Sign = ({ onOK,setScrollTrue,setScrollfalse,onBack,value=".",bgImage = "" }) => {
     const ref = useRef();
     const [signature,setSignature] = useState('.')
 
@@ -28,7 +28,12 @@ const Sign = ({ onOK,setScrollTrue,setScrollfalse,onBack,value="." }) => {
     return (
         <View style={styles.generalContainer} >
             <View style={styles.container}>
-                <SignatureScreen ref={ref} onOK={handleOK} webStyle={style}/>
+                {bgImage == ""?  <SignatureScreen ref={ref} onOK={handleOK} webStyle={style}/> :
+                    <SignatureScreen ref={ref}  bgSrc={bgImage}
+                                     bgWidth={'100%'}
+                                     bgHeight={'100%'} onOK={handleOK} webStyle={style}/>
+                }
+
                 <View style={styles.row}>
                     <Button title="Καθαρισμός " onPress={handleClear}/>
                     <Button title="Υποβολή" onPress={handleConfirm}/>
@@ -36,10 +41,20 @@ const Sign = ({ onOK,setScrollTrue,setScrollfalse,onBack,value="." }) => {
             </View>
             <View style={styles.previewContainer}>
                 <Text style={styles.previewText}>Signature Preview</Text>
-                <Image
+                { bgImage == "" ?  <Image
                     resizeMode={"contain"}
                     style={styles.previewImage}
-                    source={{ uri: `${value}`}}/>
+                    source={{ uri: `${value}`}}/>:
+                    <ImageBackground
+                        resizeMode={"cover"}
+                        style={{width: '90%', height: '70%'}}
+                                     source={ {uri:bgImage}}>
+                    <Image
+                        resizeMode={"cover"}
+                        style={styles.previewImage}
+                        source={{ uri: `${value}`}}/>
+                    </ImageBackground>}
+
             </View>
             <View style={styles.buttonContainer}>
                 <Pressable onPress={onBack} style={[styles.button, styles.buttonClose]}>

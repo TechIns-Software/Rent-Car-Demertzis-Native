@@ -61,10 +61,18 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         cardExpirationDate: "",
         cvv: "",
         signCard: ".",
+        damage1: ".",
+        damage2: ".",
+        damage3: "."
     })
     const [scrollEnabled, setScrollEnabled] = useState(true);
     const [modalVisible, setModalVisible] = useState(false);
     const [modalVisible2, setModalVisible2] = useState(false);
+    const [modalVisibleDamage1, setModalVisibleDamage1] = useState(false);
+    const [modalVisibleDamage2, setModalVisibleDamage2] = useState(false);
+    const [modalVisibleDamage3, setModalVisibleDamage3] = useState(false);
+
+
     const RULES_INPUTS = {
         driverFullName: {
             mandatory: true,
@@ -687,11 +695,35 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     </Text>
                 </View>
 
+
+
                 <View>
                     <SubmitButton style={styles.signatureButton} buttonText={' Υπογραφη'} onPress={() => {
                         setModalVisible(!modalVisible)
                     }}
                     />
+                </View>
+
+                <View>
+                    <Text style={styles.titleText}>
+                        Ζημίες Αυτοκινήτου
+                    </Text>
+
+                    <SubmitButton style={styles.damagesButton} buttonText={'Μπροστά και πλευρά οδηγού'} onPress={() => {
+                        setModalVisibleDamage1(!modalVisibleDamage1)
+                    }}/>
+
+                    <SubmitButton style={styles.damagesButton} buttonText={' Πίσω και πλευρά συνοδηγού'} onPress={() => {
+                        setModalVisible(!modalVisible)
+                    }}/>
+
+                    <SubmitButton style={styles.damagesButton} buttonText={' Οροφή Αυτοκινήτου'} onPress={() => {
+                        setModalVisible(!modalVisible)
+                    }}/>
+
+
+
+
                 </View>
 
                 <View style={styles.inputRow}>
@@ -769,6 +801,21 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             <View style={styles.generalContainer}>
                 <Text style={styles.titleText}>Υπογραφή Για την Κάρτα</Text>
                 <Sign onOK={changeHandlerInputs.bind(this,'signCard')} value={formInputs.signCard} onBack={() => setModalVisible2(!modalVisible2)}/>
+
+            </View>
+        </Modal>
+
+        <Modal
+            animationType="slide"
+            transparent={false}
+            visible={modalVisibleDamage1}
+            onRequestClose={() => {
+                setModalVisibleDamage1(!modalVisibleDamage1);
+            }}>
+
+            <View style={styles.generalContainer}>
+                <Text style={styles.titleText}>Καταγραφή ζημιών 1</Text>
+                <Sign onOK={changeHandlerInputs.bind(this,'damage1')} bgImage={'https://viajerodecorazon.com/assets/react/front-left1.png'} value={formInputs.damage1} onBack={() => setModalVisibleDamage1(!modalVisibleDamage1)}/>
 
             </View>
         </Modal>
@@ -872,8 +919,12 @@ const styles = StyleSheet.create({
     signatureButton: {
         width: '35%',
         backgroundColor: '#ec6512',
-
-
+    },
+    damagesButton :{
+        width: '100%',
+        backgroundColor: '#12015d',
+        color:'white',
+        marginVertical:5
     }
 
 
