@@ -783,10 +783,9 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 setModalVisible(!modalVisible);
             }}>
 
-            <View>
+            <View style={styles.generalContainer}>
                 <Text style={styles.titleText}>Υπογραφή Πελάτη</Text>
                 <Sign onOK={changeHandlerInputs.bind(this,'signClient')} value={formInputs.signClient} onBack={() => setModalVisible(!modalVisible)} />
-
             </View>
         </Modal>
 
@@ -855,7 +854,8 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
 
 const styles = StyleSheet.create({
     generalContainer: {
-        flex: 1
+        flex: 1,
+        borderWidth:3
     },
     form: {
         marginTop: 20,

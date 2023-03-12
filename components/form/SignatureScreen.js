@@ -23,40 +23,43 @@ const Sign = ({ onOK,setScrollTrue,setScrollfalse,onBack,value=".",bgImage = "" 
     };
 
     const style = `.m-signature-pad--footer {display: none; margin: 0px;} body,html {
-              width:90%; height: 70%; }`;
+              width:100%; height: 100%; border:2px solid orange }`;
 
     return (
         <View style={styles.generalContainer} >
-            <View style={styles.container}>
-                {bgImage == ""?  <SignatureScreen ref={ref} onOK={handleOK} webStyle={style}/> :
-                    <SignatureScreen ref={ref}  bgSrc={bgImage}
-                                     bgWidth={'100%'}
-                                     bgHeight={'100%'} onOK={handleOK} webStyle={style}/>
-                }
+            <View style={{height:'50%'}}>
+
+                <View style={{width:'100%',height:'80%'}}>
+                    {bgImage == ""?  <SignatureScreen ref={ref} onOK={handleOK} webStyle={style}/> :
+                        <SignatureScreen ref={ref}  bgSrc={bgImage}
+                                         bgWidth={'100%'}
+                                         bgHeight={'100%'} onOK={handleOK} webStyle={style}/>
+                    }
+                </View>
 
                 <View style={styles.row}>
                     <Button title="Καθαρισμός " onPress={handleClear}/>
                     <Button title="Υποβολή" onPress={handleConfirm}/>
                 </View>
             </View>
-            <View style={styles.container}>
+            <View style={{height:'40%'}}>
                 <Text style={styles.previewText}>Signature Preview</Text>
                 { bgImage == "" ?  <Image
                     resizeMode={"contain"}
                     style={styles.previewImage}
                     source={{ uri: `${value}`}}/>:
                     <ImageBackground
-                        resizeMode={"contain"}
+                        resizeMode={"stretch"}
                         style={styles.ImageBackgroundStyle}
                                      source={ {uri:bgImage}}>
                     <Image
-                        resizeMode={"contain"}
+                        resizeMode={"stretch"}
                         style={styles.previewImage}
                         source={{ uri: `${value}`}}/>
                     </ImageBackground>}
 
             </View>
-            <View style={styles.buttonContainer}>
+            <View style={{height:'10%'}}>
                 <Pressable onPress={onBack} style={[styles.button, styles.buttonClose]}>
                     <Text style={styles.textStyle}>Πίσω</Text>
                 </Pressable>
@@ -70,19 +73,22 @@ export default Sign;
 const styles = StyleSheet.create({
     generalContainer:{
         flexDirection:'column',
-        height:'100%'
+        height:'100%',
+        flex :1
     },
     container: {
-        borderWidth:2,
+        borderWidth:1,
         alignItems: "center",
         justifyContent: "center",
-        height:'45%',
+        alignContent:"center",
+        height:'40%',
     },
     row: {
         flexDirection: "row",
-        justifyContent: "space-between",
-        width: "50%",
+        justifyContent: "space-evenly",
+        width: "100%",
         alignItems: "center",
+        marginVertical:25
     },
     previewContainer: {
         borderWidth:2,
@@ -93,8 +99,10 @@ const styles = StyleSheet.create({
       color:'#3a8af1'
     },
     previewImage:{
-        width:'90%',
-        height: '70%',
+        width:'100%',
+        height: '80%',
+        borderColor:'gray',
+        borderWidth:3
     },
     buttonContainer:{
         marginVertical:15,
@@ -116,8 +124,8 @@ const styles = StyleSheet.create({
         color:'white'
     },
     ImageBackgroundStyle:{
-        width: '90%',
-        height: '70%',
+        width: '100%',
+        height: '80%',
     }
 
 });
