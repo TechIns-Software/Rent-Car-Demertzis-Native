@@ -714,11 +714,11 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     }}/>
 
                     <SubmitButton style={styles.damagesButton} buttonText={' Πίσω και πλευρά συνοδηγού'} onPress={() => {
-                        setModalVisible(!modalVisible)
+                        setModalVisibleDamage2(!modalVisibleDamage2)
                     }}/>
 
                     <SubmitButton style={styles.damagesButton} buttonText={' Οροφή Αυτοκινήτου'} onPress={() => {
-                        setModalVisible(!modalVisible)
+                        setModalVisibleDamage3(!modalVisibleDamage3)
                     }}/>
 
 
@@ -816,6 +816,35 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             <View style={styles.generalContainer}>
                 <Text style={styles.titleText}>Καταγραφή ζημιών 1</Text>
                 <Sign onOK={changeHandlerInputs.bind(this,'damage1')} bgImage={'https://viajerodecorazon.com/assets/react/front-left1.png'} value={formInputs.damage1} onBack={() => setModalVisibleDamage1(!modalVisibleDamage1)}/>
+
+            </View>
+        </Modal>
+
+        <Modal
+            animationType="slide"
+            transparent={false}
+            visible={modalVisibleDamage2}
+            onRequestClose={() => {
+                setModalVisibleDamage2(!modalVisibleDamage2);
+            }}>
+
+            <View style={styles.generalContainer}>
+                <Text style={styles.titleText}>Καταγραφή ζημιών 2</Text>
+                <Sign onOK={changeHandlerInputs.bind(this,'damage2')} bgImage={'https://viajerodecorazon.com/assets/react/rear-right1.png'} value={formInputs.damage2} onBack={() => setModalVisibleDamage2(!modalVisibleDamage2)}/>
+
+            </View>
+        </Modal>
+
+        <Modal
+            animationType="slide"
+            transparent={false}
+            visible={modalVisibleDamage3}
+            onRequestClose={() => {
+                setModalVisibleDamage3(!modalVisibleDamage3);
+            }}>
+            <View style={styles.generalContainer}>
+                <Text style={styles.titleText}>Καταγραφή ζημιών 3</Text>
+                <Sign onOK={changeHandlerInputs.bind(this,'damage3')} bgImage={'https://viajerodecorazon.com/assets/react/top1.png'} value={formInputs.damage3} onBack={() => setModalVisibleDamage3(!modalVisibleDamage3)}/>
 
             </View>
         </Modal>

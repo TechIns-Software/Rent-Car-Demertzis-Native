@@ -39,18 +39,18 @@ const Sign = ({ onOK,setScrollTrue,setScrollfalse,onBack,value=".",bgImage = "" 
                     <Button title="Υποβολή" onPress={handleConfirm}/>
                 </View>
             </View>
-            <View style={styles.previewContainer}>
+            <View style={styles.container}>
                 <Text style={styles.previewText}>Signature Preview</Text>
                 { bgImage == "" ?  <Image
                     resizeMode={"contain"}
                     style={styles.previewImage}
                     source={{ uri: `${value}`}}/>:
                     <ImageBackground
-                        resizeMode={"cover"}
-                        style={{width: '90%', height: '70%'}}
+                        resizeMode={"contain"}
+                        style={styles.ImageBackgroundStyle}
                                      source={ {uri:bgImage}}>
                     <Image
-                        resizeMode={"cover"}
+                        resizeMode={"contain"}
                         style={styles.previewImage}
                         source={{ uri: `${value}`}}/>
                     </ImageBackground>}
@@ -73,10 +73,10 @@ const styles = StyleSheet.create({
         height:'100%'
     },
     container: {
-        borderWidth:1,
+        borderWidth:2,
         alignItems: "center",
         justifyContent: "center",
-        height:'50%',
+        height:'45%',
     },
     row: {
         flexDirection: "row",
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     previewContainer: {
-        borderWidth:0,
+        borderWidth:2,
         height:'30%',
     },
     previewText:{
@@ -114,6 +114,10 @@ const styles = StyleSheet.create({
     textStyle:{
         fontSize:16,
         color:'white'
+    },
+    ImageBackgroundStyle:{
+        width: '90%',
+        height: '70%',
     }
 
 });

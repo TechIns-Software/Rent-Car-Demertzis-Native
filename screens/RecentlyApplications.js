@@ -12,7 +12,7 @@ function renderApplications(applications){
     return <RecentlyBox
         id={applications.index}
         // type={applications.item.data.vehicleType}
-        date={applications.item.date.toString()}
+        // date={applications.item.date.toISOString()}
         // date={ getFormattedDate(applications.item.date)}
         isSent={applications.item.isSent}/>
 }
