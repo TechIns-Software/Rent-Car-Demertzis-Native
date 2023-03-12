@@ -2,6 +2,7 @@ import {createContext, useContext, useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {Alert} from "react-native";
 import {AuthContext} from "./auth-context";
+import axios from "axios";
 
 
 export  const FormsContext = createContext({
@@ -116,11 +117,9 @@ function  FormsContextProvider({children}){
 
     async function getAdmin() {
         const idAdmin = await AsyncStorage.getItem('idAdmin').then((res) => {
-            console.log(res);
             return res;
         });
         const token = await AsyncStorage.getItem('token').then((res) => {
-            console.log(res);
             return res;
         });
 
@@ -155,29 +154,36 @@ function  FormsContextProvider({children}){
         // myHeaders.append('Accept', 'application/json');
         var answer = 0;
         try {
-            answer = fetch('https://a-omega.com.gr/admin/request/', {
-                method: 'POST',
-                mode: 'cors', // no-cors, *cors, same-origin
-                cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached
-                headers: myHeaders,
-                body: data.toString() // body data type must match "Content-Type" header
-            })
-                .then((res) => {
-                    if(!res.ok) {
-                        return res.text().then(text => { throw new Error(text) })
-                    }
-                    else {
-                        return res.json();
-                    }
-                })
-                .then((response) => {
-                    console.log("returned the below");
-                    console.log(response);
-                    return response;
-                }).catch(error => {
-                    console.log(JSON.stringify(error));
+            // answer = fetch('https://a-omega.com.gr/admin/request/', {
+            //     method: 'POST',
+            //     mode: 'cors', // no-cors, *cors, same-origin
+            //     cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached
+            //     headers: myHeaders,
+            //     body: data.toString() // body data type must match "Content-Type" header
+            // })
+            //     .then((res) => {
+            //         if(!res.ok) {
+            //             return res.text().then(text => { throw new Error(text) })
+            //         }
+            //         else {
+            //             return res.json();
+            //         }
+            //     })
+            //     .then((response) => {
+            //         console.log("returned the below");
+            //         console.log(response);
+            //         return response;
+            //     }).catch(error => {
+            //         console.log(JSON.stringify(error));
+            //         console.log(error);
+            //     }).then(errorResponse => errorResponse);
+            answer = await axios.post('https://a-omega.com.gr/admin/request/', data)
+                .then(function (response) {
+                return response.data
+                }).catch(function (error) {
+                    console.log('error');
                     console.log(error);
-                }).then(errorResponse => errorResponse);
+                });
         } catch (error){
             const ans = {
                 "no-network": "1"
