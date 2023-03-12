@@ -425,8 +425,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             if (!flag) {
                 Alert.alert('Πρόβλημα με τα στοιχεία', 'Πρέπει να συμπληρώσετε ορισμένα πεδία')
             } else {
-                console.log(authCtx);
-                const answer = await formCtx.saveLocal(formInputs, authCtx);
+                const answer = await formCtx.saveLocal(formInputs);
                 if (answer['uploadedOk']) {
                     if (answer['uploadedOk'] == '1') {
                         Alert.alert('Υποβολή Φόρμας', "Επιτυχής Υποβολή")
@@ -528,7 +527,6 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 <Input style={styles.rowInput}
                        label={'Αρ.Αδείας Επιπλέον Οδηγού'}
                        onChangeText={changeHandlerInputs.bind(this, 'secondDriverRegistrationNumber')}
-                       TextInputConfig={{keyboardType: 'phone-pad',}}
                        inputStyle={!everythingOk.secondDriverRegistrationNumber ? styles.nullInput : ''}
                        value={formInputs['secondDriverRegistrationNumber']}
                 />

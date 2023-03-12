@@ -29,50 +29,50 @@ export  const DUMMY_CONTNENT = [
 
 export  const AuthContext = createContext({
     username:'',
-    driverFullName:'',
+    fullName:'',
     token :'',
     idAdmin :'',
     isAuthenticated :false,
-    authenticate :(username,driverFullName,token,idAdmin,isAuthenticated) =>{},
+    authenticate :(username,fullName,token,idAdmin,isAuthenticated) =>{},
     logout :() =>{},
 });
 
 function  AuthContextProvider({children}){
     const [authInfo,setAuthToken] = useState({
         username:'',
-        driverFullName:'',
+        fullName:'',
         token :'',
         idAdmin :'',
         isAuthenticated :false,
     });
 
-    function authenticate(username,driverFullName,token,idAdmin,isAuthenticated){
+    function authenticate(username,fullName,token,idAdmin,isAuthenticated){
 
-        setAuthToken(prevState => ({
+        setAuthToken({
             username:username,
-            driverFullName:driverFullName,
+            fullName:fullName,
             token :token,
             idAdmin :idAdmin,
             isAuthenticated :isAuthenticated,
-        }));
+        });
 
         AsyncStorage.setItem('username',username);
-        AsyncStorage.setItem('driverFullName',driverFullName);
+        AsyncStorage.setItem('fullName',fullName);
         AsyncStorage.setItem('token',token);
-        AsyncStorage.setItem('idAdmin',JSON.stringify(idAdmin));
-        AsyncStorage.setItem('isAuthenticated',JSON.stringify(isAuthenticated));
+        AsyncStorage.setItem('idAdmin',idAdmin.toString());
+        AsyncStorage.setItem('isAuthenticated',isAuthenticated.toString());
     }
 
     function logout(){
         setAuthToken({
             username:'',
-            driverFullName:'',
+            fullName:'',
             token :'',
             idAdmin :'',
             isAuthenticated :0,
         })
         AsyncStorage.removeItem('username');
-        AsyncStorage.removeItem('driverFullName');
+        AsyncStorage.removeItem('fullName');
         AsyncStorage.removeItem('token');
         AsyncStorage.removeItem('idAdmin');
         AsyncStorage.removeItem('isAuthenticated');

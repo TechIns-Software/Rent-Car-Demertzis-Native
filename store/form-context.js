@@ -7,6 +7,7 @@ import {AuthContext} from "./auth-context";
 export  const FormsContext = createContext({
     numberOfForms :0,
     saveLocal : (isUploaded,data)=>{},
+    getAdmin : ()=>{},
     upload : ()=>{},
     previewForm :(idForm) =>{},
     allForms : ()=>{}
@@ -58,11 +59,11 @@ function  FormsContextProvider({children}){
     const [numberOfForm,setNumberOfForms] = useState(0)
 
 
-    async function saveLocal(data, authCtx){
+    async function saveLocal(data){
         const currentDate = new Date();
         const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth()+1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')} ${String(currentDate.getHours()).padStart(2, '0')}:${String(currentDate.getMinutes()).padStart(2, '0')}:${String(currentDate.getSeconds()).padStart(2, '0')}`;
-        const answer = await sendForm(data, formattedDate, authCtx);
-
+        const answer = await sendForm(data, formattedDate);
+        console.log(answer);
         setFormInfo({
             isUploaded: answer.uploadedOk ?? 0,
             data :data,
@@ -113,12 +114,25 @@ function  FormsContextProvider({children}){
         });
     }
 
-    async function sendForm(formInputs, date, authCtx) {
-        console.log(authCtx);
-        const idAdmin = authCtx['idAdmin'];
+    async function getAdmin() {
+        const idAdmin = await AsyncStorage.getItem('idAdmin').then((res) => {
+            console.log(res);
+            return res;
+        });
+        const token = await AsyncStorage.getItem('token').then((res) => {
+            console.log(res);
+            return res;
+        });
+
+        return {idAdmin: idAdmin, token: token};
+    }
+
+    async function sendForm(formInputs, date) {
+        const adminObj = await getAdmin();
+        const idAdmin = adminObj['idAdmin'];
         const uniqueHash = Date.now() + (Math.random() + 1).toString(36) + String(idAdmin).padStart(3, '0');
         //todo calculate digest
-        const hashToken = authCtx['token'];
+        const hashToken = adminObj['token'];
         const digest = "sadsad";
         const timeUploaded = date;
         formInputs.action = "uploadForm";
@@ -126,7 +140,7 @@ function  FormsContextProvider({children}){
         formInputs.digest = digest;
         formInputs.uniqueHash = uniqueHash;
         formInputs.timeUploaded = timeUploaded;
-        // console.log(formInputs);
+        console.log(formInputs);
         const toUrlEncoded = (obj) => {
             return Object
                 .keys(obj)
@@ -138,7 +152,7 @@ function  FormsContextProvider({children}){
         const data = toUrlEncoded(formInputs);
         var myHeaders = new Headers();
         myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
-        myHeaders.append('Accept', 'application/json');
+        // myHeaders.append('Accept', 'application/json');
         var answer = 0;
         try {
             answer = fetch('https://a-omega.com.gr/admin/request/', {
@@ -176,7 +190,8 @@ function  FormsContextProvider({children}){
     const value = {
         saveLocal :saveLocal,
         numberOfForms :numberOfForm,
-        allForms : getAllForms
+        allForms : getAllForms,
+        getAdmin : getAdmin
     }
 
     return <FormsContext.Provider value={value}>{children}</FormsContext.Provider>

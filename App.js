@@ -111,8 +111,11 @@ function Root(){
     useEffect(()=>{
         async function fetchToken(){
             const storedToken =  await AsyncStorage.getItem('token');
+            const username =  await AsyncStorage.getItem('username');
+            const fullName =  await AsyncStorage.getItem('fullName');
+            const idAdmin =  await AsyncStorage.getItem('idAdmin');
             if (storedToken){
-                authCtx.authenticate('','',storedToken,'',1);
+                authCtx.authenticate(username,fullName,storedToken,idAdmin,1);
             }
 
         }
