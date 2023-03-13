@@ -1,6 +1,7 @@
 import {StatusBar} from 'expo-status-bar';
-import {StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
+
 
 function RecentlyBox(props) {
     return         <View style={styles.container} >
@@ -8,14 +9,28 @@ function RecentlyBox(props) {
                 <Text style={styles.label}>#{props.id}</Text>
                 <Text style={styles.label} >Τύπος:<Text style={styles.value} > {props.type}</Text></Text>
                 <Text style={styles.label}>Ημερομηνία:<Text style={styles.value}>{props.date} </Text></Text>
+                {props.isSent ? <Text style={[styles.successText]}>Έχει ανεβεί</Text> : <Text style={[styles.warningText]}> Δεν έχει ανεβεί</Text>}
+
             </View>
 
-            <View style={styles.isSentBox}>
-                <Text> {props.isSent ?
-                    <Ionicons name={'ios-information-circle'} size={35} color={'green'}/>
-                    : <Ionicons name={'ios-flag'} size={35} color={'red'}/>}</Text>
+
+        <Pressable onPress={props.onPressDelete} style={({pressed}) => ({
+            backgroundColor: pressed
+                ? 'rgb(26,76,139)'
+                : 'white',
+            borderRadius:10,
+            justifyContent:'center',
+            padding:5
+
+        })}>
+            <View style={styles.deleteContainer}>
+
+                <Ionicons name={'ios-trash'} size={35} color={'red'}/>
             </View>
-        </View>}
+        </Pressable>
+
+        </View>
+}
 
 const styles = StyleSheet.create({
     container:{
@@ -35,10 +50,35 @@ const styles = StyleSheet.create({
         fontWeight : '500'
     },
     value:{
-        color :'rgb(225,65,65)',
+        color :'rgb(223,10,42)',
         fontWeight : 'bold',
         fontSize : 16
+    },
+    warningText :{
+        fontSize:18,
+        color:'white',
+        fontWeight:'bold',
+        backgroundColor:'#b70707',
+        borderRadius :5,
+        marginVertical:5,
+        paddingVertical:2
+    },
+    successText:{
+        fontSize:18,
+        color:'white',
+        fontWeight:'bold',
+        backgroundColor:'#11b707',
+        borderRadius :5,
+        marginVertical:5,
+        paddingVertical:2
+
+    },
+    deleteContainer:{
+        borderRadius:10,
+        justifyContent:'center',
+        padding:10
     }
+
 
 
 });
