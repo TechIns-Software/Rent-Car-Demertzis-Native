@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, ImageBackground, StyleSheet, Text, View} from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
@@ -8,8 +8,11 @@ function HomeScreen (){
 
     return <View style={styles.container}>
 
-        <Image style={ styles.imageStyle}   source={require("../assets/img/logo.png")} >
-        </Image>
+        <View style={ styles.imageStyle} >
+            <ImageBackground resizeMode={'contain'} style={ styles.image}  source={ {uri:'https://www.superisemykonos.com/image/logo.png'}}>
+            </ImageBackground>
+        </View>
+
         <Text style={styles.title}>Καλώς Ήρθατε  </Text>
     </View>
 }
@@ -29,7 +32,12 @@ const styles = StyleSheet.create({
     },
     imageStyle:{
         width: '50%',
-        height:'50%'
+        height:'50%',
+
+    },
+    image:{
+        width: '100%',
+        height:'100%',
     }
 
 })
