@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {Button, View, Text, StyleSheet} from "react-native";
+import {Button, View, Text, StyleSheet, Pressable} from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {RFPercentage} from "react-native-responsive-fontsize";
 
@@ -8,6 +8,7 @@ const DatePicker2 = ({style,label,type,customOnChange,objectKey}) => {
 
     const [time,setTime] = useState('-------')
     const [date,setDate] = useState('-------')
+    const [isDateSet,setIsDateSet] = useState(false)
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
     const showDatePicker = () => {
@@ -33,6 +34,7 @@ const DatePicker2 = ({style,label,type,customOnChange,objectKey}) => {
             setTime(time24);
             customOnChange(objectKey,time24);
         }
+        setIsDateSet(!isDateSet);
 
 
     };
@@ -45,7 +47,10 @@ const DatePicker2 = ({style,label,type,customOnChange,objectKey}) => {
     return (
         <View style={style}>
             <Text style={styles.label}>{label}</Text>
-            <Button title={type === 'date' ? date.toString() : time.toString()} onPress={showDatePicker} />
+            <Pressable onPress={showDatePicker} style={!isDateSet ? styles.dateWithoutValue : styles.dateWithValue} >
+                <Text> {type === 'date' ? date.toString() : time.toString()}</Text>
+            </Pressable>
+
             <DateTimePickerModal
                 isVisible={isDatePickerVisible}
                 mode={type}
@@ -73,7 +78,22 @@ const  styles = StyleSheet.create({
     },
     styleIosPicker:{
         color:'black'
+    },
+    dateWithoutValue:{
+        backgroundColor:'#fdb4b4',
+        width:'100%',
+        borderRadius:6,
+        padding :8,
+        fontSize :18,
+    },
+    dateWithValue:{
+        backgroundColor:'#a9cafa',
+        width:'100%',
+        borderRadius:6,
+        padding :8,
+        fontSize :18,
     }
+
 })
 
 export default DatePicker2;
