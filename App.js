@@ -73,7 +73,7 @@ function MyTabs() {
             {     headerRight:({tintColor}) =><IconButton icon={'exit'}
                                                     color={'red'}
                                                     size={30}
-                                                    onPress={authCtx.logout}
+
 
             /> }}
         />
@@ -81,14 +81,13 @@ function MyTabs() {
             {     headerRight:({tintColor}) =><IconButton icon={'exit'}
                                                           color={'red'}
                                                           size={30}
-                                                          onPress={authCtx.logout}
+
 
                 /> }}  />
         <Tab.Screen name="Αιτήσεις στην Συσκευή" component={RecentlyApplications}               options={
             {tabBarBadge:numberOfForms,     headerRight:({tintColor}) =><IconButton icon={'exit'}
                                                           color={'red'}
                                                           size={30}
-                                                          onPress={authCtx.logout}
 
                 /> }} />
       </Tab.Navigator>
