@@ -16,8 +16,6 @@ function RecentlyApplications(){
     var [modalVisible, setModalVisible] = useState(false);
 
     function renderApplications(applications){
-        console.log(applications.item)
-        console.log("------------------")
 
         return <RecentlyBox
             driverName={applications.item.data.driverFullName}

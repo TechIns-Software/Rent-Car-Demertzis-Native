@@ -83,7 +83,8 @@ function  AuthContextProvider({children}){
         authInformation:authInfo,
         isAuthenticated :!!authInfo.token,
         authenticate :authenticate,
-        logout :logout
+        logout :logout,
+        fullName:authInfo.fullName
     }
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
