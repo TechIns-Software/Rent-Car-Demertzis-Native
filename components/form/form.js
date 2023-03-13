@@ -273,6 +273,10 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         cardExpirationDate: false,
         cvv: false,
         signCard: false,
+        damage1: false,
+        damage2: false,
+        damage3: false,
+        damage4: false
     });
     const formCtx = useContext(FormsContext) ;
     function changeHandlerInputs(inputName, inputValue) {
@@ -409,35 +413,41 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             }
         }
         //todo check signatures and car as well
-        var flagDays = false;
-        if (formInputs['checkInDate'] && formInputs['checkOutDate']) {
-            var date1 = new Date(formInputs['checkInDate']);
-            var date2 = new Date(formInputs['checkOutDate']);
-            var daysDifference = new Date(date2.getTime() - date1.getTime()).getUTCDate() - 1;
-            if (Platform.OS == "ios") {//todo check πρωτα αν εβαζα το τελος, ή την αρχη αντιστοιχα αν εφταιγε αυτο
-                daysDifference += 1;
-            }
-            if (daysDifference != formInputs['days'] && (daysDifference + 1) != formInputs['days']) {
-                flagDays = true;
-                Alert.alert('Πρόβλημα με τις ημέρες που ορίσατε', 'Ο Υπολογισμός των ημερών φαίνεται λάθος με βάση τις ημερομηνίες που δόθηκαν')
-            }
+
+        // We check if the two signatures are not null
+        if (formInputs['signClient'] == "." || formInputs['signCard'] == "."){
+            Alert.alert('Πρόβλημα με τις υπογραφές', 'Και οι 2 υπογραφές είναι υποχρεωτικές.');
+            return;
         }
-        if (!flagDays) {
-            if (!flag) {
-                Alert.alert('Πρόβλημα με τα στοιχεία', 'Πρέπει να συμπληρώσετε ορισμένα πεδία')
-            } else {
-                const answer = await formCtx.saveLocal(formInputs);
-                if (answer['uploadedOk']) {
-                    if (answer['uploadedOk'] == '1') {
-                        Alert.alert('Υποβολή Φόρμας', "Επιτυχής Υποβολή")
-                    } else {
-                        Alert.alert('Υποβολή Φόρμας', "Επιτυχής Υποβολή")
-                    }
-                } else {
-                    Alert.alert('Υποβολή Φόρμας', "Δεν ήταν δυνατή η υποβολή στο ίντερνετ, αλλά αποθηκεύτηκε τοπικά")
-                }
-            }
-        }
+        // var flagDays = false;
+        // if (formInputs['checkInDate'] && formInputs['checkOutDate']) {
+        //     var date1 = new Date(formInputs['checkInDate']);
+        //     var date2 = new Date(formInputs['checkOutDate']);
+        //     var daysDifference = new Date(date2.getTime() - date1.getTime()).getUTCDate() - 1;
+        //     if (Platform.OS == "ios") {//todo check πρωτα αν εβαζα το τελος, ή την αρχη αντιστοιχα αν εφταιγε αυτο
+        //         daysDifference += 1;
+        //     }
+        //     if (daysDifference != formInputs['days'] && (daysDifference + 1) != formInputs['days']) {
+        //         flagDays = true;
+        //         Alert.alert('Πρόβλημα με τις ημέρες που ορίσατε', 'Ο Υπολογισμός των ημερών φαίνεται λάθος με βάση τις ημερομηνίες που δόθηκαν')
+        //     }
+        // }
+        // if (!flagDays) {
+        //     if (!flag) {
+        //         Alert.alert('Πρόβλημα με τα στοιχεία', 'Πρέπει να συμπληρώσετε ορισμένα πεδία')
+        //     } else {
+        //         const answer = await formCtx.saveLocal(formInputs);
+        //         if (answer['uploadedOk']) {
+        //             if (answer['uploadedOk'] == '1') {
+        //                 Alert.alert('Υποβολή Φόρμας', "Επιτυχής Υποβολή")
+        //             } else {
+        //                 Alert.alert('Υποβολή Φόρμας', "Επιτυχής Υποβολή")
+        //             }
+        //         } else {
+        //             Alert.alert('Υποβολή Φόρμας', "Δεν ήταν δυνατή η υποβολή στο ίντερνετ, αλλά αποθηκεύτηκε τοπικά")
+        //         }
+        //     }
+        // }
 
 
 
