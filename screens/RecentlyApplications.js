@@ -16,10 +16,14 @@ function RecentlyApplications(){
     var [modalVisible, setModalVisible] = useState(false);
 
     function renderApplications(applications){
+        console.log(applications.item)
+        console.log("------------------")
 
         return <RecentlyBox
+            driverName={applications.item.data.driverFullName}
+            // date={applications.item.date === "undefined" ? '#####': applications.item.date}
+            registrationNumber={applications.item.data.registrationNumber}
             id={applications.index}
-            // type={applications.item.data.vehicleType}
             // date={applications.item.date}
             isSent={applications.item.isSent}
             onPressDelete = {OnDeleteForm.bind(this,[applications.index,applications.item.isSent])}

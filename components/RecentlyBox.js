@@ -3,18 +3,17 @@ import {Pressable, StyleSheet, Text, View} from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 
-function RecentlyBox(props) {
+function RecentlyBox({driverName,date,registrationNumber,isSent,id,onPressDelete}) {
     return         <View style={styles.container} >
-            <View style={styles.infoBox} >
-                <Text style={styles.label}>#{props.id}</Text>
-                <Text style={styles.label} >Τύπος:<Text style={styles.value} > {props.type}</Text></Text>
-                <Text style={styles.label}>Ημερομηνία:<Text style={styles.value}>{props.date} </Text></Text>
-                {props.isSent ? <Text style={[styles.successText]}>Έχει ανεβεί</Text> : <Text style={[styles.warningText]}> Δεν έχει ανεβεί</Text>}
-
+            <View >
+                <Text style={styles.label}>Όνομα Οδηγού: {driverName}</Text>
+                <Text style={styles.label}>Ημερομηνία:<Text style={styles.value}>{date} </Text></Text>
+                <Text style={styles.label}>Αρ.Κυκλοφορίας: {registrationNumber}</Text>
+                {isSent ? <Text style={[styles.successText]}>Έχει ανεβεί</Text> : <Text style={[styles.warningText]}> Δεν έχει ανεβεί</Text>}
             </View>
 
 
-        <Pressable onPress={props.onPressDelete} style={({pressed}) => ({
+        <Pressable onPress={onPressDelete} style={({pressed}) => ({
             backgroundColor: pressed
                 ? 'rgb(26,76,139)'
                 : 'white',
@@ -61,7 +60,7 @@ const styles = StyleSheet.create({
         backgroundColor:'#b70707',
         borderRadius :5,
         marginVertical:5,
-        paddingVertical:2
+        padding:2
     },
     successText:{
         fontSize:18,
@@ -70,7 +69,7 @@ const styles = StyleSheet.create({
         backgroundColor:'#11b707',
         borderRadius :5,
         marginVertical:5,
-        paddingVertical:2
+        padding:2
 
     },
     deleteContainer:{
