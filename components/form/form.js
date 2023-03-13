@@ -63,7 +63,8 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         signCard: ".",
         damage1: ".",
         damage2: ".",
-        damage3: "."
+        damage3: ".",
+        damage4: "."
     })
     const [scrollEnabled, setScrollEnabled] = useState(true);
     const [modalVisible, setModalVisible] = useState(false);
@@ -71,6 +72,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
     const [modalVisibleDamage1, setModalVisibleDamage1] = useState(false);
     const [modalVisibleDamage2, setModalVisibleDamage2] = useState(false);
     const [modalVisibleDamage3, setModalVisibleDamage3] = useState(false);
+    const [modalVisibleDamage4, setModalVisibleDamage4] = useState(false);
 
 
     const RULES_INPUTS = {
@@ -273,7 +275,6 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         signCard: false,
     });
     const formCtx = useContext(FormsContext) ;
-    const authCtx = useContext(AuthContext);
     function changeHandlerInputs(inputName, inputValue) {
         setFormInputs((prevValues) => {
             return {
@@ -452,16 +453,6 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         updateCalculatedDependentValuesAndChangeCriteria('cdwAgree', val);
     }
 
-    function  clearSignature(label,value){
-
-        console.log(label)
-        console.log(value)
-    }
-
-    function changeDates(label, selectedDate){
-        console.log(label)
-        console.log(selectedDate)
-    }
 
     return <View style={styles.generalContainer}>
 
@@ -704,7 +695,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
 
                 <View>
                     <Text style={styles.titleText}>
-                        Ζημίες Αυτοκινήτου
+                        Ζημιές Αυτοκινήτου
                     </Text>
 
                     <SubmitButton style={styles.damagesButton} buttonText={'Μπροστά και πλευρά οδηγού'} onPress={() => {
@@ -719,10 +710,21 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                         setModalVisibleDamage3(!modalVisibleDamage3)
                     }}/>
 
+                </View>
 
+                <View>
+                    <Text style={styles.titleText}>
+                        Ζημιές Μηχανής
+                    </Text>
 
+                    <SubmitButton style={styles.damagesButton} buttonText={' Μηχανή'} onPress={() => {
+                        setModalVisibleDamage4(!modalVisibleDamage4)
+                    }}/>
 
                 </View>
+
+
+
 
                 <View style={styles.inputRow}>
                     <FormText
@@ -846,6 +848,20 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             </View>
         </Modal>
 
+        <Modal
+            animationType="slide"
+            transparent={false}
+            visible={modalVisibleDamage4}
+            onRequestClose={() => {
+                setModalVisibleDamage4(!modalVisibleDamage4);
+            }}>
+            <View style={styles.generalContainer}>
+                <Text style={styles.titleText}>Καταγραφή ζημιών Μηχανής</Text>
+                <Sign onOK={changeHandlerInputs.bind(this,'damage4')} bgImage={'https://viajerodecorazon.com/assets/react/bike1.png'} value={formInputs.damage3} onBack={() => setModalVisibleDamage4(!modalVisibleDamage4)}/>
+
+            </View>
+        </Modal>
+
 
     </View>
 }
@@ -853,7 +869,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
 const styles = StyleSheet.create({
     generalContainer: {
         flex: 1,
-        borderWidth:3
+
     },
     form: {
         marginTop: 20,

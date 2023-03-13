@@ -49,12 +49,16 @@ function  FormsContextProvider({children}){
             cdw: "",
             liabilityAmount: "",
             total: "",
-            cdwAgree: true,
-            signClient:"",
+            cdwAgree: false,
+            signClient:".",
             cardHolderName: "",
-            cardExpirationDate : "",
+            cardExpirationDate: "",
             cvv: "",
-            signCard: "",
+            signCard: ".",
+            damage1: ".",
+            damage2: ".",
+            damage3: ".",
+            damage4: "."
         }
     });
     const [numberOfForm,setNumberOfForms] = useState(0)
