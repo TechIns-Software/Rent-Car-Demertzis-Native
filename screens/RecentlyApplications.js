@@ -14,6 +14,8 @@ import Sign from "../components/form/SignatureScreen";
 
 function RecentlyApplications(){
     var [modalVisible, setModalVisible] = useState(false);
+    var [RecentlyId,setRecentlyId] = useState(0);
+    var [RecentlyIsSent,setRecentlyIsSent] = useState(false);
 
     function renderApplications(applications){
 
@@ -24,12 +26,14 @@ function RecentlyApplications(){
             id={applications.index}
             // date={applications.item.date}
             isSent={applications.item.isSent}
-            onPressDelete = {OnDeleteForm.bind(this,[applications.index,applications.item.isSent])}
+            onPressDelete = {OnDeleteForm.bind(this,{id:applications.index,isSent:applications.item.isSent})}
         />
 
     }
 
-    function OnDeleteForm(formId){
+    function OnDeleteForm(formInfos){
+        setRecentlyId(formInfos.id)
+        setRecentlyIsSent(formInfos.isSent)
 
         setModalVisible(!modalVisible)
 
@@ -96,12 +100,13 @@ function RecentlyApplications(){
             {/*All views of Modal*/}
             <View style = {styles.modal}>
                 {/*{View1 When form is uploaded}*/}
-                <Text style = {styles.text}>Είσαι σίγουρος οτι θέλεις να διαγράψεις την φόρμα ?</Text>
+                {RecentlyIsSent == true ?  <Text style = {styles.text}>Είσαι σίγουρος οτι θέλεις να διαγράψεις την φόρμα με id {RecentlyId} ? </Text> :
+                <Text style = {styles.text}>Η φόρμα με αριθμό :{RecentlyId} έχει αποθηκευτεί μόνο τοπικά. Θέλετε σίγουρα να το διαγράψετε ? </Text>}
+
                 <View style={styles.buttonsContainer}>
                     <Pressable style={styles.deleteButtonForm} >
                         <Text style={styles.deleteButtonText}>Διαγραφή Φόρμας</Text>
                     </Pressable>
-
                     <Pressable style={styles.goBackButton} onPress={() => setModalVisible(!modalVisible)}>
                         <Text style={styles.goBackText}> Πήγαινε Πίσω </Text>
                     </Pressable>
