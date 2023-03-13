@@ -11,7 +11,8 @@ export  const FormsContext = createContext({
     getAdmin : ()=>{},
     upload : ()=>{},
     previewForm :(idForm) =>{},
-    allForms : ()=>{}
+    allForms : ()=>{},
+    deleteForm : (idForm)=>{}
 });
 
 function  FormsContextProvider({children}){
@@ -68,13 +69,14 @@ function  FormsContextProvider({children}){
         const currentDate = new Date();
         const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth()+1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')} ${String(currentDate.getHours()).padStart(2, '0')}:${String(currentDate.getMinutes()).padStart(2, '0')}:${String(currentDate.getSeconds()).padStart(2, '0')}`;
         const answer = await sendForm(data, formattedDate);
-        console.log(answer);
+        // console.log(answer);
+        let lastId = await getLastId();
         setFormInfo({
             isUploaded: answer.uploadedOk ?? 0,
             data :data,
             date:formattedDate
         });
-        let lastId = await getLastId();
+
         await storeData({[lastId + 1]:formInfo},Number(lastId+1).toString());
         return answer;
 
@@ -143,7 +145,7 @@ function  FormsContextProvider({children}){
         formInputs.digest = digest;
         formInputs.uniqueHash = uniqueHash;
         formInputs.timeUploaded = timeUploaded;
-        console.log(formInputs);
+
         const toUrlEncoded = (obj) => {
             return Object
                 .keys(obj)
@@ -197,11 +199,19 @@ function  FormsContextProvider({children}){
         return answer;
     }
 
+    async function deleteForm(idForm){
+        const allForms = await getAllForms();
+        console.log('=================================================================');
+        console.log('=================================================================');
+        console.log(allForms);
+    }
+
     const value = {
         saveLocal :saveLocal,
         numberOfForms :numberOfForm,
         allForms : getAllForms,
-        getAdmin : getAdmin
+        getAdmin : getAdmin,
+        deleteForm :deleteForm
     }
 
     return <FormsContext.Provider value={value}>{children}</FormsContext.Provider>

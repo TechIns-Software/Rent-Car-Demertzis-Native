@@ -16,15 +16,16 @@ function RecentlyApplications(){
     var [modalVisible, setModalVisible] = useState(false);
     var [RecentlyId,setRecentlyId] = useState(0);
     var [RecentlyIsSent,setRecentlyIsSent] = useState(false);
+    const [allFormsSaved, setAllFormsSaved] = useState([]);
+    const formsCtx = useContext(FormsContext);
 
     function renderApplications(applications){
 
         return <RecentlyBox
             driverName={applications.item.data.driverFullName}
-            // date={applications.item.date === "undefined" ? '#####': applications.item.date}
             registrationNumber={applications.item.data.registrationNumber}
             id={applications.index}
-            // date={applications.item.date}
+            date={applications.item.date}
             isSent={applications.item.isSent}
             onPressDelete = {OnDeleteForm.bind(this,{id:applications.index,isSent:applications.item.isSent})}
         />
@@ -34,29 +35,23 @@ function RecentlyApplications(){
     function OnDeleteForm(formInfos){
         setRecentlyId(formInfos.id)
         setRecentlyIsSent(formInfos.isSent)
-
         setModalVisible(!modalVisible)
+    }
 
+    function deleteForm(formid){
+        formsCtx.deleteForm(formid)
+        // setModalVisible(!modalVisible)
     }
 
 
 
-    const [allFormsSaved, setAllFormsSaved] = useState(DUMMY_CONTNENT);
-    const formsCtx = useContext(FormsContext);
+
     useEffect(()=>{
         function  getAllForms(){
+
         formsCtx.allForms().then((res) => {
             if (res == null){
-                setAllFormsSaved([    {
-                    id : -55,
-                    data : {
-                        driverFullName: 'sad',
-                        vehicleType : 'sad'
-                    },
-                    isSent: 1,
-                    date : new Date('2022-11-19'),
-
-                },]);
+                setAllFormsSaved([]);
             } else {
                 const newObj = [];
                 var alreadyKeys = [];
@@ -66,7 +61,8 @@ function RecentlyApplications(){
                     //     continue;
                     // }
 
-                    tempInnerObj.id = value.id;
+
+                    tempInnerObj.id = key
                     tempInnerObj.data = value.data;
                     tempInnerObj.isSent = value.isUploaded;
                     tempInnerObj.date = value.date;
@@ -86,11 +82,12 @@ function RecentlyApplications(){
 
 
     return <View style={styles.container} >
-        <FlatList
+        {allFormsSaved.length > 0 ?      <FlatList
             data={allFormsSaved}
             renderItem={renderApplications}
-            // keyExtractor={(item) => item.id }
-        />
+            keyExtractor={(item, index) => index}
+        /> :<Text style={styles.text}>Δεν υπάρχει καμία αίτηση</Text> }
+
 
         <Modal
             animationType = {"fade"}
@@ -104,7 +101,7 @@ function RecentlyApplications(){
                 <Text style = {styles.text}>Η φόρμα με αριθμό :{RecentlyId} έχει αποθηκευτεί μόνο τοπικά. Θέλετε σίγουρα να το διαγράψετε ? </Text>}
 
                 <View style={styles.buttonsContainer}>
-                    <Pressable style={styles.deleteButtonForm} >
+                    <Pressable onPress={deleteForm.bind(this,RecentlyId)} style={styles.deleteButtonForm} >
                         <Text style={styles.deleteButtonText}>Διαγραφή Φόρμας</Text>
                     </Pressable>
                     <Pressable style={styles.goBackButton} onPress={() => setModalVisible(!modalVisible)}>
