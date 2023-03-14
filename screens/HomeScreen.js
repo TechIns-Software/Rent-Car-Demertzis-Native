@@ -9,7 +9,7 @@ function HomeScreen (){
     return <View style={styles.container}>
 
         <View style={ styles.imageStyle} >
-            <ImageBackground resizeMode={'contain'} style={ styles.image}  source={ {uri:'https://www.superisemykonos.com/image/logo.png'}}>
+            <ImageBackground resizeMode={'contain'} style={ styles.image}  source={ require('../assets/img/logo.png')}>
             </ImageBackground>
         </View>
 

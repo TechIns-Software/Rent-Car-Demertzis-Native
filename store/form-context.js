@@ -202,16 +202,14 @@ function  FormsContextProvider({children}){
         const allForms = await getAllForms();
         console.log('=================================================================');
         console.log('=================================================================');
-        console.log(typeof (allForms));
-        console.log(allForms);
+
         delete allForms[Number(idForm)];
         await AsyncStorage.removeItem('userForms');
 
         const obj = JSON.stringify(allForms);
         await AsyncStorage.setItem('userForms', obj);
-        // await AsyncStorage.removeItem('numberOfForms');
-        const allForms2 = await getAllForms();
-        console.log(allForms2);
+        setNumberOfForms((prevValue) => Number(prevValue - 1));
+        await AsyncStorage.setItem('numberOfForms', numberOfForm.toString());
     }
 
     const value = {

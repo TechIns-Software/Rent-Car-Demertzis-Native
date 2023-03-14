@@ -40,7 +40,7 @@ function RecentlyApplications(){
 
     async function deleteForm(formid){
       await  formsCtx.deleteForm(formid)
-        // setModalVisible(!modalVisible)
+        setModalVisible(!modalVisible)
     }
 
 
@@ -71,7 +71,7 @@ function RecentlyApplications(){
         });
         }
         getAllForms();
-    },[formsCtx.numberOfForms])
+    },[formsCtx.numberOfForms,deleteForm])
 
 
     return <View style={styles.container} >
