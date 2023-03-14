@@ -48,7 +48,7 @@ const DatePicker2 = ({style,label,type,customOnChange,objectKey}) => {
     return (
         <View style={style}>
             <Text style={styles.label}>{label}</Text>
-            <Pressable onPress={showDatePicker} style={isDateSet.trim() !== '' ? styles.dateWithoutValue : styles.dateWithValue} >
+            <Pressable onPress={showDatePicker} style={isDateSet.trim() == '' ? styles.dateWithoutValue : styles.dateWithValue} >
                 <Text> {type === 'date' ? date.toString() : time.toString()}</Text>
             </Pressable>
 
