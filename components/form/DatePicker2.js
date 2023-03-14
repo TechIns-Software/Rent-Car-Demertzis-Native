@@ -8,7 +8,7 @@ const DatePicker2 = ({style,label,type,customOnChange,objectKey}) => {
 
     const [time,setTime] = useState('-------')
     const [date,setDate] = useState('-------')
-    const [isDateSet,setIsDateSet] = useState(false)
+    const [isDateSet,setIsDateSet] = useState('')
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
     const showDatePicker = () => {
@@ -27,14 +27,15 @@ const DatePicker2 = ({style,label,type,customOnChange,objectKey}) => {
             const formatedDate = setFormatDate(date)
             setDate(formatedDate);
             customOnChange(objectKey,formatedDate)
+            setIsDateSet(time24);
         }else if (type == 'time') {
             const timemin = String(date.getMinutes()).padStart(2, '0');
             const timeHour = String(date.getHours()).padStart(2, '0');
             const time24 = timeHour+':'+timemin;
             setTime(time24);
             customOnChange(objectKey,time24);
+            setIsDateSet(time24);
         }
-        setIsDateSet(!isDateSet);
 
 
     };
@@ -47,7 +48,7 @@ const DatePicker2 = ({style,label,type,customOnChange,objectKey}) => {
     return (
         <View style={style}>
             <Text style={styles.label}>{label}</Text>
-            <Pressable onPress={showDatePicker} style={!isDateSet ? styles.dateWithoutValue : styles.dateWithValue} >
+            <Pressable onPress={showDatePicker} style={isDateSet.trim() !== '' ? styles.dateWithoutValue : styles.dateWithValue} >
                 <Text> {type === 'date' ? date.toString() : time.toString()}</Text>
             </Pressable>
 
