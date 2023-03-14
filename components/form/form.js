@@ -866,7 +866,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             }}>
             <View style={styles.generalContainer}>
                 <Text style={styles.titleText}>Καταγραφή ζημιών Μηχανής</Text>
-                <Sign onOK={changeHandlerInputs.bind(this,'damage4')} bgImage={'https://viajerodecorazon.com/assets/react/bike1.png'} value={formInputs.damage3} onBack={() => setModalVisibleDamage4(!modalVisibleDamage4)}/>
+                <Sign onOK={changeHandlerInputs.bind(this,'damage4')} bgImage={'https://viajerodecorazon.com/assets/react/bike1.png'} value={formInputs.damage4} onBack={() => setModalVisibleDamage4(!modalVisibleDamage4)}/>
 
             </View>
         </Modal>
