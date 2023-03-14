@@ -14,7 +14,7 @@ import Sign from "../components/form/SignatureScreen";
 
 function RecentlyApplications(){
     var [modalVisible, setModalVisible] = useState(false);
-    var [RecentlyId,setRecentlyId] = useState(0);
+    var [RecentlyId,setRecentlyId] = useState(99);
     var [RecentlyIsSent,setRecentlyIsSent] = useState(false);
     const [allFormsSaved, setAllFormsSaved] = useState([]);
     const formsCtx = useContext(FormsContext);
@@ -22,12 +22,12 @@ function RecentlyApplications(){
     function renderApplications(applications){
 
         return <RecentlyBox
-            driverName={applications.item.data.driverFullName}
-            registrationNumber={applications.item.data.registrationNumber}
-            id={applications.index}
+            driverName={applications.item.driverFullName}
+            registrationNumber={applications.item.registrationNumber}
+            id={Number(applications.index + 1)}
             date={applications.item.date}
             isSent={applications.item.isSent}
-            onPressDelete = {OnDeleteForm.bind(this,{id:applications.index,isSent:applications.item.isSent})}
+            onPressDelete = {OnDeleteForm.bind(this,{id:Number(applications.index + 1) ,isSent:applications.item.isSent})}
         />
 
     }
@@ -38,8 +38,8 @@ function RecentlyApplications(){
         setModalVisible(!modalVisible)
     }
 
-    function deleteForm(formid){
-        formsCtx.deleteForm(formid)
+    async function deleteForm(formid){
+      await  formsCtx.deleteForm(formid)
         // setModalVisible(!modalVisible)
     }
 
@@ -54,25 +54,18 @@ function RecentlyApplications(){
                 setAllFormsSaved([]);
             } else {
                 const newObj = [];
-                var alreadyKeys = [];
                 for (const [key, value] of Object.entries(res)) {
                     var tempInnerObj = {};
-                    // if (alreadyKeys.includes(key)) {
-                    //     continue;
-                    // }
-
 
                     tempInnerObj.id = key
-                    tempInnerObj.data = value.data;
+                    tempInnerObj.driverFullName = value.data.driverFullName
+                    tempInnerObj.registrationNumber = value.data.registrationNumber
                     tempInnerObj.isSent = value.isUploaded;
                     tempInnerObj.date = value.date;
                     // alreadyKeys.push(key);
                     newObj.push(tempInnerObj);
                 }
-                // console.log(newObj);
-                // AsyncStorage.removeItem(3);
                 setAllFormsSaved(newObj);
-                // console.log(res);
 
             }
         });
@@ -85,7 +78,7 @@ function RecentlyApplications(){
         {allFormsSaved.length > 0 ?      <FlatList
             data={allFormsSaved}
             renderItem={renderApplications}
-            keyExtractor={(item, index) => index}
+            keyExtractor={(item) =>  item.id}
         /> :<Text style={styles.text}>Δεν υπάρχει καμία αίτηση</Text> }
 
 
