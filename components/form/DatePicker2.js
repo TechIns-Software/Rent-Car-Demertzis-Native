@@ -27,7 +27,7 @@ const DatePicker2 = ({style,label,type,customOnChange,objectKey}) => {
             const formatedDate = setFormatDate(date)
             setDate(formatedDate);
             customOnChange(objectKey,formatedDate)
-            setIsDateSet(time24);
+            setIsDateSet(formatedDate);
         }else if (type == 'time') {
             const timemin = String(date.getMinutes()).padStart(2, '0');
             const timeHour = String(date.getHours()).padStart(2, '0');
