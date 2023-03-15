@@ -1,10 +1,11 @@
-import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
+import {Linking, Modal, Pressable, StyleSheet, Text, View} from 'react-native';
 
 import Button from '../ui/Button';
 import Input from './Input';
 
 function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
+    var [modalVisible, setModalVisible] = useState(false);
     const [enteredEmail, setEnteredEmail] = useState('');
     const [enteredConfirmEmail, setEnteredConfirmEmail] = useState('');
     const [enteredPassword, setEnteredPassword] = useState('');
@@ -53,15 +54,6 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
                     keyboardType="email-address"
                     isInvalid={emailIsInvalid}
                 />
-                {!isLogin && (
-                    <Input
-                        label="Confirm Email Address"
-                        onUpdateValue={updateInputValueHandler.bind(this, 'confirmEmail')}
-                        value={enteredConfirmEmail}
-                        keyboardType="email-address"
-                        isInvalid={emailsDontMatch}
-                    />
-                )}
                 <Input
                     label="Password"
                     onUpdateValue={updateInputValueHandler.bind(this, 'password')}
@@ -69,18 +61,10 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
                     value={enteredPassword}
                     isInvalid={passwordIsInvalid}
                 />
-                {!isLogin && (
-                    <Input
-                        label="Confirm Password"
-                        onUpdateValue={updateInputValueHandler.bind(
-                            this,
-                            'confirmPassword'
-                        )}
-                        secure
-                        value={enteredConfirmPassword}
-                        isInvalid={passwordsDontMatch}
-                    />
-                )}
+
+                <Pressable onPress={() => Linking.openURL('http://google.com')} >
+                    <Text style={styles.termsText} >Όροι και προϋποθέσεις</Text>
+                </Pressable>
                 <View style={styles.buttons}>
                     <Button onPress={submitHandler}>
                         {isLogin ? 'Log In' : 'Sign Up'}
@@ -97,4 +81,58 @@ const styles = StyleSheet.create({
     buttons: {
         marginTop: 12,
     },
+    termsText:{
+        color:'#dedcdc',
+        fontSize :19,
+        textDecorationLine:'underline'
+    },    container: {
+        flex: 1,
+
+    },
+    modal: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor : "rgba(196,199,199,0.62)",
+        height: '70%' ,
+        width: '100%',
+        borderRadius:10,
+        borderWidth: 1,
+        borderColor: '#fff',
+        marginTop: 80,
+    },
+    text: {
+        color: '#293449',
+        marginTop: 10,
+        fontSize:18
+    },
+    deleteButtonForm:{
+        backgroundColor:'red',
+        width:'80%',
+        padding:10,
+        borderRadius:10,
+        marginVertical:5
+    },
+    deleteButtonText:{
+        color:'white',
+        fontSize:20,
+        textAlign:'center'
+    },
+    buttonsContainer:{
+        alignItems:'center',
+        width:'100%',
+    },
+    goBackButton:{
+        backgroundColor:'orange',
+        width:'80%',
+        padding:10,
+        borderRadius:10,
+        marginVertical:5
+    },
+    goBackText:{
+        color:'black',
+        fontSize:20,
+        textAlign:'center'
+    }
 });
+
+
