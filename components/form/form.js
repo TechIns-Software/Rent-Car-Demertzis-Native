@@ -24,7 +24,7 @@ import DatePicker2 from "./DatePicker2";
 
 function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
 
-    const [formInputs, setFormInputs] = useState({
+    const initialState = {
         driverFullName: "",
         driverDateOfBirth: "",
         driverPhone: "",
@@ -65,7 +65,8 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         damage2: ".",
         damage3: ".",
         damage4: "."
-    })
+    };
+    const [formInputs, setFormInputs] = useState(initialState)
     const [scrollEnabled, setScrollEnabled] = useState(true);
     const [modalVisible, setModalVisible] = useState(false);
     const [modalVisible2, setModalVisible2] = useState(false);
@@ -446,9 +447,9 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 } else {
                     Alert.alert('Υποβολή Φόρμας', "Δεν ήταν δυνατή η υποβολή στο ίντερνετ, αλλά αποθηκεύτηκε τοπικά")
                 }
+                resetForm();
             }
         }
-
 
     }
 
@@ -460,6 +461,10 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             }
         });
         updateCalculatedDependentValuesAndChangeCriteria('cdwAgree', val);
+    }
+
+    function resetForm(){
+        setFormInputs(initialState)
     }
 
 
