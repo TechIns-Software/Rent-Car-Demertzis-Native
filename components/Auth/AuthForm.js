@@ -48,7 +48,7 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
         <View style={styles.form}>
             <View>
                 <Input
-                    label="Email Address"
+                    label="Username"
                     onUpdateValue={updateInputValueHandler.bind(this, 'email')}
                     value={enteredEmail}
                     keyboardType="email-address"
@@ -62,8 +62,8 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
                     isInvalid={passwordIsInvalid}
                 />
 
-                <Pressable onPress={() => Linking.openURL('http://google.com')} >
-                    <Text style={styles.termsText} >Όροι και προϋποθέσεις</Text>
+                <Pressable onPress={() => Linking.openURL('https://a-omega.com.gr/admin/publicDocs/appPolicy.pdf')} >
+                    <Text style={styles.termsText} >Terms and conditions</Text>
                 </Pressable>
                 <View style={styles.buttons}>
                     <Button onPress={submitHandler}>
