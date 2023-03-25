@@ -155,8 +155,7 @@ function  FormsContextProvider({children}){
 
     async function deleteForm(idForm){
         const allForms = await getAllForms();
-        console.log('=================================================================');
-        console.log('=================================================================');
+
 
         delete allForms[Number(idForm)];
         await AsyncStorage.removeItem('userForms');
