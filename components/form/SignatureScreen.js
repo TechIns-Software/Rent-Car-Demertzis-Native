@@ -4,7 +4,7 @@ import SignatureScreen from "react-native-signature-canvas";
 
 const Sign = ({ onOK,setScrollTrue,setScrollfalse,onBack,value=".",bgImage = "" }) => {
     const ref = useRef();
-    const [signature,setSignature] = useState('.')
+    const [signature,setSignature] = useState(value)
 
     const handleOK = (signature) => {
         // console.log(signature);
