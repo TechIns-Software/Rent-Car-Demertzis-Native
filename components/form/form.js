@@ -498,6 +498,11 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     <DatePicker2 style={styles.rowInput} objectKey={'driverRegistrationDateIssue'}  customOnChange={changeHandlerDatePicker}  label={'Ημερ Εκδοσης'} type={'date'}/>
                     <DatePicker2 style={styles.rowInput} objectKey={'driverRegistrationExpirationDate'}  customOnChange={changeHandlerDatePicker}  label={'Λήξη'} type={'date'}/>
                 </View>
+                <Input label={'Email'}
+                       onChangeText={changeHandlerInputs.bind(this, 'email')}
+                       inputStyle={!everythingOk.email ? styles.nullInput : ''}
+                       value={formInputs['email']}
+                />
             </View>
 
             {/*<View style={[styles.clientBox, {overflow: 'hidden'}]}>*/}
@@ -535,11 +540,6 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 <DatePicker2 style={styles.rowInput} objectKey={'secondDriverRegistrationExpirationDate'}  customOnChange={changeHandlerDatePicker}  label={'Λήξη'} type={'date'}/>
 
             </View>
-            <Input label={'Email'}
-                   onChangeText={changeHandlerInputs.bind(this, 'email')}
-                   inputStyle={!everythingOk.email ? styles.nullInput : ''}
-                   value={formInputs['email']}
-            />
             <View style={styles.containerBorder}>
                 <Text style={styles.titleText}>Επιπλέον Πληροφορίες</Text>
                 <View style={styles.inputRow}>

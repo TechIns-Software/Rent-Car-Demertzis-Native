@@ -7,7 +7,10 @@ const RadioButtonCustom = ({onPress, label, value}) => {
         <View style={styles.container}>
             <Text style={styles.label}>{label}</Text>
             <View style={styles.radioRow}>
-            <Text> Αποδέχομαι</Text>
+            <Text onPress={() =>{
+                onPress(true)
+            }}
+            > Αποδέχομαι</Text>
             <RadioButton
                 value="true"
                 status={ value  ? 'checked' : 'unchecked' }
@@ -18,7 +21,10 @@ const RadioButtonCustom = ({onPress, label, value}) => {
             />
             </View>
             <View style={styles.radioRow}>
-            <Text> Δεν Αποδέχομαι</Text>
+            <Text onPress={() =>{
+                onPress(false)
+            }}
+            > Δεν Αποδέχομαι</Text>
             <RadioButton
                 value="false"
                 status={ !value  ? 'checked' : 'unchecked' }
