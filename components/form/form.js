@@ -307,16 +307,16 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 _ = 1;
             }
             if (inputName === 'days') {
-                _total = (inputValue * Number(formInputs['charges']) + _ * Number(formInputs['cdw'])).toString();
+                _total = (inputValue * (Number(formInputs['charges']) + _ * Number(formInputs['cdw']))).toString();
                 _subTotal = (inputValue * Number(formInputs['charges'])).toString();
             } else if (inputName === 'charges') {
-                _total = (formInputs['days'] * Number(inputValue) + _ * Number(formInputs['cdw'])).toString();
+                _total = (formInputs['days'] * (Number(inputValue) + _ * Number(formInputs['cdw']))).toString();
                 _subTotal = (formInputs['days'] * Number(inputValue)).toString();
             } else if (inputName === "cdw") {
-                _total = (formInputs['days'] * Number(formInputs['charges']) + _ * Number(inputValue)).toString();
+                _total = (formInputs['days'] * (Number(formInputs['charges']) + _ * Number(inputValue))).toString();
                 _subTotal = (formInputs['days'] * Number(formInputs['charges'])).toString();
             } else if (inputName === "cdwAgree") {
-                _total = (formInputs['days'] * Number(formInputs['charges']) + inputValue * Number(formInputs['cdw'])).toString();
+                _total = (formInputs['days'] * (Number(formInputs['charges']) + inputValue * Number(formInputs['cdw']))).toString();
                 _subTotal = (formInputs['days'] * Number(formInputs['charges'])).toString();
             }
 
@@ -636,7 +636,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                         <Input style={styles.rowInput}
                                value={formInputs['cdw']}
                                onChangeText={changeHandlerInputs.bind(this, 'cdw')}
-                               label={'C.M.D Μερική Απαλλαγή Ζημιών'}
+                               label={'C.M.W Μερική Απαλλαγή Ζημιών'}
                                inputStyle={!everythingOk.cdw ? styles.nullInput : ''}
                         />
                     </View>
