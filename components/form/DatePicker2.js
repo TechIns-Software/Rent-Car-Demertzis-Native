@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {Button, View, Text, StyleSheet, Pressable} from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {RFPercentage} from "react-native-responsive-fontsize";
+import { Appearance } from 'react-native';
 
 const DatePicker2 = ({style,label,type,customOnChange,objectKey}) => {
     const newDate = new Date();
@@ -10,7 +11,8 @@ const DatePicker2 = ({style,label,type,customOnChange,objectKey}) => {
     const [date,setDate] = useState('-------')
     const [isDateSet,setIsDateSet] = useState('')
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
+    const [colorDefaultScheme, setColorDefaultScheme] = useState(true);
+    const flagDarkMode = Appearance.getColorScheme() === 'dark';
     const showDatePicker = () => {
         setDatePickerVisibility(true);
     };
@@ -57,7 +59,7 @@ const DatePicker2 = ({style,label,type,customOnChange,objectKey}) => {
                 mode={type}
                 onConfirm={handleConfirm}
                 onCancel={hideDatePicker}
-                isDarkModeEnabled={true}
+                isDarkModeEnabled={flagDarkMode}
             />
         </View>
     );
