@@ -10,7 +10,7 @@ const RadioButtonCustom = ({onPress, label, value}) => {
             <Text onPress={() =>{
                 onPress(true)
             }}
-            > Αποδέχομαι</Text>
+            > Agree</Text>
             <RadioButton
                 value="true"
                 status={ value  ? 'checked' : 'unchecked' }
@@ -24,7 +24,7 @@ const RadioButtonCustom = ({onPress, label, value}) => {
             <Text onPress={() =>{
                 onPress(false)
             }}
-            > Δεν Αποδέχομαι</Text>
+            > Not Agree</Text>
             <RadioButton
                 value="false"
                 status={ !value  ? 'checked' : 'unchecked' }
