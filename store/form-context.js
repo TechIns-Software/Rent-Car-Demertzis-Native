@@ -16,51 +16,6 @@ export  const FormsContext = createContext({
 });
 
 function  FormsContextProvider({children}){
-    const [formInfo,setFormInfo] = useState({
-        isUploaded:0,
-        data:{
-            driverFullName: "",
-            driverDateOfBirth: "",
-            driverPhone: "",
-            driverRegistrationNumber: "",
-            driverRegistrationCountry: "",
-            driverRegistrationDateIssue: "",
-            driverRegistrationExpirationDate: "",
-            secondDriverFullName: "",
-            secondDriverBirthDate: "",
-            secondDriverRegistrationNumber: "",
-            secondDriverRegistrationCountry: "",
-            secondDriverRegistrationDateIssue: "",
-            secondDriverRegistrationExpirationDate : "",
-            email: "",
-            registrationNumber: "",
-            vehicleType: "",
-            checkOutDate: "",
-            checkOutTime: "",
-            checkOutStation: "",
-            checkInDate: "",
-            checkInTime: "",
-            checkInStation: "",
-            charges: "",
-            days: "",
-            recommendedBy: "",
-            rateCode: "",
-            subTotal: "",
-            cdw: "",
-            liabilityAmount: "",
-            total: "",
-            cdwAgree: false,
-            signClient:".",
-            cardHolderName: "",
-            cardExpirationDate: "",
-            cvv: "",
-            signCard: ".",
-            damage1: ".",
-            damage2: ".",
-            damage3: ".",
-            damage4: "."
-        }
-    });
     const [numberOfForm,setNumberOfForms] = useState(0)
 
 
@@ -70,11 +25,11 @@ function  FormsContextProvider({children}){
         const answer = await sendForm(data, formattedDate);
         // console.log(answer);
         let lastId = await getLastId();
-        setFormInfo({
+        const formInfo = {
             isUploaded: answer.uploadedOk ?? 0,
             data :data,
             date:formattedDate
-        });
+        }
 
         await storeData({[lastId + 1]:formInfo},Number(lastId+1).toString());
         return answer;
@@ -200,8 +155,7 @@ function  FormsContextProvider({children}){
 
     async function deleteForm(idForm){
         const allForms = await getAllForms();
-        console.log('=================================================================');
-        console.log('=================================================================');
+
 
         delete allForms[Number(idForm)];
         await AsyncStorage.removeItem('userForms');

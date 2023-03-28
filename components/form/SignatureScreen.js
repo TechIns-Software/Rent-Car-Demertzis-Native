@@ -4,7 +4,7 @@ import SignatureScreen from "react-native-signature-canvas";
 
 const Sign = ({ onOK,setScrollTrue,setScrollfalse,onBack,value=".",bgImage = "" }) => {
     const ref = useRef();
-    const [signature,setSignature] = useState('.')
+    const [signature,setSignature] = useState(value)
 
     const handleOK = (signature) => {
         // console.log(signature);
@@ -47,7 +47,7 @@ const Sign = ({ onOK,setScrollTrue,setScrollfalse,onBack,value=".",bgImage = "" 
                 { bgImage == "" ?  <Image
                     resizeMode={"contain"}
                     style={styles.previewImage}
-                    source={{ uri: `${value}`}}/>:
+                    source={ signature == "."? require('../../assets/img/whitebg.jpg') :{uri: `${value}`}}/>:
                     <ImageBackground
                         resizeMode={"stretch"}
                         style={styles.ImageBackgroundStyle}
@@ -55,8 +55,9 @@ const Sign = ({ onOK,setScrollTrue,setScrollfalse,onBack,value=".",bgImage = "" 
                     <Image
                         resizeMode={"stretch"}
                         style={styles.previewImage}
-                        source={{ uri: `${value}`}}/>
-                    </ImageBackground>}
+                        source={ signature == "."? require('../../assets/img/whitebg.jpg') :{uri: `${value}`}}/>
+                    </ImageBackground>
+                }
 
             </View>
             <View style={{height:'10%'}}>

@@ -1,11 +1,7 @@
-import { StatusBar } from 'expo-status-bar';
-import {Button, FlatList, Modal, Pressable, StyleSheet, Text, View} from 'react-native';
+import {Button, FlatList, Modal, Pressable, StyleSheet, Text, View,RefreshControl} from 'react-native';
 import RecentlyBox from '../components/RecentlyBox';
-import {DUMMY_CONTNENT} from "../store/auth-context";
-import {getFormattedDate} from "../util/date";
 import React, {createContext, useContext, useEffect, useState} from "react";
 import {FormsContext} from "../store/form-context";
-import Sign from "../components/form/SignatureScreen";
 
 
 
@@ -19,15 +15,25 @@ function RecentlyApplications(){
     const [allFormsSaved, setAllFormsSaved] = useState([]);
     const formsCtx = useContext(FormsContext);
 
+    const [refreshing, setRefreshing] = React.useState(false);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 2000);
+    }, []);
+
     function renderApplications(applications){
+
 
         return <RecentlyBox
             driverName={applications.item.driverFullName}
             registrationNumber={applications.item.registrationNumber}
-            id={Number(applications.index + 1)}
+            id={Number(applications.item.id)}
             date={applications.item.date}
             isSent={applications.item.isSent}
-            onPressDelete = {OnDeleteForm.bind(this,{id:Number(applications.index + 1) ,isSent:applications.item.isSent})}
+            onPressDelete = {OnDeleteForm.bind(this,{id:Number(applications.item.id) ,isSent:applications.item.isSent})}
         />
 
     }
@@ -71,11 +77,14 @@ function RecentlyApplications(){
         });
         }
         getAllForms();
-    },[formsCtx.numberOfForms,deleteForm])
+    },[formsCtx.numberOfForms])
 
 
     return <View style={styles.container} >
         {allFormsSaved.length > 0 ?      <FlatList
+            refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
             data={allFormsSaved}
             renderItem={renderApplications}
             keyExtractor={(item) =>  item.id}

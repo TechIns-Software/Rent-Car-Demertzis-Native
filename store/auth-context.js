@@ -76,6 +76,8 @@ function  AuthContextProvider({children}){
         AsyncStorage.removeItem('token');
         AsyncStorage.removeItem('idAdmin');
         AsyncStorage.removeItem('isAuthenticated');
+        AsyncStorage.removeItem('numberOfForms');
+        AsyncStorage.removeItem('userForms');
     }
 
 

@@ -307,16 +307,16 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 _ = 1;
             }
             if (inputName === 'days') {
-                _total = (inputValue * Number(formInputs['charges']) + _ * Number(formInputs['cdw'])).toString();
+                _total = (inputValue * (Number(formInputs['charges']) + _ * Number(formInputs['cdw']))).toString();
                 _subTotal = (inputValue * Number(formInputs['charges'])).toString();
             } else if (inputName === 'charges') {
-                _total = (formInputs['days'] * Number(inputValue) + _ * Number(formInputs['cdw'])).toString();
+                _total = (formInputs['days'] * (Number(inputValue) + _ * Number(formInputs['cdw']))).toString();
                 _subTotal = (formInputs['days'] * Number(inputValue)).toString();
             } else if (inputName === "cdw") {
-                _total = (formInputs['days'] * Number(formInputs['charges']) + _ * Number(inputValue)).toString();
+                _total = (formInputs['days'] * (Number(formInputs['charges']) + _ * Number(inputValue))).toString();
                 _subTotal = (formInputs['days'] * Number(formInputs['charges'])).toString();
             } else if (inputName === "cdwAgree") {
-                _total = (formInputs['days'] * Number(formInputs['charges']) + inputValue * Number(formInputs['cdw'])).toString();
+                _total = (formInputs['days'] * (Number(formInputs['charges']) + inputValue * Number(formInputs['cdw']))).toString();
                 _subTotal = (formInputs['days'] * Number(formInputs['charges'])).toString();
             }
 
@@ -421,18 +421,6 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             return;
         }
         var flagDays = false;
-        if (formInputs['checkInDate'] && formInputs['checkOutDate']) {
-            var date1 = new Date(formInputs['checkInDate']);
-            var date2 = new Date(formInputs['checkOutDate']);
-            var daysDifference = new Date(date2.getTime() - date1.getTime()).getUTCDate() - 1;
-            if (Platform.OS == "ios") {//todo check πρωτα αν εβαζα το τελος, ή την αρχη αντιστοιχα αν εφταιγε αυτο
-                daysDifference += 1;
-            }
-            if (daysDifference != formInputs['days'] && (daysDifference + 1) != formInputs['days']) {
-                flagDays = true;
-                Alert.alert('Πρόβλημα με τις ημέρες που ορίσατε', 'Ο Υπολογισμός των ημερών φαίνεται λάθος με βάση τις ημερομηνίες που δόθηκαν')
-            }
-        }
         if (!flagDays) {
             if (!flag) {
                 Alert.alert('Πρόβλημα με τα στοιχεία', 'Πρέπει να συμπληρώσετε ορισμένα πεδία')
@@ -648,7 +636,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                         <Input style={styles.rowInput}
                                value={formInputs['cdw']}
                                onChangeText={changeHandlerInputs.bind(this, 'cdw')}
-                               label={'C.M.D Μερική Απαλλαγή Ζημιών'}
+                               label={'C.M.W Μερική Απαλλαγή Ζημιών'}
                                inputStyle={!everythingOk.cdw ? styles.nullInput : ''}
                         />
                     </View>
