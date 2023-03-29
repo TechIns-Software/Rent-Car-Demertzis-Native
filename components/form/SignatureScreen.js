@@ -38,8 +38,8 @@ const Sign = ({ onOK,setScrollTrue,setScrollfalse,onBack,value=".",bgImage = "" 
                 </View>
 
                 <View style={styles.row}>
-                    <Button title="Καθαρισμός " onPress={handleClear}/>
-                    <Button title="Υποβολή" onPress={handleConfirm}/>
+                    <Button title="Clear " onPress={handleClear}/>
+                    <Button title="Submit" onPress={handleConfirm}/>
                 </View>
             </View>
             <View style={{height:'40%'}}>
@@ -62,7 +62,7 @@ const Sign = ({ onOK,setScrollTrue,setScrollfalse,onBack,value=".",bgImage = "" 
             </View>
             <View style={{height:'10%'}}>
                 <Pressable onPress={onBack} style={[styles.button, styles.buttonClose]}>
-                    <Text style={styles.textStyle}>Πίσω</Text>
+                    <Text style={styles.textStyle}>Go Back</Text>
                 </Pressable>
             </View>
         </View>
