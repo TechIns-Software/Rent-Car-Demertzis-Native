@@ -691,39 +691,6 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     />
                 </View>
 
-                <View>
-                    <Text style={styles.titleText}>
-                         Car Damages
-                    </Text>
-
-                    <SubmitButton style={styles.damagesButton} buttonText={'Front and driver`s side '} onPress={() => {
-                        setModalVisibleDamage1(!modalVisibleDamage1)
-                    }}/>
-
-                    <SubmitButton style={styles.damagesButton} buttonText={' Rear and passenger side'} onPress={() => {
-                        setModalVisibleDamage2(!modalVisibleDamage2)
-                    }}/>
-
-                    <SubmitButton style={styles.damagesButton} buttonText={' Car Roof'} onPress={() => {
-                        setModalVisibleDamage3(!modalVisibleDamage3)
-                    }}/>
-
-                </View>
-
-                <View>
-                    <Text style={styles.titleText}>
-                       Motto Damages
-                    </Text>
-
-                    <SubmitButton style={styles.damagesButton} buttonText={' Motto'} onPress={() => {
-                        setModalVisibleDamage4(!modalVisibleDamage4)
-                    }}/>
-
-                </View>
-
-
-
-
                 <View style={styles.inputRow}>
                     <FormText
                         onChangeInputs={changeHandlerInputs}
@@ -765,7 +732,35 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                     />
 
                 </View>
+                <View>
+                    <Text style={styles.titleText}>
+                        Car Damages
+                    </Text>
 
+                    <SubmitButton style={styles.damagesButton} buttonText={'Front and driver`s side '} onPress={() => {
+                        setModalVisibleDamage1(!modalVisibleDamage1)
+                    }}/>
+
+                    <SubmitButton style={styles.damagesButton} buttonText={' Rear and passenger side'} onPress={() => {
+                        setModalVisibleDamage2(!modalVisibleDamage2)
+                    }}/>
+
+                    <SubmitButton style={styles.damagesButton} buttonText={' Car Roof'} onPress={() => {
+                        setModalVisibleDamage3(!modalVisibleDamage3)
+                    }}/>
+
+                </View>
+
+                <View>
+                    <Text style={styles.titleText}>
+                        Motto Damages
+                    </Text>
+
+                    <SubmitButton style={styles.damagesButton} buttonText={' Motto'} onPress={() => {
+                        setModalVisibleDamage4(!modalVisibleDamage4)
+                    }}/>
+
+                </View>
 
                 <SubmitButton onPress={checkInputs} buttonText={'Form Submit'}/>
 
