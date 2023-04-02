@@ -1,4 +1,4 @@
-import {Text, TextInput, View,StyleSheet} from "react-native";
+import {Text, TextInput, View,StyleSheet,KeyboardAvoidingView} from "react-native";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
 function Input({label,style,TextInputConfig,name,onChangeText,inputStyle,onSubmit,editable=true,value}){
@@ -9,10 +9,14 @@ function Input({label,style,TextInputConfig,name,onChangeText,inputStyle,onSubmi
         inputStyles.push(styles.inputMultiline);
     }
 
-    return <View style={[styles.inputContainer,style]}>
+    return     <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}>
+    <View style={[styles.inputContainer,style]}>
         <Text style={styles.label}>{label}</Text>
         <TextInput value={value} style={[inputStyles,inputStyle]} editable={editable} name={name} onChangeText={onChangeText} {...TextInputConfig}  />
     </View>
+    </KeyboardAvoidingView>
 }
 const  styles = StyleSheet.create({
     inputContainer :{
@@ -36,6 +40,9 @@ const  styles = StyleSheet.create({
     inputMultiline:{
         minHeight :100,
         textAlignVertical :'top'
-    }
+    },
+    container: {
+        flex: 1,
+    },
 })
 export default Input
