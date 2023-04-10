@@ -65,10 +65,10 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         damage2: ".",
         damage3: ".",
         damage4: ".",
-        damageIsOkBtn1: false,
-        damageIsOkBtn2: false,
-        damageIsOkBtn3: false,
-        damageIsOkBtn4: false,
+        damageIsOkBtn1: true,
+        damageIsOkBtn2: true,
+        damageIsOkBtn3: true,
+        damageIsOkBtn4: true,
     };
     const [formInputs, setFormInputs] = useState(initialState)
     const [scrollEnabled, setScrollEnabled] = useState(true);
@@ -424,16 +424,16 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         }
 
         // # We check if the damages are ok, or not mandatory
-        if (formInputs['damage1'] == "." || !formInputs['damageIsOkBtn1']){
+        if (formInputs['damage1'] == "." && formInputs['damageIsOkBtn1']){
             Alert.alert('Πρόβλημα με την ζημιά αυτοκινήτου', 'Front and driver\'s side δεν έχει συμπληρωθεί ή δεν έχει επιλεχθεί ότι είναι οκ');
             return;
-        } else if (formInputs['damage2'] == "." || !formInputs['damageIsOkBtn2']) {
+        } else if (formInputs['damage2'] == "." && formInputs['damageIsOkBtn2']) {
             Alert.alert('Πρόβλημα με την ζημιά αυτοκινήτου', 'Real and passenger side δεν έχει συμπληρωθεί ή δεν έχει επιλεχθεί ότι είναι οκ');
             return;
-        } else if (formInputs['damage3'] == "." || !formInputs['damageIsOkBtn3']) {
+        } else if (formInputs['damage3'] == "." && formInputs['damageIsOkBtn3']) {
             Alert.alert('Πρόβλημα με την ζημιά αυτοκινήτου', 'Car Roof δεν έχει συμπληρωθεί ή δεν έχει επιλεχθεί ότι είναι οκ');
             return;
-        } else if (formInputs['damage4'] == "." || !formInputs['damageIsOkBtn4']) {
+        } else if (formInputs['damage4'] == "." && formInputs['damageIsOkBtn4']) {
             Alert.alert('Πρόβλημα με τις ζημιές του μηχανάκι', 'Δεν έχουν ρυθμιστεί οι ζημιές στο μηχανάκι');
             return;
         }
