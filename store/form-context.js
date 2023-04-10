@@ -1,7 +1,6 @@
 import {createContext, useContext, useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {Alert} from "react-native";
-import {AuthContext} from "./auth-context";
+import NetInfo from "@react-native-community/netinfo";
 import axios from "axios";
 
 
@@ -20,6 +19,16 @@ function  FormsContextProvider({children}){
 
 
     async function saveLocal(data){
+        // we check the connection START
+        const unsubscribe = NetInfo.addEventListener(state => {
+            console.log("Connection type", state.type);
+            console.log("Is connected?", state.isConnected);
+            return state.isConnected;
+        });
+
+        const areWeOnline =  unsubscribe();
+        // we check the connection END
+
         const currentDate = new Date();
         const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth()+1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')} ${String(currentDate.getHours()).padStart(2, '0')}:${String(currentDate.getMinutes()).padStart(2, '0')}:${String(currentDate.getSeconds()).padStart(2, '0')}`;
         const answer = await sendForm(data, formattedDate);
