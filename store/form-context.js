@@ -2,6 +2,7 @@ import {createContext, useContext, useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NetInfo from "@react-native-community/netinfo";
 import axios from "axios";
+import {Alert} from "react-native";
 
 
 export  const FormsContext = createContext({
@@ -23,6 +24,7 @@ function  FormsContextProvider({children}){
         const unsubscribe = NetInfo.addEventListener(state => {
             console.log("Connection type", state.type);
             console.log("Is connected?", state.isConnected);
+            Alert.alert('Internet Connection problem', 'No internet found but click ok to continue local');
             return state.isConnected;
         });
 
