@@ -65,7 +65,7 @@ const Sign = ({ onOK,setScrollTrue,setScrollfalse,onBack,value=".",bgImage = "" 
 
             {
                 typeof hasDamage === "boolean" ? <View style={styles.checkBoxContainer}>
-                    <RadioButtonCustom value={hasDamage} onPress={onchangeRadioButton} option1={'No'} option2={'Yes'} label={"Is there damage?"}/>
+                    <RadioButtonCustom value={hasDamage} onPress={onchangeRadioButton} option1={'Yes'} option2={'No'} label={"Is there damage?"}/>
                 </View> :''
             }
 
