@@ -24,7 +24,9 @@ function  FormsContextProvider({children}){
         const unsubscribe = NetInfo.addEventListener(state => {
             console.log("Connection type", state.type);
             console.log("Is connected?", state.isConnected);
-            Alert.alert('Internet Connection problem', 'No internet found but click ok to continue local');
+            if (!state.isConnected) {
+                Alert.alert('Internet Connection problem', 'No internet found but ok saved in local');
+            }
             return state.isConnected;
         });
 

@@ -45,7 +45,7 @@ const Sign = ({ onOK,setScrollTrue,setScrollfalse,onBack,value=".",bgImage = "" 
                 </View>
             </View>
             <View style={styles.previewContainer}>
-                <Text style={styles.previewText}>Signature Preview</Text>
+                <Text style={styles.previewText}>Preview</Text>
                 { bgImage == "" ?  <Image
                     resizeMode={"contain"}
                     style={styles.previewImage}
