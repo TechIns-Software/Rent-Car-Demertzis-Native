@@ -72,6 +72,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
     };
     const [formInputs, setFormInputs] = useState(initialState)
     const [scrollEnabled, setScrollEnabled] = useState(true);
+    const [modalVisibleSecondDriver, setmodalVisibleSecondDriver] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [modalVisible2, setModalVisible2] = useState(false);
     const [modalVisibleDamage1, setModalVisibleDamage1] = useState(false);
@@ -518,37 +519,13 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 />
             </View>
 
-            <View style={[styles.inputRow, {marginTop: 30}]}>
-                <Input
-                    style={styles.rowInput}
-                    label={'Add Driver'}
-                    onChangeText={changeHandlerInputs.bind(this, 'secondDriverFullName')}
-                    value={formInputs['secondDriverFullName']}
-                    inputStyle={!everythingOk.secondDriverFullName ? styles.nullInput : ''}
-                />
-
-                <DatePicker2 style={styles.rowInput} objectKey={'secondDriverBirthDate'}  customOnChange={changeHandlerDatePicker}  label={'Date of Birth'} type={'date'}/>
+            <View style={[ {marginVertical: 30}]}>
+                <SubmitButton style={styles.damagesButton} buttonText={' Second Driver Information'} onPress={() => {
+                    setmodalVisibleSecondDriver(!modalVisibleSecondDriver)
+                }}/>
 
             </View>
-            <View style={styles.inputRow}>
-                <Input style={styles.rowInput}
-                       label={'Driver`s Lic. No'}
-                       onChangeText={changeHandlerInputs.bind(this, 'secondDriverRegistrationNumber')}
-                       inputStyle={!everythingOk.secondDriverRegistrationNumber ? styles.nullInput : ''}
-                       value={formInputs['secondDriverRegistrationNumber']}
-                />
-                <Input
-                    style={styles.rowInput}
-                    onChangeText={changeHandlerInputs.bind(this, 'secondDriverRegistrationCountry')}
-                    label={'Country'}
-                    value={formInputs['secondDriverRegistrationCountry']}
-                    inputStyle={!everythingOk.secondDriverRegistrationCountry ? styles.nullInput : ''}
-                />
 
-                <DatePicker2 style={styles.rowInput} objectKey={'secondDriverRegistrationDateIssue'}  customOnChange={changeHandlerDatePicker}  label={'Date of issue'} type={'date'}/>
-                <DatePicker2 style={styles.rowInput} objectKey={'secondDriverRegistrationExpirationDate'}  customOnChange={changeHandlerDatePicker}  label={'Exp. Date'} type={'date'}/>
-
-            </View>
             <View style={styles.containerBorder}>
                 <Text style={styles.titleText}>Extra Information</Text>
                 <View style={styles.inputRow}>
@@ -868,6 +845,65 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             </View>
         </Modal>
 
+
+        <Modal
+            animationType="slide"
+            transparent={false}
+            visible={modalVisibleSecondDriver}
+            onRequestClose={() => {
+                setmodalVisibleSecondDriver(!modalVisibleSecondDriver)
+            }}>
+            <View >
+                <ScrollView style={styles.form} scrollEnabled={scrollEnabled}>
+                    <View style={[styles.clientBox, {overflow: 'hidden'}]}>
+                        <View style={[styles.inputRow, {marginTop: 30}]}>
+                            <Input
+                                style={styles.rowInput}
+                                label={'Add Driver'}
+                                onChangeText={changeHandlerInputs.bind(this, 'secondDriverFullName')}
+                                value={formInputs['secondDriverFullName']}
+                                inputStyle={!everythingOk.secondDriverFullName ? styles.nullInput : ''}
+                            />
+
+                            <DatePicker2 style={styles.rowInput} objectKey={'secondDriverBirthDate'}
+                                         customOnChange={changeHandlerDatePicker} label={'Date of Birth'}
+                                         type={'date'}/>
+                        </View>
+
+                        <View style={[styles.inputRow, {marginTop: 30}]}>
+                            <Input style={styles.rowInput}
+                                   label={'Driver`s Lic. No'}
+                                   onChangeText={changeHandlerInputs.bind(this, 'secondDriverRegistrationNumber')}
+                                   inputStyle={!everythingOk.secondDriverRegistrationNumber ? styles.nullInput : ''}
+                                   value={formInputs['secondDriverRegistrationNumber']}
+                            />
+                            <Input
+                                style={styles.rowInput}
+                                onChangeText={changeHandlerInputs.bind(this, 'secondDriverRegistrationCountry')}
+                                label={'Country'}
+                                value={formInputs['secondDriverRegistrationCountry']}
+                                inputStyle={!everythingOk.secondDriverRegistrationCountry ? styles.nullInput : ''}
+                            />
+
+                            <DatePicker2 style={styles.rowInput} objectKey={'secondDriverRegistrationDateIssue'}
+                                         customOnChange={changeHandlerDatePicker} label={'Date of issue'}
+                                         type={'date'}/>
+                            <DatePicker2 style={styles.rowInput} objectKey={'secondDriverRegistrationExpirationDate'}
+                                         customOnChange={changeHandlerDatePicker} label={'Exp. Date'} type={'date'}/>
+
+                        </View>
+                    </View>
+                    <View style={{height:'30%',marginVertical:35}}>
+                        <Pressable onPress={() => {
+                            setmodalVisibleSecondDriver(!modalVisibleSecondDriver)
+                        }} style={[styles.button, styles.buttonClose]}>
+                            <Text style={styles.textStyle}>Go Back</Text>
+                        </Pressable>
+                    </View>
+                </ScrollView>
+            </View>
+
+        </Modal>
 
     </View>
 }
