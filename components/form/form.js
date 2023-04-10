@@ -64,7 +64,11 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         damage1: ".",
         damage2: ".",
         damage3: ".",
-        damage4: "."
+        damage4: ".",
+        damageIsOkBtn1: false,
+        damageIsOkBtn2: false,
+        damageIsOkBtn3: false,
+        damageIsOkBtn4: false,
     };
     const [formInputs, setFormInputs] = useState(initialState)
     const [scrollEnabled, setScrollEnabled] = useState(true);
@@ -206,9 +210,8 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             radioToCheckOn: "cdwAgree"
         },
         liabilityAmount: {
-            mandatory: true,
-            type: "bool-influenced",
-            radioToCheckOn: "cdwAgree"
+            mandatory: false,
+            type: "text",
         },
         fullNameBank: {
             mandatory: true,
@@ -413,30 +416,40 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 break;
             }
         }
-        //todo check signatures and car as well
-
         // We check if the two signatures are not null
         if (formInputs['signClient'] == "." || formInputs['signCard'] == "."){
             Alert.alert('Πρόβλημα με τις υπογραφές', 'Και οι 2 υπογραφές είναι υποχρεωτικές.');
             return;
         }
-        var flagDays = false;
-        if (!flagDays) {
-            if (!flag) {
-                Alert.alert('Πρόβλημα με τα στοιχεία', 'Πρέπει να συμπληρώσετε ορισμένα πεδία')
-            } else {
-                const answer = await formCtx.saveLocal(formInputs);
-                if (answer['uploadedOk']) {
-                    if (answer['uploadedOk'] == '1') {
-                        Alert.alert('Υποβολή Φόρμας', "Επιτυχής Υποβολή")
-                    } else {
-                        Alert.alert('Υποβολή Φόρμας', "Επιτυχής Υποβολή")
-                    }
+
+        // # We check if the damages are ok, or not mandatory
+        if (formInputs['damage1'] == "." || !formInputs['damageIsOkBtn1']){
+            Alert.alert('Πρόβλημα με την ζημιά αυτοκινήτου', 'Front and driver\'s side δεν έχει συμπληρωθεί ή δεν έχει επιλεχθεί ότι είναι οκ');
+            return;
+        } else if (formInputs['damage2'] == "." || !formInputs['damageIsOkBtn2']) {
+            Alert.alert('Πρόβλημα με την ζημιά αυτοκινήτου', 'Real and passenger side δεν έχει συμπληρωθεί ή δεν έχει επιλεχθεί ότι είναι οκ');
+            return;
+        } else if (formInputs['damage3'] == "." || !formInputs['damageIsOkBtn3']) {
+            Alert.alert('Πρόβλημα με την ζημιά αυτοκινήτου', 'Car Roof δεν έχει συμπληρωθεί ή δεν έχει επιλεχθεί ότι είναι οκ');
+            return;
+        } else if (formInputs['damage4'] == "." || !formInputs['damageIsOkBtn4']) {
+            Alert.alert('Πρόβλημα με τις ζημιές του μηχανάκι', 'Δεν έχουν ρυθμιστεί οι ζημιές στο μηχανάκι');
+            return;
+        }
+        if (!flag) {
+            Alert.alert('Πρόβλημα με τα στοιχεία', 'Πρέπει να συμπληρώσετε ορισμένα πεδία')
+        } else {
+            const answer = await formCtx.saveLocal(formInputs);
+            if (answer['uploadedOk']) {
+                if (answer['uploadedOk'] == '1') {
+                    Alert.alert('Υποβολή Φόρμας', "Επιτυχής Υποβολή")
                 } else {
-                    Alert.alert('Υποβολή Φόρμας', "Δεν ήταν δυνατή η υποβολή στο ίντερνετ, αλλά αποθηκεύτηκε τοπικά")
+                    Alert.alert('Υποβολή Φόρμας', "Επιτυχής Υποβολή")
                 }
-                resetForm();
+            } else {
+                Alert.alert('Υποβολή Φόρμας', "Δεν ήταν δυνατή η υποβολή στο ίντερνετ, αλλά αποθηκεύτηκε τοπικά")
             }
+            resetForm();
         }
 
     }
