@@ -591,7 +591,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 <View style={styles.inputRow}>
                     <View style={{minWidth: '50%'}}></View>
                     <View style={styles.rowInput}>
-                        <RadioButtonCustom value={formInputs['cdwAgree']} onPress={RadioPressHandler} label={"Αποδέχεσαι C.D.W."}/>
+                        <RadioButtonCustom value={formInputs['cdwAgree']} onPress={RadioPressHandler} option1={'I Agree'}  option2={' I Dont Agree'} label={" C.D.W."}/>
                     </View>
                 </View>
                 <View style={styles.inputRow}>
@@ -797,7 +797,14 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
 
             <View style={styles.generalContainer}>
                 <Text style={styles.titleText}>Καταγραφή ζημιών 1</Text>
-                <Sign onOK={changeHandlerInputs.bind(this,'damage1')} bgImage={'https://viajerodecorazon.com/assets/react/front-left1.png'} value={formInputs.damage1} onBack={() => setModalVisibleDamage1(!modalVisibleDamage1)}/>
+                <Sign onOK={changeHandlerInputs.bind(this,'damage1')}
+                      bgImage={'https://viajerodecorazon.com/assets/react/front-left1.png'}
+                      value={formInputs.damage1}
+                      onBack={() => setModalVisibleDamage1(!modalVisibleDamage1)}
+                      onDamage
+                      hasDamage={formInputs.damageIsOkBtn1}
+                      onchangeRadioButton={changeHandlerInputs.bind(this,'damageIsOkBtn1')}
+                />
 
             </View>
         </Modal>
@@ -812,7 +819,13 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
 
             <View style={styles.generalContainer}>
                 <Text style={styles.titleText}>Καταγραφή ζημιών 2</Text>
-                <Sign onOK={changeHandlerInputs.bind(this,'damage2')} bgImage={'https://viajerodecorazon.com/assets/react/rear-right1.png'} value={formInputs.damage2} onBack={() => setModalVisibleDamage2(!modalVisibleDamage2)}/>
+                <Sign onOK={changeHandlerInputs.bind(this,'damage2')}
+                      bgImage={'https://viajerodecorazon.com/assets/react/rear-right1.png'}
+                      value={formInputs.damage2}
+                      onBack={() => setModalVisibleDamage2(!modalVisibleDamage2)}
+                      hasDamage={formInputs.damageIsOkBtn2}
+                      onchangeRadioButton={changeHandlerInputs.bind(this,'damageIsOkBtn2')}
+                />
 
             </View>
         </Modal>
@@ -826,7 +839,14 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             }}>
             <View style={styles.generalContainer}>
                 <Text style={styles.titleText}>Καταγραφή ζημιών 3</Text>
-                <Sign onOK={changeHandlerInputs.bind(this,'damage3')} bgImage={'https://viajerodecorazon.com/assets/react/top1.png'} value={formInputs.damage3} onBack={() => setModalVisibleDamage3(!modalVisibleDamage3)}/>
+                <Sign onOK={changeHandlerInputs.bind(this,'damage3')}
+                      bgImage={'https://viajerodecorazon.com/assets/react/top1.png'}
+                      value={formInputs.damage3}
+                      onBack={() => setModalVisibleDamage3(!modalVisibleDamage3)}
+                      hasDamage={formInputs.damageIsOkBtn3}
+                      onchangeRadioButton={changeHandlerInputs.bind(this,'damageIsOkBtn3')}
+
+                />
 
             </View>
         </Modal>
@@ -840,7 +860,14 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             }}>
             <View style={styles.generalContainer}>
                 <Text style={styles.titleText}>Καταγραφή ζημιών Μηχανής</Text>
-                <Sign onOK={changeHandlerInputs.bind(this,'damage4')} bgImage={'https://viajerodecorazon.com/assets/react/bike1.png'} value={formInputs.damage4} onBack={() => setModalVisibleDamage4(!modalVisibleDamage4)}/>
+                <Sign
+                    onOK={changeHandlerInputs.bind(this,'damage4')}
+                    bgImage={'https://viajerodecorazon.com/assets/react/bike1.png'}
+                    value={formInputs.damage4}
+                    onBack={() => setModalVisibleDamage4(!modalVisibleDamage4)}
+                    hasDamage={formInputs.damageIsOkBtn4}
+                    onchangeRadioButton={changeHandlerInputs.bind(this,'damageIsOkBtn4')}
+                />
 
             </View>
         </Modal>

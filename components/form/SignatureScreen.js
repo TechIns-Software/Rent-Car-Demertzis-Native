@@ -1,8 +1,9 @@
 import React, {useRef, useState} from "react";
 import {StyleSheet, View, Button, Image, Text, Pressable, ScrollView, ImageBackground} from "react-native";
 import SignatureScreen from "react-native-signature-canvas";
+import RadioButtonCustom from "./radioButton";
 
-const Sign = ({ onOK,setScrollTrue,setScrollfalse,onBack,value=".",bgImage = "" }) => {
+const Sign = ({ onOK,setScrollTrue,setScrollfalse,onBack,value=".",bgImage = "" ,hasDamage="",onchangeRadioButton}) => {
     const ref = useRef();
     const [signature,setSignature] = useState(value)
 
@@ -25,6 +26,7 @@ const Sign = ({ onOK,setScrollTrue,setScrollfalse,onBack,value=".",bgImage = "" 
     const style = `.m-signature-pad--footer {display: none; margin: 0px;} body,html {
               width:100%; height: 100%; border:2px solid orange }`;
 
+
     return (
         <View style={styles.generalContainer} >
             <View style={{height:'50%'}}>
@@ -42,7 +44,7 @@ const Sign = ({ onOK,setScrollTrue,setScrollfalse,onBack,value=".",bgImage = "" 
                     <Button title="Submit" onPress={handleConfirm}/>
                 </View>
             </View>
-            <View style={{height:'40%'}}>
+            <View style={styles.previewContainer}>
                 <Text style={styles.previewText}>Signature Preview</Text>
                 { bgImage == "" ?  <Image
                     resizeMode={"contain"}
@@ -60,7 +62,14 @@ const Sign = ({ onOK,setScrollTrue,setScrollfalse,onBack,value=".",bgImage = "" 
                 }
 
             </View>
-            <View style={{height:'10%'}}>
+
+            {
+                typeof hasDamage === "boolean" ? <View style={styles.checkBoxContainer}>
+                    <RadioButtonCustom value={hasDamage} onPress={onchangeRadioButton} option1={'Yes'} option2={'No'} label={"Is there damage?"}/>
+                </View> :''
+            }
+
+            <View style={{height:'7%'}}>
                 <Pressable onPress={onBack} style={[styles.button, styles.buttonClose]}>
                     <Text style={styles.textStyle}>Go Back</Text>
                 </Pressable>
@@ -92,8 +101,9 @@ const styles = StyleSheet.create({
         marginVertical:25
     },
     previewContainer: {
-        borderWidth:2,
+        borderWidth:1,
         height:'30%',
+        padding:0
     },
     previewText:{
         fontSize:29,
@@ -106,9 +116,8 @@ const styles = StyleSheet.create({
         borderWidth:3
     },
     buttonContainer:{
-        marginVertical:15,
+        marginVertical:5,
         height:'10%',
-
     },
     button: {
         borderRadius: 20,
@@ -116,6 +125,7 @@ const styles = StyleSheet.create({
         elevation: 2,
     },
     buttonClose: {
+        marginTop:5,
         textAlign:'center',
         alignItems:'center',
         backgroundColor: '#f1950d',
@@ -127,6 +137,10 @@ const styles = StyleSheet.create({
     ImageBackgroundStyle:{
         width: '100%',
         height: '80%',
+    },
+    checkBoxContainer:{
+        display:'flex',
+        height:'10%'
     }
 
 });

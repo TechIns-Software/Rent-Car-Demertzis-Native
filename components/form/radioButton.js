@@ -2,37 +2,39 @@ import * as React from 'react';
 import {Text, View,StyleSheet} from 'react-native';
 import { RadioButton } from 'react-native-paper';
 
-const RadioButtonCustom = ({onPress, label, value}) => {
+const RadioButtonCustom = ({onPress, label, value,option1,option2}) => {
     return (
         <View style={styles.container}>
             <Text style={styles.label}>{label}</Text>
-            <View style={styles.radioRow}>
-            <Text onPress={() =>{
-                onPress(true)
-            }}
-            > Agree</Text>
-            <RadioButton
-                value="true"
-                status={ value  ? 'checked' : 'unchecked' }
-                onPress={() =>{
-                    onPress(true)
-                }}
+            <View style={styles.row}>
+                <View style={styles.radioRow}>
+                    <Text onPress={() => {
+                        onPress(true)
+                    }}
+                    > {option1}</Text>
+                    <RadioButton
+                        value="true"
+                        status={value ? 'checked' : 'unchecked'}
+                        onPress={() => {
+                            onPress(true)
+                        }}
 
-            />
-            </View>
-            <View style={styles.radioRow}>
-            <Text onPress={() =>{
-                onPress(false)
-            }}
-            > Not Agree</Text>
-            <RadioButton
-                value="false"
-                status={ !value  ? 'checked' : 'unchecked' }
-                onPress={() =>{
-                    onPress(false)
-                }}
+                    />
+                </View>
+                <View style={styles.radioRow}>
+                    <Text onPress={() => {
+                        onPress(false)
+                    }}
+                    > {option2}</Text>
+                    <RadioButton
+                        value="false"
+                        status={!value ? 'checked' : 'unchecked'}
+                        onPress={() => {
+                            onPress(false)
+                        }}
 
-            />
+                    />
+                </View>
             </View>
         </View>
     );
@@ -40,7 +42,7 @@ const RadioButtonCustom = ({onPress, label, value}) => {
 
 const styles = StyleSheet.create({
     container:{
-        flexDirection:'column'
+        flexDirection:'column',
     },
     radioRow:{
         flexDirection:'row',
@@ -50,6 +52,14 @@ const styles = StyleSheet.create({
     label: {
         fontWeight: "bold",
         marginBottom: 10
+    },
+    row:{
+        display:'flex',
+        justifyContent:'space-evenly',
+        alignContent:'flex-start',
+        alignItems:'center',
+        flexDirection:'row',
+
     }
 })
 export default RadioButtonCustom;
