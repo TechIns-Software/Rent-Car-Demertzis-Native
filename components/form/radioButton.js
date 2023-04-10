@@ -5,7 +5,10 @@ import { RadioButton } from 'react-native-paper';
 const RadioButtonCustom = ({onPress, label, value,option1,option2}) => {
     return (
         <View style={styles.container}>
-            <Text style={styles.label}>{label}</Text>
+            <View>
+                <Text style={styles.label}>{label}</Text>
+            </View>
+
             <View style={styles.row}>
                 <View style={styles.radioRow}>
                     <Text onPress={() => {
@@ -51,7 +54,8 @@ const styles = StyleSheet.create({
     },
     label: {
         fontWeight: "bold",
-        marginBottom: 10
+        marginBottom: 10,
+        textAlign:'center'
     },
     row:{
         display:'flex',
@@ -59,7 +63,7 @@ const styles = StyleSheet.create({
         alignContent:'flex-start',
         alignItems:'center',
         flexDirection:'row',
+    },
 
-    }
 })
 export default RadioButtonCustom;
