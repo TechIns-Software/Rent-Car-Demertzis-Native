@@ -2,9 +2,9 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import Form from "../components/form/form";
 // import {black} from "react-native-paper/lib/typescript/styles/themes/v2/colors";
-function FormScreen(){
+function FormScreen({navigation}){
     return <View style={styles.container}>
-        <Form/>
+        <Form navigation={navigation}/>
 
     </View>
 }

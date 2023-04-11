@@ -22,7 +22,7 @@ import CustomDatePicker from "./DatePicker";
 import {AuthContext} from "../../store/auth-context";
 import DatePicker2 from "./DatePicker2";
 
-function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
+function expenseForm({navigation}) {
 
     const initialState = {
         driverFullName: "",
@@ -406,6 +406,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
     }
 
     async function checkInputs() {
+
         // console.log(formInputs);
         // console.log(everythingOk);
         let flag = changeStateOfEverythingOk();
@@ -451,6 +452,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 Alert.alert('Form submission', "Failed to submit online, but saved locally")
             }
             resetForm();
+         await navigation.navigate('Homepage');
         }
 
     }
