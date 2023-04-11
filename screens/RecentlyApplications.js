@@ -82,7 +82,7 @@ function RecentlyApplications(){
         });
         }
         getAllForms();
-    },[formsCtx.numberOfForms])
+    },[formsCtx.numberOfForms,onUploadForm])
 
 
     return <View style={styles.container} >
