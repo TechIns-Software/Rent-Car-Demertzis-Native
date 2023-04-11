@@ -36,13 +36,9 @@ function AuthStack() {
     );
 }
 function MyTabs() {
-    const [numberOfForms,SetNumberOfForms] = useState(0)
     const authCtx = useContext(AuthContext);
     const formCtx = useContext(FormsContext);
 
-    AsyncStorage.getItem("numberOfForms").then((value) => {
-        SetNumberOfForms(value);
-    })
   return (
       <Tab.Navigator
           screenOptions={({ route }) => ({
@@ -85,7 +81,7 @@ function MyTabs() {
 
                 /> }}  />
         <Tab.Screen name="Αιτήσεις στην Συσκευή" component={RecentlyApplications}               options={
-            {tabBarBadge:numberOfForms,     headerRight:({tintColor}) =><IconButton icon={'exit'}
+            { headerRight:({tintColor}) =><IconButton icon={'exit'}
                                                           color={'red'}
                                                           size={30}
 
