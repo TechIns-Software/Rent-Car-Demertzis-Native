@@ -419,36 +419,36 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
         }
         // We check if the two signatures are not null
         if (formInputs['signClient'] == "." || formInputs['signCard'] == "."){
-            Alert.alert('Πρόβλημα με τις υπογραφές', 'Και οι 2 υπογραφές είναι υποχρεωτικές.');
+            Alert.alert('Problem with signatures', 'Both signatures are mandatory.');
             return;
         }
 
         // # We check if the damages are ok, or not mandatory
         if (formInputs['damage1'] == "." && formInputs['damageIsOkBtn1']){
-            Alert.alert('Πρόβλημα με την ζημιά αυτοκινήτου', 'Front and driver\'s side δεν έχει συμπληρωθεί ή δεν έχει επιλεχθεί ότι είναι οκ');
+            Alert.alert('Problem with car damage', 'Front and driver\'s side not filled in or not selected that is ok');
             return;
         } else if (formInputs['damage2'] == "." && formInputs['damageIsOkBtn2']) {
-            Alert.alert('Πρόβλημα με την ζημιά αυτοκινήτου', 'Real and passenger side δεν έχει συμπληρωθεί ή δεν έχει επιλεχθεί ότι είναι οκ');
+            Alert.alert('Problem with car damage', 'Real and passenger side not filled in or not selected that is ok');
             return;
         } else if (formInputs['damage3'] == "." && formInputs['damageIsOkBtn3']) {
-            Alert.alert('Πρόβλημα με την ζημιά αυτοκινήτου', 'Car Roof δεν έχει συμπληρωθεί ή δεν έχει επιλεχθεί ότι είναι οκ');
+            Alert.alert('Problem with car damage', 'Car Roof not filled in or not selected that is ok');
             return;
         } else if (formInputs['damage4'] == "." && formInputs['damageIsOkBtn4']) {
-            Alert.alert('Πρόβλημα με τις ζημιές του μηχανάκι', 'Δεν έχουν ρυθμιστεί οι ζημιές στο μηχανάκι');
+            Alert.alert('Problem with the damage of the motorbike', 'The damage to the motorbike has not been adjusted');
             return;
         }
         if (!flag) {
-            Alert.alert('Πρόβλημα με τα στοιχεία', 'Πρέπει να συμπληρώσετε ορισμένα πεδία')
+            Alert.alert('Data problem', 'You must fill in some fields. Check the inputs')
         } else {
             const answer = await formCtx.saveLocal(formInputs);
             if (answer['uploadedOk']) {
                 if (answer['uploadedOk'] == '1') {
-                    Alert.alert('Υποβολή Φόρμας', "Επιτυχής Υποβολή")
+                    Alert.alert('Form submission',"Successful Submission")
                 } else {
-                    Alert.alert('Υποβολή Φόρμας', "Επιτυχής Υποβολή")
+                    Alert.alert('Form submission',"Successful Submission")
                 }
             } else {
-                Alert.alert('Υποβολή Φόρμας', "Δεν ήταν δυνατή η υποβολή στο ίντερνετ, αλλά αποθηκεύτηκε τοπικά")
+                Alert.alert('Form submission', "Failed to submit online, but saved locally")
             }
             resetForm();
         }
@@ -530,7 +530,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 <Text style={styles.titleText}>Extra Information</Text>
                 <View style={styles.inputRow}>
                     <Input style={styles.rowInput}
-                           label={'Registrasion No'}
+                           label={'Registration No'}
                            value={formInputs['registrationNumber']}
                            onChangeText={changeHandlerInputs.bind(this, 'registrationNumber')}
                            inputStyle={!everythingOk.registrationNumber ? styles.nullInput : ''}
@@ -577,13 +577,13 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 <View style={[styles.inputRow, {marginBottom: 60}]}>
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'recommendedBy')}
-                           label={'Recommended By'}
+                           label={'Hotel / Villa'}
                            value={formInputs['recommendedBy']}
                            inputStyle={!everythingOk.recommendedBy ? styles.nullInput : ''}
                     />
                     <Input style={styles.rowInput}
                            onChangeText={changeHandlerInputs.bind(this, 'rateCode')}
-                           label={'Rate Code'}
+                           label={'Room'}
                            value={formInputs['rateCode']}
                            inputStyle={!everythingOk.rateCode ? styles.nullInput : ''}
                     />
@@ -796,7 +796,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             }}>
 
             <View style={styles.generalContainer}>
-                <Text style={styles.titleText}>Καταγραφή ζημιών 1</Text>
+                <Text style={styles.titleText}>Damage Record 1</Text>
                 <Sign onOK={changeHandlerInputs.bind(this,'damage1')}
                       bgImage={'https://viajerodecorazon.com/assets/react/front-left1.png'}
                       value={formInputs.damage1}
@@ -818,7 +818,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
             }}>
 
             <View style={styles.generalContainer}>
-                <Text style={styles.titleText}>Καταγραφή ζημιών 2</Text>
+                <Text style={styles.titleText}>Damage Record 2</Text>
                 <Sign onOK={changeHandlerInputs.bind(this,'damage2')}
                       bgImage={'https://viajerodecorazon.com/assets/react/rear-right1.png'}
                       value={formInputs.damage2}
@@ -838,7 +838,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 setModalVisibleDamage3(!modalVisibleDamage3);
             }}>
             <View style={styles.generalContainer}>
-                <Text style={styles.titleText}>Καταγραφή ζημιών 3</Text>
+                <Text style={styles.titleText}>Damage Record 3</Text>
                 <Sign onOK={changeHandlerInputs.bind(this,'damage3')}
                       bgImage={'https://viajerodecorazon.com/assets/react/top1.png'}
                       value={formInputs.damage3}
@@ -859,7 +859,7 @@ function expenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
                 setModalVisibleDamage4(!modalVisibleDamage4);
             }}>
             <View style={styles.generalContainer}>
-                <Text style={styles.titleText}>Καταγραφή ζημιών Μηχανής</Text>
+                <Text style={styles.titleText}>Damage Record Motto</Text>
                 <Sign
                     onOK={changeHandlerInputs.bind(this,'damage4')}
                     bgImage={'https://viajerodecorazon.com/assets/react/bike1.png'}

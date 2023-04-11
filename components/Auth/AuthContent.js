@@ -36,7 +36,7 @@ function AuthContent({ isLogin, onAuthenticate }) {
             !emailIsValid ||
             !isLogin
         ) {
-            Alert.alert('Ελλιπείς Στοιχεία', 'Παρακαλώ συμπληρώστε όλα τα πεδία.');
+            Alert.alert('Missing Data', 'Please fill in all the mandatory fields.');
             // setCredentialsInvalid({
             //     password: !passwordIsValid
             // });

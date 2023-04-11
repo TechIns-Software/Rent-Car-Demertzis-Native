@@ -42,7 +42,7 @@ function LoginScreen() {
                         // console.log(email,response.fullName,response.specialHash,response.idAdmin,1);
 
                     } else {
-                        Alert.alert('Ανεπιτυχής Σύνδεση', response['status'])
+                        Alert.alert('Login failed', response['status'])
                     }
 
                 });

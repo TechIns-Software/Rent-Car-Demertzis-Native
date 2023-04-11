@@ -88,7 +88,7 @@ function RecentlyApplications(){
             data={allFormsSaved}
             renderItem={renderApplications}
             keyExtractor={(item) =>  item.id}
-        /> :<Text style={styles.text}>Δεν υπάρχει καμία αίτηση</Text> }
+        /> :<Text style={styles.text}>No forms available in the device !</Text> }
 
 
         <Modal
@@ -135,7 +135,8 @@ const styles = StyleSheet.create({
     text: {
         color: '#3f2949',
         marginTop: 10,
-        fontSize:28
+        fontSize:28,
+        textAlign:'center'
     },
     deleteButtonForm:{
         backgroundColor:'red',

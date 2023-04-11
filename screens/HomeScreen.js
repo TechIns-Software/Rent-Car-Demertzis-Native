@@ -13,7 +13,7 @@ function HomeScreen (){
             </ImageBackground>
         </View>
 
-        <Text style={styles.title}>Καλώς Ήρθατε  </Text>
+        <Text style={styles.title}>Welcome Back </Text>
     </View>
 }
 

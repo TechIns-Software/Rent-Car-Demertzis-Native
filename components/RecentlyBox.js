@@ -8,9 +8,9 @@ import {FormsContext} from "../store/form-context";
 function RecentlyBox({driverName,date,registrationNumber,isSent,id,onPressDelete}) {
     return         <View style={styles.container} >
             <View >
-                <Text style={styles.label}>Όνομα Οδηγού: {driverName}</Text>
-                <Text style={styles.label}>Ημερομηνία:<Text style={styles.value}>{date} </Text></Text>
-                <Text style={styles.label}>Αρ.Κυκλοφορίας: {registrationNumber}</Text>
+                <Text style={styles.label}>Driver Name: {driverName}</Text>
+                <Text style={styles.label}>Date:<Text style={styles.value}>{date} </Text></Text>
+                <Text style={styles.label}>Registration No: {registrationNumber}</Text>
                 {isSent ? <Text style={[styles.successText]}>Έχει ανεβεί</Text> : <Text style={[styles.warningText]}> Δεν έχει ανεβεί</Text>}
             </View>
 

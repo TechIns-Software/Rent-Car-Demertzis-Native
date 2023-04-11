@@ -45,13 +45,13 @@ function MyTabs() {
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
 
-              if (route.name === 'Αρχική') {
+              if (route.name === 'Homepage') {
                 iconName = focused
                     ? 'ios-information-circle'
                     : 'ios-information-circle-outline';
-              } else if (route.name === 'Δημιουργία Αίτησης') {
+              } else if (route.name === 'Create Form') {
                 iconName = focused ? 'ios-list' : 'ios-list-outline';
-              }else  if (route.name === 'Αιτήσεις στην Συσκευή'){
+              }else  if (route.name === 'Device Forms'){
                 iconName = focused ? 'ios-folder' : 'ios-folder-outline';
               }else  if (route.name === 'Αποσύνδεση'){
                   iconName = focused ? 'ios-exit' : 'ios-exit-outline';
@@ -64,7 +64,7 @@ function MyTabs() {
             tabBarInactiveTintColor: 'gray',
           })}
       >
-        <Tab.Screen name="Αρχική" component={HomeScreen}
+        <Tab.Screen name="Homepage" component={HomeScreen}
                     options={
             {     headerRight:({tintColor}) =><IconButton icon={'exit'}
                                                     color={'red'}
@@ -73,14 +73,14 @@ function MyTabs() {
 
             /> }}
         />
-        <Tab.Screen name="Δημιουργία Αίτησης" component={FormScreen}                  options={
+        <Tab.Screen name="Create Form" component={FormScreen}                  options={
             {     headerRight:({tintColor}) =><IconButton icon={'exit'}
                                                           color={'red'}
                                                           size={30}
 
 
                 /> }}  />
-        <Tab.Screen name="Αιτήσεις στην Συσκευή" component={RecentlyApplications}               options={
+        <Tab.Screen name="Device Forms" component={RecentlyApplications}               options={
             { headerRight:({tintColor}) =><IconButton icon={'exit'}
                                                           color={'red'}
                                                           size={30}

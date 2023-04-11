@@ -22,16 +22,16 @@ function IconButton({ icon, color, size, onPress }) {
     <View style = {styles.modal}>
       {/*{View1 When form is uploaded}*/}
       <View style={styles.textContainer}>
-      <Text style = {styles.text}>Είσαι σίγουρος οτι θέλεις να κάνεις αποσύνδεση απο την εφαρμογή ?</Text>
-      <Text style = {styles.text}>Οταν γίνεται αποσύνδεση απο την εφαρμογή, η φόρμες διαγράφονται αυτόματα απο την συσκεύη</Text>
+      <Text style = {styles.text}>Are you sure you want to log out of the application ?</Text>
+      <Text style = {styles.text}>When logging out of the application, the forms are automatically deleted from the device</Text>
       </View>
       <View style={styles.buttonsContainer}>
         <Pressable style={styles.deleteButtonForm}    onPress={authCtx.logout}>
-          <Text style={styles.deleteButtonText}>Αποσύνδεση </Text>
+          <Text style={styles.deleteButtonText}>Log out </Text>
         </Pressable>
 
         <Pressable style={styles.goBackButton} onPress={() => setModalVisible(!modalVisible)}>
-          <Text style={styles.goBackText}> Πήγαινε Πίσω </Text>
+          <Text style={styles.goBackText}> Go Back</Text>
         </Pressable>
 
       </View>
