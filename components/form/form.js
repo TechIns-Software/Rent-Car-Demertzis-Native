@@ -78,6 +78,7 @@ function expenseForm({navigation}) {
     const [modalVisibleDamage2, setModalVisibleDamage2] = useState(false);
     const [modalVisibleDamage3, setModalVisibleDamage3] = useState(false);
     const [modalVisibleDamage4, setModalVisibleDamage4] = useState(false);
+    const [stateOfButton,setStateOfButton] = useState(false);
 
 
     const RULES_INPUTS = {
@@ -415,58 +416,55 @@ function expenseForm({navigation}) {
     }
 
     async function checkInputs() {
+        setStateOfButton(true);
 
-        // console.log(formInputs);
-        // console.log(everythingOk);
-        // let flag = changeStateOfEverythingOk();
-        // for (const [key, value] of Object.entries(everythingOk)) {
-        //     if (!value) {
-        //         console.log(everythingOk);
-        //         console.log(formInputs);
-        //         flag = false;
-        //         break;
-        //     }
-        // }
-        // // We check if the two signatures are not null
-        // if (formInputs['signClient'] == "." || formInputs['signCard'] == "."){
-        //     Alert.alert('Problem with signatures', 'Both signatures are mandatory.');
-        //     return;
-        // }
-        //
-        // // # We check if the damages are ok, or not mandatory
-        // if (formInputs['damage1'] == "." && formInputs['damageIsOkBtn1']){
-        //     Alert.alert('Problem with car damage', 'Front and driver\'s side not filled in or not selected that is ok');
-        //     return;
-        // } else if (formInputs['damage2'] == "." && formInputs['damageIsOkBtn2']) {
-        //     Alert.alert('Problem with car damage', 'Real and passenger side not filled in or not selected that is ok');
-        //     return;
-        // } else if (formInputs['damage3'] == "." && formInputs['damageIsOkBtn3']) {
-        //     Alert.alert('Problem with car damage', 'Car Roof not filled in or not selected that is ok');
-        //     return;
-        // } else if (formInputs['damage4'] == "." && formInputs['damageIsOkBtn4']) {
-        //     Alert.alert('Problem with the damage of the motorbike', 'The damage to the motorbike has not been adjusted');
-        //     return;
-        // }
-        // if (!flag) {
-        //     Alert.alert('Data problem', 'You must fill in some fields. Check the inputs')
-        // } else {
-        //     const answer = await formCtx.saveLocal(formInputs);
-        //     if (answer['uploadedOk']) {
-        //         if (answer['uploadedOk'] == '1') {
-        //             Alert.alert('Form submission',"Successful Submission")
-        //         } else {
-        //             Alert.alert('Form submission',"Successful Submission")
-        //         }
-        //     } else {
-        //         Alert.alert('Form submission', "Failed to submit online, but saved locally")
-        //     }
-        //     resetForm();
-        //
-        // }
+        let flag = changeStateOfEverythingOk();
+        for (const [key, value] of Object.entries(everythingOk)) {
+            if (!value) {
+                console.log(everythingOk);
+                console.log(formInputs);
+                flag = false;
+                break;
+            }
+        }
+        // We check if the two signatures are not null
+        if (formInputs['signClient'] == "." || formInputs['signCard'] == "."){
+            Alert.alert('Problem with signatures', 'Both signatures are mandatory.');
+            return;
+        }
 
-        const answer = await formCtx.saveLocal(formInputs);
+        // # We check if the damages are ok, or not mandatory
+        if (formInputs['damage1'] == "." && formInputs['damageIsOkBtn1']){
+            Alert.alert('Problem with car damage', 'Front and driver\'s side not filled in or not selected that is ok');
+            return;
+        } else if (formInputs['damage2'] == "." && formInputs['damageIsOkBtn2']) {
+            Alert.alert('Problem with car damage', 'Real and passenger side not filled in or not selected that is ok');
+            return;
+        } else if (formInputs['damage3'] == "." && formInputs['damageIsOkBtn3']) {
+            Alert.alert('Problem with car damage', 'Car Roof not filled in or not selected that is ok');
+            return;
+        } else if (formInputs['damage4'] == "." && formInputs['damageIsOkBtn4']) {
+            Alert.alert('Problem with the damage of the motorbike', 'The damage to the motorbike has not been adjusted');
+            return;
+        }
+        if (!flag) {
+            Alert.alert('Data problem', 'You must fill in some fields. Check the inputs')
+        } else {
+            const answer = await formCtx.saveLocal(formInputs);
+            if (answer['uploadedOk']) {
+                if (answer['uploadedOk'] == '1') {
+                    Alert.alert('Form submission',"Successful Submission")
+                } else {
+                    Alert.alert('Form submission',"Successful Submission")
+                }
+            } else {
+                Alert.alert('Form submission', "Failed to submit online, but saved locally")
+            }
+            resetForm();
+            setStateOfButton(false)
+
+        }
         await navigation.navigate('Homepage');
-
     }
 
 
@@ -780,7 +778,7 @@ function expenseForm({navigation}) {
 
                 </View>
 
-                <SubmitButton onPress={checkInputs} buttonText={'Form Submit'}/>
+                <SubmitButton isDisabled={stateOfButton} onPress={checkInputs}  buttonText={'Form Submit'}/>
 
             </View>
 
@@ -795,7 +793,7 @@ function expenseForm({navigation}) {
             }}>
 
             <View style={styles.generalContainer}>
-                <Text style={styles.titleText}>Υπογραφή Πελάτη</Text>
+                <Text style={styles.titleText}> Client Signature</Text>
                 <Sign onOK={changeHandlerInputs.bind(this,'signClient')} value={formInputs.signClient} onBack={() => setModalVisible(!modalVisible)} />
             </View>
         </Modal>
@@ -809,7 +807,7 @@ function expenseForm({navigation}) {
             }}>
 
             <View style={styles.generalContainer}>
-                <Text style={styles.titleText}>Υπογραφή Για την Κάρτα</Text>
+                <Text style={styles.titleText}> Signature for the card</Text>
                 <Sign onOK={changeHandlerInputs.bind(this,'signCard')} value={formInputs.signCard} onBack={() => setModalVisible2(!modalVisible2)}/>
 
             </View>
