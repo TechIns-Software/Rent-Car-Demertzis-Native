@@ -67,7 +67,7 @@ function expenseForm({navigation}) {
         damageIsOkBtn2: true,
         damageIsOkBtn3: true,
         damageIsOkBtn4: true,
-        fuel:1
+        fuel:4
     };
     const [formInputs, setFormInputs] = useState(initialState)
     const [scrollEnabled, setScrollEnabled] = useState(true);
@@ -211,8 +211,9 @@ function expenseForm({navigation}) {
             radioToCheckOn: "cdwAgree"
         },
         liabilityAmount: {
-            mandatory: false,
-            type: "text",
+            mandatory: true,
+            type: "bool-influenced",
+            radioToCheckOn: "cdwAgree"
         },
         fullNameBank: {
             mandatory: true,
@@ -421,8 +422,6 @@ function expenseForm({navigation}) {
         let flag = changeStateOfEverythingOk();
         for (const [key, value] of Object.entries(everythingOk)) {
             if (!value) {
-                console.log(everythingOk);
-                console.log(formInputs);
                 flag = false;
                 break;
             }
@@ -430,41 +429,47 @@ function expenseForm({navigation}) {
         // We check if the two signatures are not null
         if (formInputs['signClient'] == "." || formInputs['signCard'] == "."){
             Alert.alert('Problem with signatures', 'Both signatures are mandatory.');
+            setStateOfButton(false);
             return;
         }
 
         // # We check if the damages are ok, or not mandatory
-        if (formInputs['damage1'] == "." && formInputs['damageIsOkBtn1']){
-            Alert.alert('Problem with car damage', 'Front and driver\'s side not filled in or not selected that is ok');
-            return;
-        } else if (formInputs['damage2'] == "." && formInputs['damageIsOkBtn2']) {
-            Alert.alert('Problem with car damage', 'Real and passenger side not filled in or not selected that is ok');
-            return;
-        } else if (formInputs['damage3'] == "." && formInputs['damageIsOkBtn3']) {
-            Alert.alert('Problem with car damage', 'Car Roof not filled in or not selected that is ok');
-            return;
-        } else if (formInputs['damage4'] == "." && formInputs['damageIsOkBtn4']) {
-            Alert.alert('Problem with the damage of the motorbike', 'The damage to the motorbike has not been adjusted');
-            return;
+        if (formInputs['damage4'] == "." && formInputs['damageIsOkBtn4']) {
+            if (formInputs['damage1'] == "." && formInputs['damageIsOkBtn1']){
+                Alert.alert('Problem with car damage', 'Front and driver\'s side not filled in or not selected that is ok');
+                setStateOfButton(false);
+                return;
+            } else if (formInputs['damage2'] == "." && formInputs['damageIsOkBtn2']) {
+                Alert.alert('Problem with car damage', 'Real and passenger side not filled in or not selected that is ok');
+                setStateOfButton(false);
+                return;
+            } else if (formInputs['damage3'] == "." && formInputs['damageIsOkBtn3']) {
+                Alert.alert('Problem with car damage', 'Car Roof not filled in or not selected that is ok');
+                setStateOfButton(false);
+                return;
+            }
         }
+
         if (!flag) {
-            Alert.alert('Data problem', 'You must fill in some fields. Check the inputs')
+            Alert.alert('Data problem', 'You must fill in some fields. Check the inputs');
+            setStateOfButton(false);
         } else {
             const answer = await formCtx.saveLocal(formInputs);
             if (answer['uploadedOk']) {
                 if (answer['uploadedOk'] == '1') {
                     Alert.alert('Form submission',"Successful Submission")
                 } else {
-                    Alert.alert('Form submission',"Successful Submission")
+                    Alert.alert('Form submission', "Failed to submit online, but saved locally")
                 }
             } else {
-                Alert.alert('Form submission', "Failed to submit online, but saved locally")
+                Alert.alert('Unexepted error',"Something went wrong")
             }
             resetForm();
             setStateOfButton(false);
+            await navigation.navigate('Homepage');
 
         }
-        await navigation.navigate('Homepage');
+
     }
 
 
@@ -635,7 +640,7 @@ function expenseForm({navigation}) {
                         <Input style={styles.rowInput}
                                value={formInputs['cdw']}
                                onChangeText={changeHandlerInputs.bind(this, 'cdw')}
-                               label={'C.M.W '}
+                               label={'C.D.W '}
                                inputStyle={!everythingOk.cdw ? styles.nullInput : ''}
                         />
                     </View>
@@ -673,19 +678,6 @@ function expenseForm({navigation}) {
                         windshield, windows, and underneath the car are not covered in both causes.
                     </Text>
                 </View>
-                <Text style={styles.bolder}> ΑΠΑΛΛΑΓΗ ΕΥΘΥΝΗΣ ΖΗΜΙΩΝ</Text>
-                <View style={styles.inputRow}>
-                    <Text>
-                        Ο πελάτης - μισθωτής ευθύνεται για οποιαδήποτε ζημία κατά τη διάρκεια της μίσθωσης ανεξαρτήτου
-                        υπαιτιότητας. Εάν όμως δεχτεί με σημείωση στο ανάλογο πεδίο να καταβάλει ημερησίως ποσό που
-                        προβλέπει ο ισχύων τιμοκατάλογος η ευθύνη του περιορίζεται ανά ζημιά στο ανώτερο ποσό των
-                        €{formInputs.liabilityAmount} ή με σημείωση στο ανάλογο πεδίο να καταβάλει πρόσθετο ποσόν που καλύπτει πλήρη
-                        απαλλαγή ζημιών.
-                        Ζημιές σε ελαστικά, τζάμια και στο κάτω μέρος του αυτοκινήτου δεν καλύπτονται
-                    </Text>
-                </View>
-
-
 
                 <View>
                     <SubmitButton style={styles.signatureButton} buttonText={' Signature'} onPress={() => {
@@ -698,7 +690,7 @@ function expenseForm({navigation}) {
                     <FormText
                         onChangeInputs={changeHandlerInputs}
                         driverFullName={formInputs.driverFullName}
-                        After={formInputs.afterDateBank}
+                        After={formInputs.checkOutDate}
                         RegistrationNumber={formInputs.registrationNumber}
                     />
 
@@ -740,18 +732,7 @@ function expenseForm({navigation}) {
                         Car Damages
                     </Text>
 
-                    <View style={styles.container}>
-                        <Text style={styles.sliderTitle}  >Fuel : {formInputs.fuel} </Text>
-                        <Slider
-                            containerStyle={styles.sliderContainer}
-                            value={formInputs.fuel}
-                            onValueChange={changeSliderValue}
-                            step={1}
-                            maximumValue={8}
-                            minimumValue={1}
-                        />
 
-                    </View>
 
                     <SubmitButton style={styles.damagesButton} buttonText={'Front and driver`s side '} onPress={() => {
                         setModalVisibleDamage1(!modalVisibleDamage1)
@@ -775,6 +756,24 @@ function expenseForm({navigation}) {
                     <SubmitButton style={styles.damagesButton} buttonText={' Motto'} onPress={() => {
                         setModalVisibleDamage4(!modalVisibleDamage4)
                     }}/>
+
+                </View>
+                <View>
+                    <Text style={styles.titleText}>
+                        Fuel Deposit
+                    </Text>
+                    <View style={styles.container}>
+                        <Text style={styles.sliderTitle}  >Fuel : {formInputs.fuel} </Text>
+                        <Slider
+                            containerStyle={styles.sliderContainer}
+                            value={formInputs.fuel}
+                            onValueChange={changeSliderValue}
+                            step={1}
+                            maximumValue={8}
+                            minimumValue={1}
+                        />
+
+                    </View>
 
                 </View>
 
