@@ -7,19 +7,17 @@ import {
     Button,
     Modal,
     Pressable,
-    Platform
+    Platform,
+    AppRegistry
 } from "react-native";
+import {Slider} from '@miblanchard/react-native-slider';
 import Input from "./input";
 import RadioButtonCustom from "./radioButton";
 import FormText from "./formText";
 import SubmitButton from "./submitButton";
 import React, {useContext, useEffect, useState} from "react";
-import SignatureScreen from "react-native-signature-canvas";
 import Sign from "./SignatureScreen";
 import {FormsContext} from "../../store/form-context";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import CustomDatePicker from "./DatePicker";
-import {AuthContext} from "../../store/auth-context";
 import DatePicker2 from "./DatePicker2";
 
 function expenseForm({navigation}) {
@@ -69,6 +67,7 @@ function expenseForm({navigation}) {
         damageIsOkBtn2: true,
         damageIsOkBtn3: true,
         damageIsOkBtn4: true,
+        fuel:0
     };
     const [formInputs, setFormInputs] = useState(initialState)
     const [scrollEnabled, setScrollEnabled] = useState(true);
@@ -405,57 +404,71 @@ function expenseForm({navigation}) {
         return flag;
     }
 
+    function changeSliderValue(value){
+        setFormInputs((prevValues) => {
+            return {
+                ...prevValues,
+                ['fuel']: value
+            }
+        });
+
+    }
+
     async function checkInputs() {
 
         // console.log(formInputs);
         // console.log(everythingOk);
-        let flag = changeStateOfEverythingOk();
-        for (const [key, value] of Object.entries(everythingOk)) {
-            if (!value) {
-                console.log(everythingOk);
-                console.log(formInputs);
-                flag = false;
-                break;
-            }
-        }
-        // We check if the two signatures are not null
-        if (formInputs['signClient'] == "." || formInputs['signCard'] == "."){
-            Alert.alert('Problem with signatures', 'Both signatures are mandatory.');
-            return;
-        }
+        // let flag = changeStateOfEverythingOk();
+        // for (const [key, value] of Object.entries(everythingOk)) {
+        //     if (!value) {
+        //         console.log(everythingOk);
+        //         console.log(formInputs);
+        //         flag = false;
+        //         break;
+        //     }
+        // }
+        // // We check if the two signatures are not null
+        // if (formInputs['signClient'] == "." || formInputs['signCard'] == "."){
+        //     Alert.alert('Problem with signatures', 'Both signatures are mandatory.');
+        //     return;
+        // }
+        //
+        // // # We check if the damages are ok, or not mandatory
+        // if (formInputs['damage1'] == "." && formInputs['damageIsOkBtn1']){
+        //     Alert.alert('Problem with car damage', 'Front and driver\'s side not filled in or not selected that is ok');
+        //     return;
+        // } else if (formInputs['damage2'] == "." && formInputs['damageIsOkBtn2']) {
+        //     Alert.alert('Problem with car damage', 'Real and passenger side not filled in or not selected that is ok');
+        //     return;
+        // } else if (formInputs['damage3'] == "." && formInputs['damageIsOkBtn3']) {
+        //     Alert.alert('Problem with car damage', 'Car Roof not filled in or not selected that is ok');
+        //     return;
+        // } else if (formInputs['damage4'] == "." && formInputs['damageIsOkBtn4']) {
+        //     Alert.alert('Problem with the damage of the motorbike', 'The damage to the motorbike has not been adjusted');
+        //     return;
+        // }
+        // if (!flag) {
+        //     Alert.alert('Data problem', 'You must fill in some fields. Check the inputs')
+        // } else {
+        //     const answer = await formCtx.saveLocal(formInputs);
+        //     if (answer['uploadedOk']) {
+        //         if (answer['uploadedOk'] == '1') {
+        //             Alert.alert('Form submission',"Successful Submission")
+        //         } else {
+        //             Alert.alert('Form submission',"Successful Submission")
+        //         }
+        //     } else {
+        //         Alert.alert('Form submission', "Failed to submit online, but saved locally")
+        //     }
+        //     resetForm();
+        //
+        // }
 
-        // # We check if the damages are ok, or not mandatory
-        if (formInputs['damage1'] == "." && formInputs['damageIsOkBtn1']){
-            Alert.alert('Problem with car damage', 'Front and driver\'s side not filled in or not selected that is ok');
-            return;
-        } else if (formInputs['damage2'] == "." && formInputs['damageIsOkBtn2']) {
-            Alert.alert('Problem with car damage', 'Real and passenger side not filled in or not selected that is ok');
-            return;
-        } else if (formInputs['damage3'] == "." && formInputs['damageIsOkBtn3']) {
-            Alert.alert('Problem with car damage', 'Car Roof not filled in or not selected that is ok');
-            return;
-        } else if (formInputs['damage4'] == "." && formInputs['damageIsOkBtn4']) {
-            Alert.alert('Problem with the damage of the motorbike', 'The damage to the motorbike has not been adjusted');
-            return;
-        }
-        if (!flag) {
-            Alert.alert('Data problem', 'You must fill in some fields. Check the inputs')
-        } else {
-            const answer = await formCtx.saveLocal(formInputs);
-            if (answer['uploadedOk']) {
-                if (answer['uploadedOk'] == '1') {
-                    Alert.alert('Form submission',"Successful Submission")
-                } else {
-                    Alert.alert('Form submission',"Successful Submission")
-                }
-            } else {
-                Alert.alert('Form submission', "Failed to submit online, but saved locally")
-            }
-            resetForm();
-         await navigation.navigate('Homepage');
-        }
+        const answer = await formCtx.saveLocal(formInputs);
+        await navigation.navigate('Homepage');
 
     }
+
 
     function RadioPressHandler(val) {
         setFormInputs((prevValues) => {
@@ -728,6 +741,19 @@ function expenseForm({navigation}) {
                     <Text style={styles.titleText}>
                         Car Damages
                     </Text>
+
+                    <View style={styles.container}>
+                        <Text style={styles.sliderTitle}  >Fuel : {formInputs.fuel} </Text>
+                        <Slider
+                            containerStyle={styles.sliderContainer}
+                            value={formInputs.fuel}
+                            onValueChange={changeSliderValue}
+                            step={1}
+                            maximumValue={8}
+                            minimumValue={0}
+                        />
+
+                    </View>
 
                     <SubmitButton style={styles.damagesButton} buttonText={'Front and driver`s side '} onPress={() => {
                         setModalVisibleDamage1(!modalVisibleDamage1)
@@ -1039,6 +1065,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#12015d',
         color:'white',
         marginVertical:5
+    },
+    sliderTitle:{
+      textAlign:'center',
+      fontSize:25
+    },
+    sliderContainer:{
+        marginHorizontal:45
     }
 
 
