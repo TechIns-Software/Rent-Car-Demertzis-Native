@@ -5,32 +5,57 @@ import {useContext} from "react";
 import {FormsContext} from "../store/form-context";
 
 
-function RecentlyBox({driverName,date,registrationNumber,isSent,id,onPressDelete}) {
-    return         <View style={styles.container} >
-            <View >
-                <Text style={styles.label}>Driver Name: {driverName}</Text>
-                <Text style={styles.label}>Date:<Text style={styles.value}>{date} </Text></Text>
-                <Text style={styles.label}>Registration No: {registrationNumber}</Text>
-                {isSent ? <Text style={[styles.successText]}>Έχει ανεβεί</Text> : <Text style={[styles.warningText]}> Δεν έχει ανεβεί</Text>}
-            </View>
+function RecentlyBox({driverName,date,registrationNumber,isSent,id,onPressDelete,onUploadForm}) {
+    return <View style={styles.container}>
+        <View style={styles.info}>
+            <Text style={styles.label}>Driver Name: {driverName}</Text>
+            <Text style={styles.label}>Date:<Text style={styles.value}>{date} </Text></Text>
+            <Text style={styles.label}>Registration No: {registrationNumber}</Text>
+            {isSent ? <Text style={[styles.successText]}>Έχει ανεβεί</Text> :
+                <Text style={[styles.warningText]}> Δεν έχει ανεβεί</Text>}
+        </View>
 
 
-        <Pressable onPress={onPressDelete} style={({pressed}) => ({
-            backgroundColor: pressed
-                ? 'rgb(26,76,139)'
-                : 'white',
-            borderRadius:10,
-            justifyContent:'center',
-            padding:5
+        <View style={styles.buttonsContainer}>
 
-        })}>
-            <View style={styles.deleteContainer}>
 
-                <Ionicons name={'ios-trash'} size={35} color={'red'}/>
-            </View>
-        </Pressable>
+            { !isSent ?
+                <Pressable onPress={onUploadForm} style={({pressed}) => ({
+                    backgroundColor: pressed
+                        ? 'rgb(26,76,139)'
+                        : '#0e5ec5',
+                    borderRadius: 10,
+                    justifyContent: 'center',
+                    padding: 5,
+                    marginHorizontal:5
+
+                })}>
+                    <View style={styles.deleteContainer}>
+                        <Ionicons name={'cloud-upload'} size={25} color={'white'}/>
+                    </View>
+                </Pressable> :''
+            }
+
+            <Pressable onPress={onPressDelete} style={({pressed}) => ({
+                backgroundColor: pressed
+                    ? 'rgb(26,76,139)'
+                    : 'white',
+                borderRadius: 10,
+                justifyContent: 'center',
+                padding: 5,
+                marginHorizontal:5
+
+            })}>
+                <View style={styles.deleteContainer}>
+
+                    <Ionicons name={'ios-trash'} size={25} color={'red'}/>
+                </View>
+            </Pressable>
+
 
         </View>
+
+    </View>
 }
 
 const styles = StyleSheet.create({
@@ -78,6 +103,13 @@ const styles = StyleSheet.create({
         borderRadius:10,
         justifyContent:'center',
         padding:10
+    },
+    buttonsContainer:{
+
+        flexDirection :'row',
+        justifyContent :'space-between',
+        borderRadius : 6,
+
     }
 
 

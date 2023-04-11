@@ -12,7 +12,8 @@ export  const FormsContext = createContext({
     upload : ()=>{},
     previewForm :(idForm) =>{},
     allForms : ()=>{},
-    deleteForm : (idForm)=>{}
+    deleteForm : (idForm)=>{},
+    uploadOfflineForm :  (idForm)=>{}
 });
 
 function  FormsContextProvider({children}){
@@ -29,8 +30,6 @@ function  FormsContextProvider({children}){
             }
             return state.isConnected;
         });
-
-        const areWeOnline =  unsubscribe();
         // we check the connection END
 
         const currentDate = new Date();
@@ -99,20 +98,23 @@ function  FormsContextProvider({children}){
         return {idAdmin: idAdmin, token: token};
     }
 
-    async function sendForm(formInputs, date) {
-        const adminObj = await getAdmin();
-        const idAdmin = adminObj['idAdmin'];
-        const uniqueHash = Date.now() + (Math.random() + 1).toString(36) + String(idAdmin).padStart(3, '0');
-        //todo calculate digest
-        const hashToken = adminObj['token'];
-        const digest = "sadsad";
-        const timeUploaded = date;
-        formInputs.action = "uploadForm";
-        formInputs.idAdmin = idAdmin;
-        formInputs.digest = digest;
-        formInputs.uniqueHash = uniqueHash;
-        formInputs.timeUploaded = timeUploaded;
+    async function sendForm(formInputs, date,isReUpload = false) {
+        if (!isReUpload){
+            const adminObj = await getAdmin();
+            const idAdmin = adminObj['idAdmin'];
+            const uniqueHash = Date.now() + (Math.random() + 1).toString(36) + String(idAdmin).padStart(3, '0');
+            //todo calculate digest
+            const hashToken = adminObj['token'];
+            const digest = "sadsad";
 
+            formInputs.action = "uploadForm";
+            formInputs.idAdmin = idAdmin;
+            formInputs.digest = digest;
+            formInputs.uniqueHash = uniqueHash;
+
+        }
+        const timeUploaded = date;
+        formInputs.timeUploaded = timeUploaded;
         const toUrlEncoded = (obj) => {
             return Object
                 .keys(obj)
@@ -127,29 +129,6 @@ function  FormsContextProvider({children}){
         // myHeaders.append('Accept', 'application/json');
         var answer = 0;
         try {
-            // answer = fetch('https://a-omega.com.gr/admin/request/', {
-            //     method: 'POST',
-            //     mode: 'cors', // no-cors, *cors, same-origin
-            //     cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached
-            //     headers: myHeaders,
-            //     body: data.toString() // body data type must match "Content-Type" header
-            // })
-            //     .then((res) => {
-            //         if(!res.ok) {
-            //             return res.text().then(text => { throw new Error(text) })
-            //         }
-            //         else {
-            //             return res.json();
-            //         }
-            //     })
-            //     .then((response) => {
-            //         console.log("returned the below");
-            //         console.log(response);
-            //         return response;
-            //     }).catch(error => {
-            //         console.log(JSON.stringify(error));
-            //         console.log(error);
-            //     }).then(errorResponse => errorResponse);
             answer = await axios.post('https://a-omega.com.gr/admin/request/', data)
                 .then(function (response) {
                 return response.data
@@ -169,14 +148,29 @@ function  FormsContextProvider({children}){
     async function deleteForm(idForm){
         const allForms = await getAllForms();
 
-
         delete allForms[Number(idForm)];
         await AsyncStorage.removeItem('userForms');
-
         const obj = JSON.stringify(allForms);
         await AsyncStorage.setItem('userForms', obj);
         setNumberOfForms((prevValue) => Number(prevValue - 1));
         await AsyncStorage.setItem('numberOfForms', numberOfForm.toString());
+    }
+
+    async  function uploadOfflineForm(formId){
+        const currentDate = new Date();
+        const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth()+1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')} ${String(currentDate.getHours()).padStart(2, '0')}:${String(currentDate.getMinutes()).padStart(2, '0')}:${String(currentDate.getSeconds()).padStart(2, '0')}`;
+        const allForms = await getAllForms();
+        const myForm = allForms[Number(formId)].data;
+        const answer = await sendForm(myForm, formattedDate,true);
+
+        allForms[Number(formId)].isUploaded = answer.uploadedOk ;
+        await AsyncStorage.removeItem('userForms');
+        const obj = JSON.stringify(allForms);
+        await AsyncStorage.setItem('userForms', obj);
+        if (answer.uploadedOk){
+            Alert.alert('Successful Upload', 'Form has successfully uploaded in the web');
+        }
+
     }
 
     const value = {
@@ -184,7 +178,8 @@ function  FormsContextProvider({children}){
         numberOfForms :numberOfForm,
         allForms : getAllForms,
         getAdmin : getAdmin,
-        deleteForm :deleteForm
+        deleteForm :deleteForm,
+        uploadOfflineForm : uploadOfflineForm
     }
 
     return <FormsContext.Provider value={value}>{children}</FormsContext.Provider>

@@ -34,6 +34,7 @@ function RecentlyApplications(){
             date={applications.item.date}
             isSent={applications.item.isSent}
             onPressDelete = {OnDeleteForm.bind(this,{id:Number(applications.item.id) ,isSent:applications.item.isSent})}
+            onUploadForm = {onUploadForm.bind(this,{id:Number(applications.item.id) ,isSent:applications.item.isSent})}
         />
 
     }
@@ -47,6 +48,10 @@ function RecentlyApplications(){
     async function deleteForm(formid){
       await  formsCtx.deleteForm(formid)
         setModalVisible(!modalVisible)
+    }
+
+    async function onUploadForm(formInfos){
+        await  formsCtx.uploadOfflineForm(formInfos.id);
     }
 
 
