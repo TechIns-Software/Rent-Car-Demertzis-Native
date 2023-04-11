@@ -67,7 +67,7 @@ function expenseForm({navigation}) {
         damageIsOkBtn2: true,
         damageIsOkBtn3: true,
         damageIsOkBtn4: true,
-        fuel:0
+        fuel:1
     };
     const [formInputs, setFormInputs] = useState(initialState)
     const [scrollEnabled, setScrollEnabled] = useState(true);
@@ -461,7 +461,7 @@ function expenseForm({navigation}) {
                 Alert.alert('Form submission', "Failed to submit online, but saved locally")
             }
             resetForm();
-            setStateOfButton(false)
+            setStateOfButton(false);
 
         }
         await navigation.navigate('Homepage');
@@ -748,7 +748,7 @@ function expenseForm({navigation}) {
                             onValueChange={changeSliderValue}
                             step={1}
                             maximumValue={8}
-                            minimumValue={0}
+                            minimumValue={1}
                         />
 
                     </View>
