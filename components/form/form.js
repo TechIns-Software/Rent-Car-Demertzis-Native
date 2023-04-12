@@ -4,13 +4,9 @@ import {
     StyleSheet,
     Alert,
     ScrollView,
-    Button,
     Modal,
-    Pressable,
-    Platform,
-    AppRegistry
+    Pressable
 } from "react-native";
-import {Slider} from '@miblanchard/react-native-slider';
 import Input from "./input";
 import RadioButtonCustom from "./radioButton";
 import FormText from "./formText";
@@ -286,6 +282,11 @@ function expenseForm({navigation}) {
     });
     const formCtx = useContext(FormsContext) ;
     function changeHandlerInputs(inputName, inputValue) {
+        if (inputName == 'fuel' && inputValue > 8){
+            inputValue = 8;
+        }else if  (inputName == 'fuel' && inputValue == 0 ){
+            inputValue = 1;
+        }
         setFormInputs((prevValues) => {
             return {
                 ...prevValues,
@@ -406,15 +407,6 @@ function expenseForm({navigation}) {
         return flag;
     }
 
-    function changeSliderValue(value){
-        setFormInputs((prevValues) => {
-            return {
-                ...prevValues,
-                ['fuel']: value
-            }
-        });
-
-    }
 
     async function checkInputs() {
         setStateOfButton(true);
@@ -728,11 +720,34 @@ function expenseForm({navigation}) {
 
                 </View>
                 <View>
+                    <View>
+                        <Text style={styles.titleText}>
+                            Fuel Deposit {formInputs.fuel} /8
+                        </Text>
+                        <View style={styles.container}>
+                            {/*<Slider*/}
+                            {/*    containerStyle={styles.sliderContainer}*/}
+                            {/*    value={formInputs.fuel}*/}
+                            {/*    onValueChange={changeSliderValue}*/}
+                            {/*    step={1}*/}
+                            {/*    maximumValue={8}*/}
+                            {/*    minimumValue={1}*/}
+                            {/*/>*/}
+
+                            <Input style={styles.rowInput}
+                                   onChangeText={changeHandlerInputs.bind(this, 'fuel')}
+
+                                    TextInputConfig={{keyboardType:"numeric"}}
+                                   value={formInputs['fuel']}
+                                   inputStyle={!everythingOk.cvv ? styles.nullInput : ''}
+                            />
+
+                        </View>
+
+                    </View>
                     <Text style={styles.titleText}>
                         Car Damages
                     </Text>
-
-
 
                     <SubmitButton style={styles.damagesButton} buttonText={'Front and driver`s side '} onPress={() => {
                         setModalVisibleDamage1(!modalVisibleDamage1)
@@ -758,24 +773,7 @@ function expenseForm({navigation}) {
                     }}/>
 
                 </View>
-                <View>
-                    <Text style={styles.titleText}>
-                        Fuel Deposit
-                    </Text>
-                    <View style={styles.container}>
-                        <Text style={styles.sliderTitle}  >Fuel : {formInputs.fuel} </Text>
-                        <Slider
-                            containerStyle={styles.sliderContainer}
-                            value={formInputs.fuel}
-                            onValueChange={changeSliderValue}
-                            step={1}
-                            maximumValue={8}
-                            minimumValue={1}
-                        />
 
-                    </View>
-
-                </View>
 
                 <SubmitButton isDisabled={stateOfButton} onPress={checkInputs}  buttonText={'Form Submit'}/>
 
