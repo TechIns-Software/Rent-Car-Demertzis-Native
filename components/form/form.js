@@ -63,7 +63,7 @@ function expenseForm({navigation}) {
         damageIsOkBtn2: true,
         damageIsOkBtn3: true,
         damageIsOkBtn4: true,
-        fuel:4
+        fuel:""
     };
     const [formInputs, setFormInputs] = useState(initialState)
     const [scrollEnabled, setScrollEnabled] = useState(true);
@@ -234,6 +234,10 @@ function expenseForm({navigation}) {
         cvv: {
             mandatory: true,
             type: "text"
+        },
+        fuel: {
+            mandatory: true,
+            type: "text"
         }
     };
     const [everythingOk, setEveryThingOk] = useState({
@@ -278,15 +282,11 @@ function expenseForm({navigation}) {
         damage1: false,
         damage2: false,
         damage3: false,
-        damage4: false
+        damage4: false,
+        fuel: false
     });
     const formCtx = useContext(FormsContext) ;
     function changeHandlerInputs(inputName, inputValue) {
-        if (inputName == 'fuel' && inputValue > 8){
-            inputValue = 8;
-        }else if  (inputName == 'fuel' && inputValue == 0 ){
-            inputValue = 1;
-        }
         setFormInputs((prevValues) => {
             return {
                 ...prevValues,
@@ -722,7 +722,7 @@ function expenseForm({navigation}) {
                 <View>
                     <View>
                         <Text style={styles.titleText}>
-                            Fuel Deposit {formInputs.fuel} /8
+                            Fuel Deposit {formInputs.fuel == "" ? 0 : formInputs.fuel} /8
                         </Text>
                         <View style={styles.container}>
                             {/*<Slider*/}
@@ -739,7 +739,7 @@ function expenseForm({navigation}) {
 
                                     TextInputConfig={{keyboardType:"numeric"}}
                                    value={formInputs['fuel']}
-                                   inputStyle={!everythingOk.cvv ? styles.nullInput : ''}
+                                   inputStyle={!everythingOk.fuel ? styles.nullInput : ''}
                             />
 
                         </View>
