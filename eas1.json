@@ -12,8 +12,11 @@
     },
     "preview": {
       "distribution": "internal",
+      "android": {
+        "buildType": "app-bundle"
+      },
       "ios": {
-        "resourceClass": "m-medium"
+        "simulator": true
       }
     },
     "production": {
@@ -26,4 +29,3 @@
     "production": {}
   }
 }
-

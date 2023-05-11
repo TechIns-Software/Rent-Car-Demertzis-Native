@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Vehicle Form App",
-    "slug": "vehicleFormApp",
+    "name": "Form App Vehicle",
+    "slug": "form-app-vehicle",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -20,7 +20,7 @@
     "ios": {
       "supportsTablet": true,
       "buildNumber": "1.0.0",
-      "bundleIdentifier": "gr.techins.vehicleFormApp"
+      "bundleIdentifier": "gr.techins.formAppVehicle"
     },
     "android": {
       "adaptiveIcon": {
@@ -28,15 +28,16 @@
         "backgroundColor": "#FFFFFF"
       },
       "versionCode": 1,
-      "package": "gr.techins.vehicleFormApp"
+      "package": "gr.techins.formAppVehicle"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "a46d63c6-a975-4ddf-8803-eee1ae2f44dc"
+        "projectId": "04292570-019a-4722-bbb6-395eb2870ece"
       }
-    }
+    },
+    "owner": "baztekas"
   }
 }
