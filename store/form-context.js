@@ -22,20 +22,19 @@ function  FormsContextProvider({children}){
 
     async function saveLocal(data){
         // we check the connection START
-        const unsubscribe = NetInfo.addEventListener(state => {
-            console.log("Connection type", state.type);
-            console.log("Is connected?", state.isConnected);
-            if (!state.isConnected) {
-                Alert.alert('Internet Connection problem', 'No internet found but ok saved in local');
-            }
+        const hasInternet = await NetInfo.fetch().then(state => {
             return state.isConnected;
         });
         // we check the connection END
 
         const currentDate = new Date();
         const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth()+1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')} ${String(currentDate.getHours()).padStart(2, '0')}:${String(currentDate.getMinutes()).padStart(2, '0')}:${String(currentDate.getSeconds()).padStart(2, '0')}`;
-        const answer = await sendForm(data, formattedDate);
-        // console.log(answer);
+        let answer;
+        if (hasInternet) {
+            answer = await sendForm(data, formattedDate);
+        } else {
+            answer['uploadedOk'] = 0;
+        }
         let lastId = await getLastId();
         const formInfo = {
             isUploaded: answer.uploadedOk ?? 0,
