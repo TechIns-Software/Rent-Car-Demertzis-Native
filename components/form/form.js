@@ -455,7 +455,7 @@ function expenseForm({navigation}) {
             setStateOfButton(false);
         } else {
             const answer = await formCtx.saveLocal(formInputs);
-            if (answer['uploadedOk']) {
+            if (answer.hasOwnProperty('uploadedOk')) {
                 if (answer['uploadedOk'] == '1') {
                     Alert.alert('Form submission',"Successful Submission")
                 } else {
