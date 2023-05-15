@@ -98,20 +98,17 @@ function  FormsContextProvider({children}){
     }
 
     async function sendForm(formInputs, date,isReUpload = false) {
-        if (!isReUpload){
-            const adminObj = await getAdmin();
-            const idAdmin = adminObj['idAdmin'];
-            const uniqueHash = Date.now() + (Math.random() + 1).toString(36) + String(idAdmin).padStart(3, '0');
-            //todo calculate digest
-            const hashToken = adminObj['token'];
-            const digest = "sadsad";
+        const adminObj = await getAdmin();
+        const idAdmin = adminObj['idAdmin'];
+        const uniqueHash = Date.now() + (Math.random() + 1).toString(36) + String(idAdmin).padStart(3, '0');
+        //todo calculate digest
+        const hashToken = adminObj['token'];
+        const digest = "sadsad";
 
-            formInputs.action = "uploadForm";
-            formInputs.idAdmin = idAdmin;
-            formInputs.digest = digest;
-            formInputs.uniqueHash = uniqueHash;
-
-        }
+        formInputs.action = "uploadForm";
+        formInputs.idAdmin = idAdmin;
+        formInputs.digest = digest;
+        formInputs.uniqueHash = uniqueHash;
         const timeUploaded = date;
         formInputs.timeUploaded = timeUploaded;
         const toUrlEncoded = (obj) => {
