@@ -293,6 +293,50 @@ function expenseForm({navigation}) {
         damage4: false,
         fuel: false
     });
+    const labels = {
+        driverFullName: "Driver Full Name",
+        driverDateOfBirth: "Driver Date Of Birth",
+        driverPhone: "Driver Phone Number",
+        driverRegistrationNumber: "Driver Registration Number",
+        driverRegistrationCountry:"Driver Registration Country",
+        driverRegistrationDateIssue: "Driver Registration Date Of Issue",
+        driverRegistrationExpirationDate: "Driver Registration Expiration Date",
+        secondDriverFullName: "Second Driver Full Name",
+        secondDriverBirthDate: "Second Driver Date Of Birth",
+        secondDriverRegistrationNumber: "Second Driver Registration Number",
+        secondDriverRegistrationCountry: "Second Driver Registration Country",
+        secondDriverRegistrationDateIssue: "Second Driver Registration Date Of Issue",
+        secondDriverRegistrationExpirationDate : "Second Driver Registration Expiration Date",
+        email: "Email",
+        registrationNumber: " Registration Number Of Vehicle",
+        vehicleType: "Vehicle Type",
+        checkOutDate: "CheckOut Date",
+        checkOutTime: "CheckOut Time",
+        checkOutStation: "CheckOut Station",
+        checkInDate: "CheckIn Date",
+        checkInTime: "CheckIn Time",
+        checkInStation: "CheckIn Station",
+
+        charges: "Charges",
+        days: "Days",
+        recommendedBy: "Hotel / Villa",
+        rateCode: "RateCode",
+        subTotal: "Sub-Total",
+        cdw: "Cdw",
+        total: "Total",
+        cdwAgree: "Cdw Agree",
+        liabilityAmount: "Liability",
+        signClient: "Sign Client",
+        cardHolderName: "Card Holder Name",
+        cardExpirationDate: "Card Expiration Date",
+        cvv: "CVV",
+        signCard: "Sign Card",
+        damage1: "Damage Front & Driver-side",
+        damage2: "Damage Rear & Passenger-side",
+        damage3: "Damage Car Roof",
+        damage4: "Damage Motto",
+        fuel: "Fuel",
+    }
     const formCtx = useContext(FormsContext) ;
     function changeHandlerInputs(inputName, inputValue) {
         setFormInputs((prevValues) => {
@@ -418,10 +462,11 @@ function expenseForm({navigation}) {
 
     async function checkInputs() {
         setStateOfButton(true);
-
+        var emptyInput = '';
         let flag = changeStateOfEverythingOk();
         for (const [key, value] of Object.entries(everythingOk)) {
             if (!value) {
+                emptyInput = key;
                 flag = false;
                 break;
             }
@@ -451,7 +496,10 @@ function expenseForm({navigation}) {
         }
 
         if (!flag) {
-            Alert.alert('Data problem', 'You must fill in some fields. Check the inputs');
+            console.log('=============================');
+            console.log(everythingOk);
+            Alert.alert('Data problem', `You must fill the ${labels[emptyInput]} Input. `);
+            // Alert.alert('Data problem', 'You must fill in some fields. Check the inputs');
             setStateOfButton(false);
         } else {
             const answer = await formCtx.saveLocal(formInputs);
