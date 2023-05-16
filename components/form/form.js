@@ -689,6 +689,7 @@ function expenseForm({navigation}) {
                                value={formInputs['cdw']}
                                onChangeText={changeHandlerInputs.bind(this, 'cdw')}
                                label={'C.D.W '}
+                               editable={formInputs.cdwAgree}
                                inputStyle={!everythingOk.cdw ? styles.nullInput : ''}
                         />
                     </View>
@@ -699,6 +700,7 @@ function expenseForm({navigation}) {
                            value={formInputs['liabilityAmount']}
                            onChangeText={changeHandlerInputs.bind(this, 'liabilityAmount')}
                            label={'Liability '}
+                           editable={formInputs.cdwAgree}
                            inputStyle={!everythingOk.liabilityAmount ? styles.nullInput : ''}
                     />
 
