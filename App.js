@@ -17,6 +17,7 @@ import  AuthContextProvider,{AuthContext} from './store/auth-context'
 import IconButton from "./components/ui/IconButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import FormsContextProvider,{FormsContext} from "./store/form-context";
+import { AutocompleteDropdownContextProvider} from 'react-native-autocomplete-dropdown';
 
 const Tab = createBottomTabNavigator();
 
@@ -124,11 +125,11 @@ function Root(){
 
 export default function App() {
   return (
-      <FormsContextProvider>
-      <AuthContextProvider>
-          <Root/>
-      </AuthContextProvider>
-      </FormsContextProvider>
+          <FormsContextProvider>
+              <AuthContextProvider>
+                  <Root/>
+              </AuthContextProvider>
+          </FormsContextProvider>
   );
 }
 
