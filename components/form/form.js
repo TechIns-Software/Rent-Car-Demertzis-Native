@@ -636,15 +636,20 @@ function expenseForm({navigation}) {
                         <View style={styles.containerBorder}>
                             <Text style={styles.titleText}>Extra Information</Text>
 
+                            <View style={styles.inputRow}>
+                                <LocalDataSetExample style={styles}/>
+                            </View>
 
 
                             <View style={styles.inputRow}>
-                                <Input style={styles.rowInput}
-                                       label={'Registration No'}
-                                       value={formInputs['registrationNumber']}
-                                       onChangeText={changeHandlerInputs.bind(this, 'registrationNumber')}
-                                       inputStyle={!everythingOk.registrationNumber ? styles.nullInput : ''}
-                                />
+                                {/*<Input style={styles.rowInput}*/}
+                                {/*       label={'Registration No'}*/}
+                                {/*       value={formInputs['registrationNumber']}*/}
+                                {/*       onChangeText={changeHandlerInputs.bind(this, 'registrationNumber')}*/}
+                                {/*       inputStyle={!everythingOk.registrationNumber ? styles.nullInput : ''}*/}
+                                {/*/>*/}
+
+
 
 
                                 <Input style={styles.rowInput}
