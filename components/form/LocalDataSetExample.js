@@ -5,14 +5,20 @@ import {generateDataSet} from "./helpers";
 import {cars} from "./data";
 import {RFPercentage} from "react-native-responsive-fontsize";
 
-export const LocalDataSetExample = memo(({style,label}) => {
+export const LocalDataSetExample = memo(({style,label,onchangeText}) => {
     const [selectedItem, setSelectedItem] = useState(null)
-
 
     const carNames = cars.map((car,index) => ( { id:index, title: car.registrationNumber.trim()}) );
 
+    function giveValue(value){
 
-    const dataSet = useMemo(generateDataSet, [])
+        if (value !=null){
+            onchangeText(value.title);
+        }else {
+            onchangeText('');
+        }
+
+    }
 
     return (
         <View style={style.rowInput}>
@@ -20,7 +26,7 @@ export const LocalDataSetExample = memo(({style,label}) => {
             <AutocompleteDropdown
                 clearOnFocus={false}
                 closeOnBlur={true}
-                onSelectItem={setSelectedItem}
+                onSelectItem={giveValue}
                 dataSet={[...carNames]}
                 ItemSeparatorComponent={<View style={{ height: 1, width: '100%', backgroundColor: '#d8e1e6' }} />}
                 getItemLayout={(data, index) => ({ length: 50, offset: 50 * index, index })}

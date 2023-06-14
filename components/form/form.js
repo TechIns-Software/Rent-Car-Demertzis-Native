@@ -360,6 +360,9 @@ function expenseForm({navigation}) {
     }
     const formCtx = useContext(FormsContext) ;
     function changeHandlerInputs(inputName, inputValue) {
+        console.log(inputName)
+        console.log(inputValue)
+
         setFormInputs((prevValues) => {
             return {
                 ...prevValues,
@@ -637,7 +640,7 @@ function expenseForm({navigation}) {
                             <Text style={styles.titleText}>Extra Information</Text>
 
                             <View style={styles.inputRow}>
-                                <LocalDataSetExample style={styles}/>
+                                <LocalDataSetExample style={styles} label={'Registration No'} onchangeText={changeHandlerInputs.bind(this, 'registrationNumber')}/>
                             </View>
 
 
