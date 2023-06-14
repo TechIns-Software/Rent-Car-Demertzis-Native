@@ -11,13 +11,14 @@ export const LocalDataSetExample = memo(({style,label,onchangeText}) => {
     const carNames = cars.map((car,index) => ( { id:index, title: car.registrationNumber.trim()}) );
 
     function giveValue(value){
-
         if (value !=null){
             onchangeText(value.title);
         }else {
             onchangeText('');
         }
-
+    }
+    function getValue(value){
+        onchangeText(value);
     }
 
     return (
@@ -31,6 +32,7 @@ export const LocalDataSetExample = memo(({style,label,onchangeText}) => {
                 ItemSeparatorComponent={<View style={{ height: 1, width: '100%', backgroundColor: '#d8e1e6' }} />}
                 getItemLayout={(data, index) => ({ length: 50, offset: 50 * index, index })}
                 showChevron={true}
+                onChangeText={getValue}
             />
             <Text style={{ color: '#668', fontSize: 13 }}>Selected item: {JSON.stringify(selectedItem)}</Text>
         </View>
