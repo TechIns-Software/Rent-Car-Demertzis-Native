@@ -425,6 +425,14 @@ function expenseForm({navigation}) {
                     ['subTotal']: _subTotal
                 }
             });
+        } else if (inputName === 'registrationNumber') {
+            console.log(inputValue, inputValue != '', formInputs);
+            setEveryThingOk((oldValues) => {
+                return {
+                    ...oldValues,
+                    ['registrationNumber']: inputValue != ''
+                }
+            });
         }
         changeStateOfEverythingOk(inputName, inputValue);
     }
@@ -542,6 +550,7 @@ function expenseForm({navigation}) {
             // Alert.alert('Data problem', 'You must fill in some fields. Check the inputs');
             setStateOfButton(false);
         } else {
+            console.log(formInputs);
             const answer = await formCtx.saveLocal(formInputs);
             if (answer.hasOwnProperty('uploadedOk')) {
                 if (answer['uploadedOk'] == '1') {

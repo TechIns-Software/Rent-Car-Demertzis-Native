@@ -6,7 +6,6 @@ import {cars} from "./data";
 import {RFPercentage} from "react-native-responsive-fontsize";
 
 export const LocalDataSetExample = memo(({style,label,onchangeText}) => {
-    const [selectedItem, setSelectedItem] = useState(null)
 
     const carNames = cars.map((car,index) => ( { id:index, title: car.registrationNumber.trim()}) );
 
@@ -34,7 +33,6 @@ export const LocalDataSetExample = memo(({style,label,onchangeText}) => {
                 showChevron={true}
                 onChangeText={getValue}
             />
-            <Text style={{ color: '#668', fontSize: 13 }}>Selected item: {JSON.stringify(selectedItem)}</Text>
         </View>
     )
 })
