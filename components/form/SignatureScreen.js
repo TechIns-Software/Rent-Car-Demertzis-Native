@@ -19,9 +19,15 @@ const Sign = ({ onOK,setScrollTrue,setScrollfalse,onBack,value=".",bgImage = "" 
     };
 
     const handleConfirm = () => {
-        // console.log("end");
+
         ref.current.readSignature();
     };
+
+    const handleUndo = (signature) => {
+        onOK(signature);
+        ref.current.undo();
+    };
+
 
     const style = `.m-signature-pad--footer {display: none; margin: 0px;} body,html {
               width:100%; height: 100%; border:2px solid orange }`;
@@ -35,11 +41,12 @@ const Sign = ({ onOK,setScrollTrue,setScrollfalse,onBack,value=".",bgImage = "" 
                     {bgImage == ""?  <SignatureScreen ref={ref} onOK={handleOK} webStyle={style}/> :
                         <SignatureScreen ref={ref}  bgSrc={bgImage}
                                          bgWidth={'100%'}
-                                         bgHeight={'100%'} onOK={handleOK} webStyle={style}/>
+                                         bgHeight={'100%'} onOK={handleOK}  webStyle={style}/>
                     }
                 </View>
 
                 <View style={styles.row}>
+                    <Button title="Undo " onPress={handleUndo}/>
                     <Button title="Clear " onPress={handleClear}/>
                     <Button title="Submit" onPress={handleConfirm}/>
                 </View>
