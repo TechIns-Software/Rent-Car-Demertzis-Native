@@ -73,6 +73,53 @@ function expenseForm({navigation}) {
         damageIsOkBtn4: true,
         fuel:""
     };
+    const initialState2 = {
+        driverFullName: false,
+        driverDateOfBirth: false,
+        driverPhone: false,
+        driverRegistrationNumber: false,
+        driverRegistrationCountry:false,
+        driverRegistrationDateIssue: false,
+        driverRegistrationExpirationDate: false,
+        secondDriverFullName: true,
+        secondDriverBirthDate: true,
+        secondDriverRegistrationNumber: true,
+        secondDriverRegistrationCountry: true,
+        secondDriverRegistrationDateIssue: true,
+        secondDriverRegistrationExpirationDate : true,
+        email: false,
+        registrationNumber: false,
+        vehicleType: false,
+        checkOutDate: false,
+        checkOutTime: false,
+        checkOutStation: false,
+        checkInDate: false,
+        checkInTime: false,
+        checkInStation: false,
+
+
+        charges: false,
+        days: false,
+        realRecommendedBy:false,
+        recommendedBy: false,
+        rateCode: false,
+        subTotal: true,
+        cdw: true,
+        total: true,
+        cdwAgree: true,
+        liabilityAmount: true,
+        signClient:false,
+        cardHolderName: false,
+        cardExpirationDate: false,
+        cvv: false,
+        signCard: false,
+        damage1: false,
+        damage2: false,
+        damage3: false,
+        damage4: false,
+        fuel: false,
+        notes:false
+    }
     const [formInputs, setFormInputs] = useState(initialState)
     const [scrollEnabled, setScrollEnabled] = useState(true);
     const [modalVisibleSecondDriver, setmodalVisibleSecondDriver] = useState(false);
@@ -256,53 +303,7 @@ function expenseForm({navigation}) {
             type: "text"
         }
     };
-    const [everythingOk, setEveryThingOk] = useState({
-        driverFullName: false,
-        driverDateOfBirth: false,
-        driverPhone: false,
-        driverRegistrationNumber: false,
-        driverRegistrationCountry:false,
-        driverRegistrationDateIssue: false,
-        driverRegistrationExpirationDate: false,
-        secondDriverFullName: true,
-        secondDriverBirthDate: true,
-        secondDriverRegistrationNumber: true,
-        secondDriverRegistrationCountry: true,
-        secondDriverRegistrationDateIssue: true,
-        secondDriverRegistrationExpirationDate : true,
-        email: false,
-        registrationNumber: false,
-        vehicleType: false,
-        checkOutDate: false,
-        checkOutTime: false,
-        checkOutStation: false,
-        checkInDate: false,
-        checkInTime: false,
-        checkInStation: false,
-
-
-        charges: false,
-        days: false,
-        realRecommendedBy:false,
-        recommendedBy: false,
-        rateCode: false,
-        subTotal: true,
-        cdw: true,
-        total: true,
-        cdwAgree: true,
-        liabilityAmount: true,
-        signClient:false,
-        cardHolderName: false,
-        cardExpirationDate: false,
-        cvv: false,
-        signCard: false,
-        damage1: false,
-        damage2: false,
-        damage3: false,
-        damage4: false,
-        fuel: false,
-        notes:false
-    });
+    const [everythingOk, setEveryThingOk] = useState(initialState2)
     const labels = {
         driverFullName: "Driver Full Name",
         driverDateOfBirth: "Driver Date Of Birth",
@@ -585,6 +586,7 @@ function expenseForm({navigation}) {
     }
     function resetForm(){
         setFormInputs(initialState)
+        setEveryThingOk(initialState2);
     }
 
 
@@ -610,7 +612,10 @@ function expenseForm({navigation}) {
 
                                 <DatePicker2 style={styles.rowInput} objectKey={'driverDateOfBirth'}
                                              customOnChange={changeHandlerDatePicker} label={'Date of Birth'}
-                                             type={'date'}/>
+                                             type={'date'}
+                                             everythingOkValue={everythingOk.driverDateOfBirth}
+
+                                />
 
                             </View>
 
@@ -641,10 +646,12 @@ function expenseForm({navigation}) {
                                 />
                                 <DatePicker2 style={styles.rowInput} objectKey={'driverRegistrationDateIssue'}
                                              customOnChange={changeHandlerDatePicker} label={'Date of issue'}
-                                             type={'date'}/>
+                                             type={'date'}
+                                             everythingOkValue={everythingOk.driverRegistrationDateIssue}/>
                                 <DatePicker2 style={styles.rowInput} objectKey={'driverRegistrationExpirationDate'}
                                              customOnChange={changeHandlerDatePicker} label={'Exp. Date'}
-                                             type={'date'}/>
+                                             type={'date'}
+                                             everythingOkValue={everythingOk.driverRegistrationExpirationDate}/>
                             </View>
                             <Input label={'Email'}
                                    onChangeText={changeHandlerInputs.bind(this, 'email')}
@@ -694,10 +701,13 @@ function expenseForm({navigation}) {
 
                                 <DatePicker2 style={styles.rowInput} objectKey={'checkInDate'}
                                              customOnChange={changeHandlerDatePicker} label={'Check in Date'}
-                                             type={'date'}/>
+                                             type={'date'}
+                                             everythingOkValue={everythingOk.checkInDate}/>
                                 <DatePicker2 style={styles.rowInput} objectKey={'checkInTime'}
                                              customOnChange={changeHandlerDatePicker} label={'Check in Time'}
-                                             type={'time'}/>
+                                             type={'time'}
+                                             everythingOkValue={everythingOk.checkInTime}
+                                />
 
 
                                 <Input style={styles.rowInput}
@@ -711,10 +721,14 @@ function expenseForm({navigation}) {
 
                                 <DatePicker2 style={styles.rowInput} objectKey={'checkOutDate'}
                                              customOnChange={changeHandlerDatePicker} label={'Check out Date'}
-                                             type={'date'}/>
+                                             type={'date'}
+                                             everythingOkValue={everythingOk.checkOutDate}
+                                />
                                 <DatePicker2 style={styles.rowInput} objectKey={'checkOutTime'}
                                              customOnChange={changeHandlerDatePicker} label={'Check out Date'}
-                                             type={'time'}/>
+                                             type={'time'}
+                                             everythingOkValue={everythingOk.checkOutTime}
+                                />
 
                                 <Input style={styles.rowInput}
                                        onChangeText={changeHandlerInputs.bind(this, 'checkOutStation')}
@@ -1090,7 +1104,8 @@ function expenseForm({navigation}) {
 
                                         <DatePicker2 style={styles.rowInput} objectKey={'secondDriverBirthDate'}
                                                      customOnChange={changeHandlerDatePicker} label={'Date of Birth'}
-                                                     type={'date'}/>
+                                                     type={'date'}
+                                                     everythingOkValue={everythingOk.secondDriverBirthDate}/>
                                     </View>
 
                                     <View style={[styles.inputRow, {marginTop: 30}]}>
@@ -1116,11 +1131,13 @@ function expenseForm({navigation}) {
 
                                     <DatePicker2 style={styles.rowInput} objectKey={'secondDriverRegistrationDateIssue'}
                                                  customOnChange={changeHandlerDatePicker} label={'Date of issue'}
-                                                 type={'date'}/>
+                                                 type={'date'}
+                                                 everythingOkValue={everythingOk.secondDriverRegistrationDateIssue}/>
                                     <DatePicker2 style={styles.rowInput}
                                                  objectKey={'secondDriverRegistrationExpirationDate'}
                                                  customOnChange={changeHandlerDatePicker} label={'Exp. Date'}
-                                                 type={'date'}/>
+                                                 type={'date'}
+                                                 everythingOkValue={everythingOk.secondDriverRegistrationExpirationDate}/>
                                 </View>
                                 <View style={{height: '30%', marginVertical: 35}}>
                                     <Pressable onPress={() => {
