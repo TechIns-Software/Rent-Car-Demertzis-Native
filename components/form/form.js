@@ -395,31 +395,51 @@ function expenseForm({navigation}) {
                 [inputName]: inputValue
             }
         });
-        if (formInputs['checkInDate'] && formInputs['checkOutDate'] ){
-            console.log('im in')
-
-            let splitCheckInDate = formInputs['checkInDate'].split('-');
-            let splitCheckOutDate = formInputs['checkOutDate'].split('-');
-            let dateCheckIn = new Date(splitCheckInDate[2],splitCheckInDate[1],splitCheckInDate[0]);
-            let dateCheckOut = new Date(splitCheckOutDate[2],splitCheckOutDate[1],splitCheckOutDate[0]);
-            const diffInMs   = dateCheckOut - dateCheckIn;
-            const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
-            if (diffInDays > 0){
-                setFormInputs((prevValues) => {
-                    return {
-                        ...prevValues,
-                        ['days']: diffInDays
-                    }
-                });
+        setFormInputs((prevValues) => {
+            return {
+                ...prevValues,
+                [inputName]: inputValue
             }
-
-        }
+        });
         updateCalculatedDependentValuesAndChangeCriteria(inputName, inputValue);
     }
     function updateCalculatedDependentValuesAndChangeCriteria(inputName, inputValue) {
         var _total = 0;
         var _subTotal = 0;
-        if (inputName === 'days' || inputName === 'charges' || inputName === "cdw" || inputName === 'cdwAgree') {
+        let flagDaysChangedByDates = false;
+        if (inputName === 'checkInDate' || inputName === 'checkOutDate') {
+            console.log('im in');
+            let checkInDateTemp;
+            let checkOutDateTemp;
+            if (inputName === 'checkInDate') {
+                checkInDateTemp = inputValue;
+                checkOutDateTemp = formInputs['checkOutDate'];
+            } else {
+                checkInDateTemp = formInputs['checkInDate']
+                checkOutDateTemp = inputValue;
+            }
+
+            let splitCheckInDate = checkInDateTemp.split('-');
+            let splitCheckOutDate = checkOutDateTemp.split('-');
+            if (splitCheckInDate.length >= 3 && splitCheckOutDate.length >= 3) {
+                let dateCheckIn = new Date(splitCheckInDate[2],splitCheckInDate[1],splitCheckInDate[0]);
+                let dateCheckOut = new Date(splitCheckOutDate[2],splitCheckOutDate[1],splitCheckOutDate[0]);
+                const diffInMs   = dateCheckOut - dateCheckIn;
+                const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+                if (diffInDays > 0){
+                    flagDaysChangedByDates = diffInDays;
+                    setFormInputs((prevValues) => {
+                        return {
+                            ...prevValues,
+                            ['days']: diffInDays
+                        }
+                    });
+                }
+            }
+
+
+        }
+        if (inputName === 'days' || inputName === 'charges' || inputName === "cdw" || inputName === 'cdwAgree' || flagDaysChangedByDates !== false) {
             var _ = 0;
             if (formInputs['cdwAgree'] == '1') {
                 _ = 1;
@@ -436,6 +456,9 @@ function expenseForm({navigation}) {
             } else if (inputName === "cdwAgree") {
                 _total = (formInputs['days'] * (Number(formInputs['charges']) + inputValue * Number(formInputs['cdw']))).toString();
                 _subTotal = (formInputs['days'] * Number(formInputs['charges'])).toString();
+            } else if (flagDaysChangedByDates !== false) {
+                _total = (flagDaysChangedByDates * (Number(formInputs['charges']) + _ * Number(formInputs['cdw']))).toString();
+                _subTotal = (flagDaysChangedByDates * Number(formInputs['charges'])).toString();
             }
 
             setFormInputs((prevValues) => {
@@ -527,15 +550,20 @@ function expenseForm({navigation}) {
         return flag;
     }
 
-    function checkDates(checkInDate,checkOutDate){
+    function checkIfDatesAreResponsive(checkInDate,checkOutDate){
         let splitCheckInDate = checkInDate.split('-');
         let splitCheckOutDate = checkOutDate.split('-');
+        if (splitCheckInDate.length < 3 || splitCheckOutDate.length < 3){
+            Alert.alert('Problem with Dates', 'Please check the dates');
+            return true;
+        }
         let dateCheckIn = new Date(splitCheckInDate[2],splitCheckInDate[1],splitCheckInDate[0]);
         let dateCheckOut = new Date(splitCheckOutDate[2],splitCheckOutDate[1],splitCheckOutDate[0]);
         if (dateCheckOut < dateCheckIn ){
             Alert.alert('Problem with Dates', 'Check Out Date must larger than Check In Date');
-            return;
+            return true;
         }
+        return false;
 
     }
 
@@ -575,7 +603,9 @@ function expenseForm({navigation}) {
         }
 
         // Check if Check out Date is larger than Check In date
-        checkDates(formInputs['checkInDate'],formInputs['checkOutDate']);
+        if (checkIfDatesAreResponsive(formInputs['checkInDate'],formInputs['checkOutDate'])) {
+            return;
+        }
 
         if (!flag) {
             console.log('=============================');
@@ -993,7 +1023,7 @@ function expenseForm({navigation}) {
                             </View>
 
 
-                            <SubmitButton isDisabled={stateOfButton} onPress={checkDates} buttonText={'Form Submit'}/>
+                            <SubmitButton isDisabled={stateOfButton} onPress={checkInputs} buttonText={'Form Submit'}/>
 
                         </View>
 
