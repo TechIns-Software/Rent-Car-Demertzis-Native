@@ -395,6 +395,25 @@ function expenseForm({navigation}) {
                 [inputName]: inputValue
             }
         });
+        if (formInputs['checkInDate'] && formInputs['checkOutDate'] ){
+            console.log('im in')
+
+            let splitCheckInDate = formInputs['checkInDate'].split('-');
+            let splitCheckOutDate = formInputs['checkOutDate'].split('-');
+            let dateCheckIn = new Date(splitCheckInDate[2],splitCheckInDate[1],splitCheckInDate[0]);
+            let dateCheckOut = new Date(splitCheckOutDate[2],splitCheckOutDate[1],splitCheckOutDate[0]);
+            const diffInMs   = dateCheckOut - dateCheckIn;
+            const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+            if (diffInDays > 0){
+                setFormInputs((prevValues) => {
+                    return {
+                        ...prevValues,
+                        ['days']: diffInDays
+                    }
+                });
+            }
+
+        }
         updateCalculatedDependentValuesAndChangeCriteria(inputName, inputValue);
     }
     function updateCalculatedDependentValuesAndChangeCriteria(inputName, inputValue) {
@@ -508,6 +527,17 @@ function expenseForm({navigation}) {
         return flag;
     }
 
+    function checkDates(checkInDate,checkOutDate){
+        let splitCheckInDate = checkInDate.split('-');
+        let splitCheckOutDate = checkOutDate.split('-');
+        let dateCheckIn = new Date(splitCheckInDate[2],splitCheckInDate[1],splitCheckInDate[0]);
+        let dateCheckOut = new Date(splitCheckOutDate[2],splitCheckOutDate[1],splitCheckOutDate[0]);
+        if (dateCheckOut < dateCheckIn ){
+            Alert.alert('Problem with Dates', 'Check Out Date must larger than Check In Date');
+            return;
+        }
+
+    }
 
     async function checkInputs() {
         setStateOfButton(true);
@@ -543,6 +573,9 @@ function expenseForm({navigation}) {
                 return;
             }
         }
+
+        // Check if Check out Date is larger than Check In date
+        checkDates(formInputs['checkInDate'],formInputs['checkOutDate']);
 
         if (!flag) {
             console.log('=============================');
@@ -725,7 +758,7 @@ function expenseForm({navigation}) {
                                              everythingOkValue={everythingOk.checkOutDate}
                                 />
                                 <DatePicker2 style={styles.rowInput} objectKey={'checkOutTime'}
-                                             customOnChange={changeHandlerDatePicker} label={'Check out Date'}
+                                             customOnChange={changeHandlerDatePicker} label={'Check out Time'}
                                              type={'time'}
                                              everythingOkValue={everythingOk.checkOutTime}
                                 />
@@ -960,7 +993,7 @@ function expenseForm({navigation}) {
                             </View>
 
 
-                            <SubmitButton isDisabled={stateOfButton} onPress={checkInputs} buttonText={'Form Submit'}/>
+                            <SubmitButton isDisabled={stateOfButton} onPress={checkDates} buttonText={'Form Submit'}/>
 
                         </View>
 
