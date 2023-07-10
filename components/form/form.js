@@ -20,7 +20,7 @@ import { AutoComplete } from 'react-native-element-textinput';
 import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-dropdown'
 import {LocalDataSetExample} from "./LocalDataSetExample";
 import {StatusBar} from "expo-status-bar";
-import {cars,bike1,front_left1,rear_right1,top1} from "./data";
+import {cars, bike1, front_left1, rear_right1, top1, recommendedList} from "./data";
 
 function expenseForm({navigation}) {
 
@@ -736,17 +736,12 @@ function expenseForm({navigation}) {
 
                             <View style={styles.inputRow}>
                                 <LocalDataSetExample style={styles} label={'Registration No'}
-                                 onchangeText={changeHandlerInputs.bind(this, 'registrationNumber')}/>
+                                 onchangeText={changeHandlerInputs.bind(this, 'registrationNumber')} objectList={cars}/>
                             </View>
 
 
                             <View style={styles.inputRow}>
-                                {/*<Input style={styles.rowInput}*/}
-                                {/*       label={'Registration No'}*/}
-                                {/*       value={formInputs['registrationNumber']}*/}
-                                {/*       onChangeText={changeHandlerInputs.bind(this, 'registrationNumber')}*/}
-                                {/*       inputStyle={!everythingOk.registrationNumber ? styles.nullInput : ''}*/}
-                                {/*/>*/}
+
 
 
 
@@ -803,12 +798,15 @@ function expenseForm({navigation}) {
 
                             <View style={[styles.inputRow, {marginTop: 40}]}>
 
-                                <Input style={styles.rowInput}
-                                       onChangeText={changeHandlerInputs.bind(this, 'realRecommendedBy')}
-                                       label={'Recommended By'}
-                                       value={formInputs['realRecommendedBy']}
-                                       inputStyle={!everythingOk.realRecommendedBy ? styles.nullInput : ''}
-                                />
+                                {/*<Input style={styles.rowInput}*/}
+                                {/*       onChangeText={changeHandlerInputs.bind(this, 'realRecommendedBy')}*/}
+                                {/*       label={'Recommended By'}*/}
+                                {/*       value={formInputs['realRecommendedBy']}*/}
+                                {/*       inputStyle={!everythingOk.realRecommendedBy ? styles.nullInput : ''}*/}
+                                {/*/>*/}
+
+                                <LocalDataSetExample style={styles} label={'Recommended By'}
+                                                     onchangeText={changeHandlerInputs.bind(this, 'realRecommendedBy')} objectList={recommendedList}/>
                             </View>
 
                             <View style={[styles.inputRow, {marginBottom: 60}]}>

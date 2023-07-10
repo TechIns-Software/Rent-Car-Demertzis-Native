@@ -1,13 +1,14 @@
 import React, { memo, useMemo, useState } from 'react'
 import {StyleSheet, Text, View} from 'react-native'
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown'
-import {generateDataSet} from "./helpers";
-import {cars} from "./data";
+
 import {RFPercentage} from "react-native-responsive-fontsize";
 
-export const LocalDataSetExample = memo(({style,label,onchangeText}) => {
+export const LocalDataSetExample = memo(({style,label,onchangeText,objectList}) => {
 
-    const carNames = cars.map((car,index) => ( { id:index, title: car.registrationNumber.trim()}) );
+    // THE objectList  MUST BE THE SAME STRUCTURE TO WORK
+
+    const objectItems = objectList.map((item,index) => ( { id:index, title: item.registrationNumber.trim()}) );
 
     function giveValue(value){
         if (value !=null){
@@ -27,7 +28,7 @@ export const LocalDataSetExample = memo(({style,label,onchangeText}) => {
                 clearOnFocus={false}
                 closeOnBlur={true}
                 onSelectItem={giveValue}
-                dataSet={[...carNames]}
+                dataSet={[...objectItems]}
                 ItemSeparatorComponent={<View style={{ height: 1, width: '100%', backgroundColor: '#d8e1e6' }} />}
                 getItemLayout={(data, index) => ({ length: 50, offset: 50 * index, index })}
                 showChevron={true}
