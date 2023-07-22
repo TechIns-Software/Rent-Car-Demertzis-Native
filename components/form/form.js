@@ -798,15 +798,13 @@ function expenseForm({navigation}) {
 
                             <View style={[styles.inputRow, {marginTop: 40}]}>
 
-                                {/*<Input style={styles.rowInput}*/}
-                                {/*       onChangeText={changeHandlerInputs.bind(this, 'realRecommendedBy')}*/}
-                                {/*       label={'Recommended By'}*/}
-                                {/*       value={formInputs['realRecommendedBy']}*/}
-                                {/*       inputStyle={!everythingOk.realRecommendedBy ? styles.nullInput : ''}*/}
-                                {/*/>*/}
+                                <Input style={styles.rowInput}
+                                       onChangeText={changeHandlerInputs.bind(this, 'realRecommendedBy')}
+                                       label={'Recommended By'}
+                                       value={formInputs['realRecommendedBy']}
+                                       inputStyle={!everythingOk.realRecommendedBy ? styles.nullInput : ''}
+                                />
 
-                                <LocalDataSetExample style={styles} label={'Recommended By'}
-                                                     onchangeText={changeHandlerInputs.bind(this, 'realRecommendedBy')} objectList={recommendedList}/>
                             </View>
 
                             <View style={[styles.inputRow, {marginBottom: 60}]}>
