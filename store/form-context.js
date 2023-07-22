@@ -41,6 +41,9 @@ function  FormsContextProvider({children}){
         await storeData({[lastId + 1]:formInfo},Number(lastId+1).toString());
         if (hasInternet) {
             answer = await sendForm(data, formattedDate);
+            if (answer.uploadedOk == 1) {
+                await updateStatusWhenFormSubmittedSuccessfully();
+            }
         } else {
             answer.uploadedOk = 0;
         }
@@ -168,6 +171,19 @@ function  FormsContextProvider({children}){
             Alert.alert('Successful Upload', 'Form has successfully uploaded in the web');
         }
 
+    }
+
+    async  function updateStatusWhenFormSubmittedSuccessfully(){
+        const allForms = await getAllForms();
+        const length = Object.keys(allForms).length;
+        console.log(length);
+        console.log(allForms[Number(length - 1)]);
+        allForms[Number(length - 1)].isUploaded = 1;
+        console.log(allForms[Number(length - 1)]);
+        await AsyncStorage.removeItem('userForms');
+        const obj = JSON.stringify(allForms);
+        await AsyncStorage.setItem('userForms', obj);
+        //fixme: when the form statusis updates, the status shown is not updated
     }
 
     const value = {
