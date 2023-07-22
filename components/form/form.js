@@ -604,6 +604,7 @@ function expenseForm({navigation}) {
 
         // Check if Check out Date is larger than Check In date
         if (checkIfDatesAreResponsive(formInputs['checkInDate'],formInputs['checkOutDate'])) {
+            setStateOfButton(false);
             return;
         }
 

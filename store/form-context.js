@@ -30,11 +30,7 @@ function  FormsContextProvider({children}){
         const currentDate = new Date();
         const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth()+1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')} ${String(currentDate.getHours()).padStart(2, '0')}:${String(currentDate.getMinutes()).padStart(2, '0')}:${String(currentDate.getSeconds()).padStart(2, '0')}`;
         var answer = {};
-        if (hasInternet) {
-            answer = await sendForm(data, formattedDate);
-        } else {
-            answer.uploadedOk = 0;
-        }
+        answer.uploadedOk = 0;
         let lastId = await getLastId();
         const formInfo = {
             isUploaded: answer.uploadedOk ?? 0,
@@ -43,6 +39,11 @@ function  FormsContextProvider({children}){
         }
 
         await storeData({[lastId + 1]:formInfo},Number(lastId+1).toString());
+        if (hasInternet) {
+            answer = await sendForm(data, formattedDate);
+        } else {
+            answer.uploadedOk = 0;
+        }
         return answer;
 
     }
