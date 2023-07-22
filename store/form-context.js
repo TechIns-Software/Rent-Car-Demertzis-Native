@@ -22,11 +22,10 @@ function  FormsContextProvider({children}){
 
     async function saveLocal(data){
         // we check the connection START
-        const hasInternet = await NetInfo.fetch().then(state => {
-            return state.isConnected;
-        });
+        // const hasInternet = await NetInfo.fetch().then(state => {
+        //     return state.isConnected;
+        // });
         // we check the connection END
-
         const currentDate = new Date();
         const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth()+1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')} ${String(currentDate.getHours()).padStart(2, '0')}:${String(currentDate.getMinutes()).padStart(2, '0')}:${String(currentDate.getSeconds()).padStart(2, '0')}`;
         var answer = {};
@@ -39,15 +38,15 @@ function  FormsContextProvider({children}){
         }
 
         await storeData({[lastId + 1]:formInfo},Number(lastId+1).toString());
-        if (hasInternet) {
-            answer = await sendForm(data, formattedDate);
-            if (answer.uploadedOk == 1) {
-                await updateStatusWhenFormSubmittedSuccessfully();
-            }
-        } else {
-            answer.uploadedOk = 0;
-        }
-        return answer;
+        // if (hasInternet) {
+        //     answer = await sendForm(data, formattedDate);
+        //     if (answer.uploadedOk == 1) {
+        //         await updateStatusWhenFormSubmittedSuccessfully();
+        //     }
+        // } else {
+        //     answer.uploadedOk = 0;
+        // }
+        return true;
 
     }
 

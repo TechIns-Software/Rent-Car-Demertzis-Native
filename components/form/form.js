@@ -617,15 +617,20 @@ function expenseForm({navigation}) {
         } else {
             console.log(formInputs);
             const answer = await formCtx.saveLocal(formInputs);
-            if (answer.hasOwnProperty('uploadedOk')) {
-                if (answer['uploadedOk'] == '1') {
-                    Alert.alert('Form submission',"Successful Submission")
-                } else {
-                    Alert.alert('Form submission', "Failed to submit online, but saved locally")
-                }
+            if (answer) {
+                Alert.alert('Form Saved',"Form Saved Locally Succesful")
             } else {
                 Alert.alert('Unexepted error',"Something went wrong")
             }
+            // if (answer.hasOwnProperty('uploadedOk')) {
+            //     if (answer['uploadedOk'] == '1') {
+            //         Alert.alert('Form submission',"Successful Submission")
+            //     } else {
+            //         Alert.alert('Form submission', "Failed to submit online, but saved locally")
+            //     }
+            // } else {
+            //     Alert.alert('Unexepted error',"Something went wrong")
+            // }
             resetForm();
             setStateOfButton(false);
             await navigation.navigate('Homepage');
@@ -1020,7 +1025,7 @@ function expenseForm({navigation}) {
                             </View>
 
 
-                            <SubmitButton isDisabled={stateOfButton} onPress={checkInputs} buttonText={'Form Submit'}/>
+                            <SubmitButton isDisabled={stateOfButton} onPress={checkInputs} buttonText={'Save Form In Device'}/>
 
                         </View>
 
