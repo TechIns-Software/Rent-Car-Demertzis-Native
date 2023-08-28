@@ -107,6 +107,7 @@ function  FormsContextProvider({children}){
         //todo calculate digest
         const hashToken = adminObj['token'];
         const digest = "sadsad";
+        console.log('test_1');
 
         formInputs.action = "uploadForm";
         formInputs.idAdmin = idAdmin;
@@ -115,32 +116,39 @@ function  FormsContextProvider({children}){
         const timeUploaded = date;
         formInputs.timeUploaded = timeUploaded;
         const toUrlEncoded = (obj) => {
+            console.log('test_2');
             return Object
                 .keys(obj)
                 .map(
                     k => encodeURIComponent(k) + '=' + encodeURIComponent(obj[k]))
                 .join('&');
         }
-
+        console.log('test_3');
         const data = toUrlEncoded(formInputs);
         var myHeaders = new Headers();
         myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
         // myHeaders.append('Accept', 'application/json');
         var answer = 0;
+        console.log('test_4');
         try {
+            console.log('test_5');
             answer = await axios.post('https://a-omega.com.gr/admin/request/', data)
                 .then(function (response) {
+                    console.log('test_6');
                 return response.data
                 }).catch(function (error) {
+                    console.log('test_7');
                     console.log('error');
                     console.log(error);
                 });
         } catch (error){
+            console.log('test_8');
             const ans = {
                 "no-network": "1"
             };
             return ans
         }
+        console.log('test_9');
         return answer;
     }
 
