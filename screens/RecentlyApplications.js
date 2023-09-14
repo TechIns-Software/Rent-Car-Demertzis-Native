@@ -90,7 +90,7 @@ function RecentlyApplications(){
             refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
-            data={allFormsSaved}
+            data={allFormsSaved.reverse()}
             renderItem={renderApplications}
             keyExtractor={(item) =>  item.id}
         /> :<Text style={styles.text}>No forms available in the device !</Text> }
