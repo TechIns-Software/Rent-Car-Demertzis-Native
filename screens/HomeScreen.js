@@ -25,7 +25,7 @@ function HomeScreen (){
             <ImageBackground resizeMode={'contain'} style={ styles.image}  source={ require('../assets/img/logo.png')}>
             </ImageBackground>
         </View>
-        <Button title={'Test Download'} onPress={downloadTest}></Button>
+        {/*<Button title={'Test Download'} onPress={downloadTest}></Button>*/}
 
         <Text style={styles.title}>Welcome Back </Text>
     </View>

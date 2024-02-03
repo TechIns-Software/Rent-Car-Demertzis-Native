@@ -639,6 +639,16 @@ function expenseForm({navigation}) {
 
     }
 
+    async function saveDraft() {
+        const answer = await formCtx.saveLocal(formInputs);
+        if (answer) {
+            Alert.alert('Form Saved As Draft',"Form Saved Locally Succesfuly")
+        } else {
+            Alert.alert('Unexpected error draft',"Something went wrong")
+        }
+
+    }
+
 
     function RadioPressHandler(val) {
         setFormInputs((prevValues) => {
@@ -1024,8 +1034,12 @@ function expenseForm({navigation}) {
 
                             </View>
 
-
-                            <SubmitButton isDisabled={stateOfButton} onPress={checkInputs} buttonText={'Save Form In Device'}/>
+                            <View style={styles.submitContainer}>
+                                <SubmitButton isDisabled={stateOfButton} onPress={checkInputs}
+                                              buttonText={'Save Form In Device'}/>
+                                <SubmitButton  style={styles.draftBtn} onPress={saveDraft}
+                                              buttonText={'Save Form As Draft'}/>
+                            </View>
 
                         </View>
 
@@ -1350,6 +1364,15 @@ const styles = StyleSheet.create({
     labelStyle: { fontSize: 14 },
     placeholderStyle: { fontSize: 16 },
     textErrorStyle: { fontSize: 16 },
+    submitContainer :{
+        display:'flex',
+        justifyContent:'space-between',
+        flexDirection:'row'
+    },
+    draftBtn: {
+        backgroundColor: 'rgba(218,8,8,0.8)',
+    }
+
 
 
 })
