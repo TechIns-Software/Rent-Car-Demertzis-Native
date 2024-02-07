@@ -5,10 +5,10 @@ import {useContext} from "react";
 import {FormsContext} from "../store/form-context";
 
 
-function RecentlyBox({driverName,date,registrationNumber,isSent,id,onPressDelete,onUploadForm}) {
+function RecentlyBox({driverName,date,registrationNumber,isSent,id,onPressDelete,onUploadForm,onEdit}) {
     return <View style={styles.container}>
         <View style={styles.editContainer}>
-        {!isSent ? <Text ><Ionicons name={'create'} size={25} color={'red'}/></Text> : '' }
+        {!isSent ? <Text ><Ionicons name={'create'}  size={25} color={'red'}/></Text> : '' }
         </View>
 
         <View style={styles.info}>
