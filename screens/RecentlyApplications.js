@@ -2,17 +2,20 @@ import {Button, FlatList, Modal, Pressable, StyleSheet, Text, View,RefreshContro
 import RecentlyBox from '../components/RecentlyBox';
 import React, {createContext, useContext, useEffect, useState} from "react";
 import {FormsContext} from "../store/form-context";
+import Form from "../components/form/form";
 
 
 
 
 
 
-function RecentlyApplications(){
+function RecentlyApplications({navigation}){
     var [modalVisible, setModalVisible] = useState(false);
     var [RecentlyId,setRecentlyId] = useState(99);
     var [RecentlyIsSent,setRecentlyIsSent] = useState(false);
     const [allFormsSaved, setAllFormsSaved] = useState([]);
+    const [onEditPage,setonEditPage] = useState(false);
+    const [editedIdForm,setEditedIdForm] = useState(0);
     const formsCtx = useContext(FormsContext);
 
     const [refreshing, setRefreshing] = React.useState(false);
@@ -35,6 +38,7 @@ function RecentlyApplications(){
             isSent={applications.item.isSent}
             onPressDelete = {OnDeleteForm.bind(this,{id:Number(applications.item.id) ,isSent:applications.item.isSent})}
             onUploadForm = {onUploadForm.bind(this,{id:Number(applications.item.id) ,isSent:applications.item.isSent})}
+            onEdit = {onEditForm.bind(this,Number(applications.item.id))}
         />
 
     }
@@ -43,6 +47,11 @@ function RecentlyApplications(){
         setRecentlyId(formInfos.id)
         setRecentlyIsSent(formInfos.isSent)
         setModalVisible(!modalVisible)
+    }
+
+    function onEditForm(idForm){
+        console.log('im here');
+        navigation.navigate('EditFormScreen',{idForm:idForm})
     }
 
     async function deleteForm(formid){
@@ -104,7 +113,7 @@ function RecentlyApplications(){
             {/*All views of Modal*/}
             <View style = {styles.modal}>
                 {/*{View1 When form is uploaded}*/}
-                {RecentlyIsSent == true ?  <Text style = {styles.text}>Είσαι σίγουρος οτι θέλεις να διαγράψεις την φόρμα με id {RecentlyId} ? </Text> :
+                {RecentlyIsSent === true ?  <Text style = {styles.text}>Είσαι σίγουρος οτι θέλεις να διαγράψεις την φόρμα με id {RecentlyId} ? </Text> :
                 <Text style = {styles.text}>Η φόρμα με αριθμό :{RecentlyId} έχει αποθηκευτεί μόνο τοπικά. Θέλετε σίγουρα να το διαγράψετε ? </Text>}
 
                 <View style={styles.buttonsContainer}>

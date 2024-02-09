@@ -13,7 +13,8 @@ export  const FormsContext = createContext({
     previewForm :(idForm) =>{},
     allForms : ()=>{},
     deleteForm : (idForm)=>{},
-    uploadOfflineForm :  (idForm)=>{}
+    uploadOfflineForm :  (idForm)=>{},
+    getForm :  (idForm)=>{}
 });
 
 function  FormsContextProvider({children}){
@@ -193,12 +194,19 @@ function  FormsContextProvider({children}){
         //fixme: when the form statusis updates, the status shown is not updated
     }
 
+    async function getForm(idForm){
+        const allForms = await getAllForms();
+        const myForm = allForms[Number(idForm)].data;
+        return myForm;
+    }
+
     const value = {
         saveLocal :saveLocal,
         numberOfForms :numberOfForm,
         allForms : getAllForms,
         getAdmin : getAdmin,
         deleteForm :deleteForm,
+        getForm :getForm,
         uploadOfflineForm : uploadOfflineForm
     }
 
