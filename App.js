@@ -18,6 +18,7 @@ import IconButton from "./components/ui/IconButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import FormsContextProvider,{FormsContext} from "./store/form-context";
 import { AutocompleteDropdownContextProvider} from 'react-native-autocomplete-dropdown';
+import EditFormScreen from "./screens/EditFormScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -36,9 +37,20 @@ function AuthStack() {
         </Stack.Navigator>
     );
 }
+
+function RecentApplicationStack() {
+    return (
+        <Stack.Navigator
+            screenOptions={{
+            }}
+        >
+            <Stack.Screen name="Device Forms" component={RecentlyApplications} />
+            <Stack.Screen name="EditFormScreen" component={EditFormScreen} />
+        </Stack.Navigator>
+    );
+}
 function MyTabs() {
-    const authCtx = useContext(AuthContext);
-    const formCtx = useContext(FormsContext);
+
 
   return (
       <Tab.Navigator
@@ -52,7 +64,7 @@ function MyTabs() {
                     : 'ios-information-circle-outline';
               } else if (route.name === 'Create Form') {
                 iconName = focused ? 'ios-list' : 'ios-list-outline';
-              }else  if (route.name === 'Device Forms'){
+              }else  if (route.name === 'Forms'){
                 iconName = focused ? 'ios-folder' : 'ios-folder-outline';
               }else  if (route.name === 'Αποσύνδεση'){
                   iconName = focused ? 'ios-exit' : 'ios-exit-outline';
@@ -81,12 +93,10 @@ function MyTabs() {
 
 
                 /> }}  />
-        <Tab.Screen name="Device Forms" component={RecentlyApplications}               options={
-            { headerRight:({tintColor}) =><IconButton icon={'exit'}
-                                                          color={'red'}
-                                                          size={30}
+        <Tab.Screen name="Forms" component={RecentApplicationStack} options={{
+            headerShown: false
+        }}/>
 
-                /> }} />
       </Tab.Navigator>
   );
 }
