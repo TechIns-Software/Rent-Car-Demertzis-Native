@@ -21,9 +21,10 @@ import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-d
 import {LocalDataSetExample} from "./LocalDataSetExample";
 import {StatusBar} from "expo-status-bar";
 import {cars, bike1, front_left1, rear_right1, top1, recommendedList} from "./data";
+import SignatureModal from "./SignatureModal";
+import DamageModal from "./DamageModal";
 
-function expenseForm({navigation}) {
-
+function expenseForm({navigation,idForm}) {
     const initialState = {
         driverFullName: "",
         driverDateOfBirth: "",
@@ -408,7 +409,7 @@ function expenseForm({navigation}) {
         var _subTotal = 0;
         let flagDaysChangedByDates = false;
         if (inputName === 'checkInDate' || inputName === 'checkOutDate') {
-            console.log('im in');
+
             let checkInDateTemp;
             let checkOutDateTemp;
             if (inputName === 'checkInDate') {
@@ -469,7 +470,6 @@ function expenseForm({navigation}) {
                 }
             });
         } else if (inputName === 'registrationNumber') {
-            console.log(inputValue, inputValue != '', formInputs);
             setEveryThingOk((oldValues) => {
                 return {
                     ...oldValues,
@@ -609,13 +609,10 @@ function expenseForm({navigation}) {
         }
 
         if (!flag) {
-            console.log('=============================');
-            console.log(everythingOk);
             Alert.alert('Data problem', `You must fill the ${labels[emptyInput]} Input. `);
             // Alert.alert('Data problem', 'You must fill in some fields. Check the inputs');
             setStateOfButton(false);
         } else {
-            console.log(formInputs);
             const answer = await formCtx.saveLocal(formInputs);
             if (answer) {
                 Alert.alert('Form Saved',"Form Saved Locally Succesful")
@@ -647,6 +644,16 @@ function expenseForm({navigation}) {
             Alert.alert('Unexpected error draft',"Something went wrong")
         }
 
+    }
+
+
+    async function getDraftForm(idForm) {
+        const form = await formCtx.getForm(idForm);
+        setFormInputs(form);
+    }
+
+    if (idForm){
+        getDraftForm(idForm);
     }
 
 
@@ -1044,122 +1051,76 @@ function expenseForm({navigation}) {
                         </View>
 
                     </ScrollView>
+                    <SignatureModal
+                        modalTitle={'Client Signature'}
+                        defaultSignature={formInputs.signClient}
+                        styles={styles}
+                        modalVisible={modalVisible}
+                        setModalVisibility={() => { setModalVisible(!modalVisible); }}
+                        onOK={changeHandlerInputs.bind(this, 'signClient')}
+                    />
 
-                    <Modal
-                        animationType="slide"
-                        transparent={false}
-                        visible={modalVisible}
-                        onRequestClose={() => {
-                            setModalVisible(!modalVisible);
-                        }}>
+                    <SignatureModal
+                        modalTitle={'Signature for the card'}
+                        defaultSignature={formInputs.signCard}
+                        styles={styles}
+                        modalVisible={modalVisible2}
+                        setModalVisibility={() => { setModalVisible2(!modalVisible2); }}
+                        onOK={changeHandlerInputs.bind(this, 'signCard')}
+                    />
 
-                        <View style={styles.generalContainer}>
-                            <Text style={styles.titleText}> Client Signature</Text>
-                            <Sign onOK={changeHandlerInputs.bind(this, 'signClient')} value={formInputs.signClient}
-                                  onBack={() => setModalVisible(!modalVisible)}/>
-                        </View>
-                    </Modal>
+                    <DamageModal
+                        modalTitle={'Damage Record 1'}
+                        defaultDamage={formInputs.damage1}
+                        styles={styles}
+                        modalVisible={modalVisibleDamage1}
+                        setModalVisibility={() => { setModalVisibleDamage1(!modalVisibleDamage1); }}
+                        onOK={changeHandlerInputs.bind(this, 'damage1')}
+                        bgImage={front_left1}
+                        hasDamage={formInputs.damageIsOkBtn1}
+                        onchangeRadioButton={changeHandlerInputs.bind(this, 'damageIsOkBtn1')}
 
-                    <Modal
-                        animationType="slide"
-                        transparent={false}
-                        visible={modalVisible2}
-                        onRequestClose={() => {
-                            setModalVisible2(!modalVisible2);
-                        }}>
+                    />
 
-                        <View style={styles.generalContainer}>
-                            <Text style={styles.titleText}> Signature for the card</Text>
-                            <Sign onOK={changeHandlerInputs.bind(this, 'signCard')} value={formInputs.signCard}
-                                  onBack={() => setModalVisible2(!modalVisible2)}/>
+                    <DamageModal
+                        modalTitle={'Damage Record 2'}
+                        defaultDamage={formInputs.damage2}
+                        styles={styles}
+                        modalVisible={modalVisibleDamage2}
+                        setModalVisibility={() => { setModalVisibleDamage2(!modalVisibleDamage2); }}
+                        onOK={changeHandlerInputs.bind(this, 'damage2')}
+                        bgImage={rear_right1}
+                        hasDamage={formInputs.damageIsOkBtn2}
+                        onchangeRadioButton={changeHandlerInputs.bind(this, 'damageIsOkBtn2')}
 
-                        </View>
-                    </Modal>
+                    />
 
-                    <Modal
-                        animationType="slide"
-                        transparent={false}
-                        visible={modalVisibleDamage1}
-                        onRequestClose={() => {
-                            setModalVisibleDamage1(!modalVisibleDamage1);
-                        }}>
+                    <DamageModal
+                        modalTitle={'Damage Record 3'}
+                        defaultDamage={formInputs.damage3}
+                        styles={styles}
+                        modalVisible={modalVisibleDamage3}
+                        setModalVisibility={() => { setModalVisibleDamage3(!modalVisibleDamage3); }}
+                        onOK={changeHandlerInputs.bind(this, 'damage3')}
+                        bgImage={top1}
+                        hasDamage={formInputs.damageIsOkBtn3}
+                        onchangeRadioButton={changeHandlerInputs.bind(this, 'damageIsOkBtn3')}
 
-                        <View style={styles.generalContainer}>
-                            <Text style={styles.titleText}>Damage Record 1</Text>
-                            <Sign onOK={changeHandlerInputs.bind(this, 'damage1')}
-                                  bgImage={front_left1}
-                                  value={formInputs.damage1}
-                                  onBack={() => setModalVisibleDamage1(!modalVisibleDamage1)}
-                                  onDamage
-                                  hasDamage={formInputs.damageIsOkBtn1}
-                                  onchangeRadioButton={changeHandlerInputs.bind(this, 'damageIsOkBtn1')}
-                            />
+                    />
 
-                        </View>
-                    </Modal>
+                    <DamageModal
+                        modalTitle={'Damage Record Motto'}
+                        defaultDamage={formInputs.damage4}
+                        styles={styles}
+                        modalVisible={modalVisibleDamage4}
+                        setModalVisibility={() => { setModalVisibleDamage4(!modalVisibleDamage4); }}
+                        onOK={changeHandlerInputs.bind(this, 'damage4')}
+                        bgImage={bike1}
+                        hasDamage={formInputs.damageIsOkBtn4}
+                        onchangeRadioButton={changeHandlerInputs.bind(this, 'damageIsOkBtn4')}
 
-                    <Modal
-                        animationType="slide"
-                        transparent={false}
-                        visible={modalVisibleDamage2}
-                        onRequestClose={() => {
-                            setModalVisibleDamage2(!modalVisibleDamage2);
-                        }}>
+                    />
 
-                        <View style={styles.generalContainer}>
-                            <Text style={styles.titleText}>Damage Record 2</Text>
-                            <Sign onOK={changeHandlerInputs.bind(this, 'damage2')}
-                                  bgImage={rear_right1}
-                                  value={formInputs.damage2}
-                                  onBack={() => setModalVisibleDamage2(!modalVisibleDamage2)}
-                                  hasDamage={formInputs.damageIsOkBtn2}
-                                  onchangeRadioButton={changeHandlerInputs.bind(this, 'damageIsOkBtn2')}
-                            />
-
-                        </View>
-                    </Modal>
-
-                    <Modal
-                        animationType="slide"
-                        transparent={false}
-                        visible={modalVisibleDamage3}
-                        onRequestClose={() => {
-                            setModalVisibleDamage3(!modalVisibleDamage3);
-                        }}>
-                        <View style={styles.generalContainer}>
-                            <Text style={styles.titleText}>Damage Record 3</Text>
-                            <Sign onOK={changeHandlerInputs.bind(this, 'damage3')}
-                                  bgImage={top1}
-                                  value={formInputs.damage3}
-                                  onBack={() => setModalVisibleDamage3(!modalVisibleDamage3)}
-                                  hasDamage={formInputs.damageIsOkBtn3}
-                                  onchangeRadioButton={changeHandlerInputs.bind(this, 'damageIsOkBtn3')}
-
-                            />
-
-                        </View>
-                    </Modal>
-
-                    <Modal
-                        animationType="slide"
-                        transparent={false}
-                        visible={modalVisibleDamage4}
-                        onRequestClose={() => {
-                            setModalVisibleDamage4(!modalVisibleDamage4);
-                        }}>
-                        <View style={styles.generalContainer}>
-                            <Text style={styles.titleText}>Damage Record Motto</Text>
-                            <Sign
-                                onOK={changeHandlerInputs.bind(this, 'damage4')}
-                                bgImage={bike1}
-                                value={formInputs.damage4}
-                                onBack={() => setModalVisibleDamage4(!modalVisibleDamage4)}
-                                hasDamage={formInputs.damageIsOkBtn4}
-                                onchangeRadioButton={changeHandlerInputs.bind(this, 'damageIsOkBtn4')}
-                            />
-
-                        </View>
-                    </Modal>
 
 
                     <Modal
