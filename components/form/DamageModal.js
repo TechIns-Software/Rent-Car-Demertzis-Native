@@ -5,7 +5,7 @@ import {front_left1} from "./data";
 
 
 function DamageModal({defaultDamage,styles,modalVisible,setModalVisibility,
-                         onOK,modalTitle,bgImage,hasDamage,onchangeRadio}){
+                         onOK,modalTitle,bgImage,hasDamage,onchangeRadioButton}){
 
     return (
         <Modal
@@ -21,7 +21,7 @@ function DamageModal({defaultDamage,styles,modalVisible,setModalVisibility,
                       value={defaultDamage}
                       onBack={setModalVisibility}
                       hasDamage={hasDamage}
-                      onchangeRadioButton={onchangeRadio}
+                      onchangeRadioButton={onchangeRadioButton}
                 />
 
             </View>
