@@ -651,7 +651,7 @@ function expenseForm({navigation,idForm}) {
         } else {
             Alert.alert('Unexpected error draft',"Something went wrong")
         }
-
+        navigation.navigate('Forms');
     }
 
     async function saveChanges() {
@@ -662,7 +662,7 @@ function expenseForm({navigation,idForm}) {
             Alert.alert('Unexpected error draft with  Form changes',"Something went wrong")
         }
 
-        await  navigation.navigate('Forms');
+        await navigation.navigate('Forms');
 
     }
 

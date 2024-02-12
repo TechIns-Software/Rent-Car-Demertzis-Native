@@ -19,6 +19,7 @@ function RecentlyApplications({navigation}){
     const formsCtx = useContext(FormsContext);
 
     const [refreshing, setRefreshing] = React.useState(false);
+    const [functionCallFlag, setFunctionCallFlag] = useState(false);
 
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
@@ -47,28 +48,27 @@ function RecentlyApplications({navigation}){
         setRecentlyId(formInfos.id)
         setRecentlyIsSent(formInfos.isSent)
         setModalVisible(!modalVisible)
+        setFunctionCallFlag(prevFlag => !prevFlag);
     }
 
     function onEditForm(idForm){
-        console.log('im here');
-        navigation.navigate('EditFormScreen',{idForm:idForm})
+        navigation.navigate('EditFormScreen',{idForm:idForm});
+        setFunctionCallFlag(prevFlag => !prevFlag);
     }
 
     async function deleteForm(formid){
       await  formsCtx.deleteForm(formid)
-        setModalVisible(!modalVisible)
+        setModalVisible(!modalVisible);
+        setFunctionCallFlag(prevFlag => !prevFlag);
     }
 
     async function onUploadForm(formInfos){
         await  formsCtx.uploadOfflineForm(formInfos.id);
+        setFunctionCallFlag(prevFlag => !prevFlag);
     }
 
 
-
-
     useEffect(()=>{
-        function  getAllForms(){
-
         formsCtx.allForms().then((res) => {
             if (res == null){
                 setAllFormsSaved([]);
@@ -76,7 +76,6 @@ function RecentlyApplications({navigation}){
                 const newObj = [];
                 for (const [key, value] of Object.entries(res)) {
                     var tempInnerObj = {};
-
                     tempInnerObj.id = key
                     tempInnerObj.driverFullName = value.data.driverFullName
                     tempInnerObj.registrationNumber = value.data.registrationNumber
@@ -89,9 +88,8 @@ function RecentlyApplications({navigation}){
 
             }
         });
-        }
-        getAllForms();
-    },[formsCtx.numberOfForms,onUploadForm])
+
+    },[functionCallFlag])
 
 
     return <View style={styles.container} >

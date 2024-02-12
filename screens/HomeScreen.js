@@ -1,10 +1,13 @@
-import {Button, Image, ImageBackground, StyleSheet, Text, View} from 'react-native';
+import {Alert, Button, Image, ImageBackground, StyleSheet, Text, View} from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as FileSystem from 'expo-file-system';
 import {shareAsync} from  'expo-sharing';
+import {FormsContext} from "../store/form-context";
+import {useContext} from "react";
 
 
 function HomeScreen (){
+
 
     const downloadTest = async () =>{
     const filename = 'test.json';
@@ -18,6 +21,13 @@ function HomeScreen (){
     const save = async (uri) =>{
     shareAsync(uri)
     }
+
+    // async function all() {
+    //     const formsCtx = useContext(FormsContext);
+    //     const answer = await formsCtx.allForms()
+    //     console.log(answer)
+    // }
+     // all();
 
     return <View style={styles.container}>
 

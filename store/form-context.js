@@ -15,7 +15,7 @@ export  const FormsContext = createContext({
     deleteForm : (idForm)=>{},
     uploadOfflineForm :  (idForm)=>{},
     getForm :  (idForm)=>{},
-    updateLocalForm : (idForm)=>{}
+    updateLocalForm : (formInputs,editedFormId,creationDate)=>{}
 });
 
 function  FormsContextProvider({children}){
@@ -33,17 +33,17 @@ function  FormsContextProvider({children}){
             data :data,
             date:formattedDate
         }
-        await storeData({[lastId + 1]:formInfo},Number(lastId+1).toString());
-        return true;
+       const result =  await storeData({[lastId + 1]:formInfo},Number(lastId+1).toString(),null);
+        return result;
     }
 
-    async function storeData(obj, formNum,idForm = null) {
+    async function storeData(obj, formNum,idForm) {
 
         try {
             var jsonObj = JSON.stringify(obj);
             await AsyncStorage.setItem('numberOfForms', formNum);
             //When the form is not set we save local when idForm is set we update the draft
-            if (idForm != null){
+            if (idForm == null){
                 await AsyncStorage.mergeItem('userForms', jsonObj);
             }else {
                 const allForms = await getAllForms();
@@ -52,8 +52,10 @@ function  FormsContextProvider({children}){
                 const obj = JSON.stringify(allForms);
                 await AsyncStorage.setItem('userForms', obj);
             }
+            return true;
         } catch (e) {
             console.log(e)
+            return false;
         }
     }
     async function getLastId() {
