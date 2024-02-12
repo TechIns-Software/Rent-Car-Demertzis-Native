@@ -6,7 +6,7 @@ import {
     ScrollView,
     Modal,
     Pressable,
-    LogBox, SafeAreaView, useColorScheme, KeyboardAvoidingView
+    LogBox, SafeAreaView, useColorScheme, KeyboardAvoidingView, Platform
 } from "react-native";
 import Input from "./input";
 import RadioButtonCustom from "./radioButton";
@@ -132,6 +132,9 @@ function expenseForm({navigation,idForm}) {
     const [modalVisibleDamage4, setModalVisibleDamage4] = useState(false);
     const [stateOfButton,setStateOfButton] = useState(false);
     const [value, setValue] = useState('');
+    const [hasLoadedForm, setHasLoadedForm] = useState(false);
+    const [creationDate, setCreationDate] = useState('');
+    const [editedFormId, setEditedFormId] = useState(0);
 
     const RULES_INPUTS = {
         driverFullName: {
@@ -646,15 +649,27 @@ function expenseForm({navigation,idForm}) {
 
     }
 
+    async function saveChanges() {
+        const answer = await formCtx.updateLocalForm(formInputs,editedFormId,creationDate);
 
-    async function getDraftForm(idForm) {
-        const form = await formCtx.getForm(idForm);
-        setFormInputs(form);
     }
 
-    if (idForm){
-        getDraftForm(idForm);
-    }
+
+    useEffect(() => {
+        async function getDraftForm(idForm) {
+            const form = await formCtx.getForm(idForm);
+            setFormInputs(form.data);
+            setCreationDate(form.date)
+        }
+        if (idForm && !hasLoadedForm) {
+            getDraftForm(idForm);
+            setEditedFormId(idForm);
+        }
+        if (idForm){
+            setHasLoadedForm(true)
+        }
+    }, [idForm, hasLoadedForm]); // Only re-run the effect when idForm or hasLoadedForm changes
+
 
 
     function RadioPressHandler(val) {
@@ -1042,10 +1057,15 @@ function expenseForm({navigation,idForm}) {
                             </View>
 
                             <View style={styles.submitContainer}>
-                                <SubmitButton isDisabled={stateOfButton} onPress={checkInputs}
-                                              buttonText={'Save Form In Device'}/>
-                                <SubmitButton  style={styles.draftBtn} onPress={saveDraft}
-                                              buttonText={'Save Form As Draft'}/>
+                                {! idForm &&    <SubmitButton isDisabled={stateOfButton} onPress={checkInputs}
+                                                              buttonText={'Save Form In Device'}/>}
+
+                                {! idForm &&         <SubmitButton  style={styles.draftBtn} onPress={saveDraft}
+                                                                    buttonText={'Save Form As Draft'}/>}
+
+                                {idForm && <SubmitButton  style={styles.draftBtn} onPress={saveChanges}
+                                                               buttonText={'Save Changes'}/> }
+
                             </View>
 
                         </View>

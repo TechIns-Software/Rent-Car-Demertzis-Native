@@ -15,7 +15,7 @@ function RecentlyBox({driverName,date,registrationNumber,isSent,id,onPressDelete
             <Text style={styles.label}>Driver Name: {driverName}</Text>
             <Text style={styles.label}>Date:<Text style={styles.value}>{date} </Text></Text>
             <Text style={styles.label}>Registration No: {registrationNumber}</Text>
-            <Text style={styles.label}>Upload Status:{isSent ? <Text style={[styles.successText]}>Uploaded</Text> :
+            <Text style={styles.label}>Upload Status:  {isSent ? <Text style={[styles.successText]}>Uploaded</Text> :
                 <Text style={[styles.warningText]}>  Not uploaded</Text>}</Text>
         </View>
         <View style={styles.buttonsContainer}>

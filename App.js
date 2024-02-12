@@ -60,14 +60,14 @@ function MyTabs() {
 
               if (route.name === 'Homepage') {
                 iconName = focused
-                    ? 'ios-information-circle'
-                    : 'ios-information-circle-outline';
+                    ? 'home'
+                    : 'home-outline';
               } else if (route.name === 'Create Form') {
-                iconName = focused ? 'ios-list' : 'ios-list-outline';
+                iconName = focused ? 'add-circle' : 'add-circle-outline'
               }else  if (route.name === 'Forms'){
-                iconName = focused ? 'ios-folder' : 'ios-folder-outline';
+                iconName = focused ? 'list' : 'list-outline';
               }else  if (route.name === 'Αποσύνδεση'){
-                  iconName = focused ? 'ios-exit' : 'ios-exit-outline';
+                  iconName = focused ? 'exit' : 'exit-outline';
               }
 
               // You can return any component that you like here!
