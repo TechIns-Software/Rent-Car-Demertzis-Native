@@ -651,6 +651,13 @@ function expenseForm({navigation,idForm}) {
 
     async function saveChanges() {
         const answer = await formCtx.updateLocalForm(formInputs,editedFormId,creationDate);
+        if (answer) {
+            Alert.alert('Form changes Saved ',"Form changes Saved  Succesfuly")
+        } else {
+            Alert.alert('Unexpected error draft with  Form changes',"Something went wrong")
+        }
+
+        await  navigation.navigate('Forms');
 
     }
 

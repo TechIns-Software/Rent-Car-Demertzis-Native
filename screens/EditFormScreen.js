@@ -3,14 +3,13 @@ import { StyleSheet, Text, View } from 'react-native';
 import Form from "../components/form/form";
 import {FormsContext} from "../store/form-context";
 import {useContext} from "react";
-import LoadingOverlay from "../components/ui/LoadingOverlay";
+
 
 function EditFormScreen({route,navigation}){
     const { idForm} = route.params;
-    const formCtx = useContext(FormsContext) ;
-    const formInputs = formCtx.getForm(idForm);
+    const formCtx = useContext(FormsContext);
     return <View style={styles.container}>
-        <Form  idForm={idForm} />
+        <Form navigation={navigation}  idForm={idForm} />
     </View>
 }
 
