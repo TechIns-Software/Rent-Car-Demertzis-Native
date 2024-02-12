@@ -20,7 +20,7 @@ import { AutoComplete } from 'react-native-element-textinput';
 import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-dropdown'
 import {LocalDataSetExample} from "./LocalDataSetExample";
 import {StatusBar} from "expo-status-bar";
-import {cars, bike1, front_left1, rear_right1, top1, recommendedList} from "./data";
+import {cars, bike1, front_left1, rear_right1, top1,atv} from "./data";
 import SignatureModal from "./SignatureModal";
 import DamageModal from "./DamageModal";
 
@@ -68,10 +68,12 @@ function expenseForm({navigation,idForm}) {
         damage2: ".",
         damage3: ".",
         damage4: ".",
+        damage5: ".",
         damageIsOkBtn1: true,
         damageIsOkBtn2: true,
         damageIsOkBtn3: true,
         damageIsOkBtn4: true,
+        damageIsOkBtn5: true,
         fuel:""
     };
     const initialState2 = {
@@ -118,6 +120,7 @@ function expenseForm({navigation,idForm}) {
         damage2: false,
         damage3: false,
         damage4: false,
+        damage5: false,
         fuel: false,
         notes:false
     }
@@ -130,8 +133,9 @@ function expenseForm({navigation,idForm}) {
     const [modalVisibleDamage2, setModalVisibleDamage2] = useState(false);
     const [modalVisibleDamage3, setModalVisibleDamage3] = useState(false);
     const [modalVisibleDamage4, setModalVisibleDamage4] = useState(false);
+    const [modalVisibleDamage5, setModalVisibleDamage5] = useState(false);
     const [stateOfButton,setStateOfButton] = useState(false);
-    const [value, setValue] = useState('');
+
     const [hasLoadedForm, setHasLoadedForm] = useState(false);
     const [creationDate, setCreationDate] = useState('');
     const [editedFormId, setEditedFormId] = useState(0);
@@ -351,6 +355,7 @@ function expenseForm({navigation,idForm}) {
         damage2: "Damage Rear & Passenger-side",
         damage3: "Damage Car Roof",
         damage4: "Damage Motto",
+        damage5: "Damage Atv",
         fuel: "Fuel",
         notes :"Notes"
     }
@@ -1035,6 +1040,7 @@ function expenseForm({navigation,idForm}) {
                                 <Text style={styles.titleText}>
                                     Car Damages
                                 </Text>
+                                <View style={styles.damagesContainer} >
 
                                 <SubmitButton style={styles.damagesButton} buttonText={'Front and driver`s side '}
                                               onPress={() => {
@@ -1049,6 +1055,7 @@ function expenseForm({navigation,idForm}) {
                                 <SubmitButton style={styles.damagesButton} buttonText={' Car Roof'} onPress={() => {
                                     setModalVisibleDamage3(!modalVisibleDamage3)
                                 }}/>
+                                </View>
 
                             </View>
 
@@ -1059,6 +1066,17 @@ function expenseForm({navigation,idForm}) {
 
                                 <SubmitButton style={styles.damagesButton} buttonText={' Motto'} onPress={() => {
                                     setModalVisibleDamage4(!modalVisibleDamage4)
+                                }}/>
+
+                            </View>
+
+                            <View>
+                                <Text style={styles.titleText}>
+                                    Atv Damages
+                                </Text>
+
+                                <SubmitButton style={styles.damagesButton} buttonText={' Atv'} onPress={() => {
+                                    setModalVisibleDamage5(!modalVisibleDamage5)
                                 }}/>
 
                             </View>
@@ -1145,6 +1163,19 @@ function expenseForm({navigation,idForm}) {
                         bgImage={bike1}
                         hasDamage={formInputs.damageIsOkBtn4}
                         onchangeRadioButton={changeHandlerInputs.bind(this, 'damageIsOkBtn4')}
+
+                    />
+
+                    <DamageModal
+                        modalTitle={'Damage Record Atv'}
+                        defaultDamage={formInputs.damage5}
+                        styles={styles}
+                        modalVisible={modalVisibleDamage5}
+                        setModalVisibility={() => { setModalVisibleDamage5(!modalVisibleDamage5); }}
+                        onOK={changeHandlerInputs.bind(this, 'damage5')}
+                        bgImage={atv}
+                        hasDamage={formInputs.damageIsOkBtn5}
+                        onchangeRadioButton={changeHandlerInputs.bind(this, 'damageIsOkBtn5')}
 
                     />
 
@@ -1321,8 +1352,16 @@ const styles = StyleSheet.create({
         width: '35%',
         backgroundColor: '#ec6512',
     },
+    damagesContainer:{
+      display:'flex',
+      justifyContent:'space-between',
+        flexDirection:'row',
+        flexWrap:'wrap'
+    },
     damagesButton :{
-        width: '100%',
+        width: 180,
+        flex:1,
+        margin:"auto",
         backgroundColor: '#12015d',
         color:'white',
         marginVertical:5
