@@ -21,11 +21,13 @@ function RecentlyApplications({navigation}){
     const [refreshing, setRefreshing] = React.useState(false);
     const [functionCallFlag, setFunctionCallFlag] = useState(false);
 
+
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
         setTimeout(() => {
             setRefreshing(false);
         }, 2000);
+        setFunctionCallFlag(prevFlag => !prevFlag);
     }, []);
 
     function renderApplications(applications){
@@ -43,6 +45,7 @@ function RecentlyApplications({navigation}){
         />
 
     }
+
 
     function OnDeleteForm(formInfos){
         setRecentlyId(formInfos.id)
@@ -69,27 +72,31 @@ function RecentlyApplications({navigation}){
 
 
     useEffect(()=>{
-        formsCtx.allForms().then((res) => {
-            if (res == null){
-                setAllFormsSaved([]);
-            } else {
-                const newObj = [];
-                for (const [key, value] of Object.entries(res)) {
-                    var tempInnerObj = {};
-                    tempInnerObj.id = key
-                    tempInnerObj.driverFullName = value.data.driverFullName
-                    tempInnerObj.registrationNumber = value.data.registrationNumber
-                    tempInnerObj.isSent = value.isUploaded;
-                    tempInnerObj.date = value.date;
-                    // alreadyKeys.push(key);
-                    newObj.push(tempInnerObj);
+        async function getRecentlyForms() {
+         await   formsCtx.allForms().then((res) => {
+
+                if (res == null) {
+                    setAllFormsSaved([]);
+                } else {
+                    const newObj = [];
+                    for (const [key, value] of Object.entries(res)) {
+                        var tempInnerObj = {};
+                        tempInnerObj.id = key
+                        tempInnerObj.driverFullName = value.data.driverFullName
+                        tempInnerObj.registrationNumber = value.data.registrationNumber
+                        tempInnerObj.isSent = value.isUploaded;
+                        tempInnerObj.date = value.date;
+                        // alreadyKeys.push(key);
+                        newObj.push(tempInnerObj);
+                    }
+                    setAllFormsSaved(newObj);
+
                 }
-                setAllFormsSaved(newObj);
+            });
+        }
+        getRecentlyForms();
+    },[functionCallFlag]);
 
-            }
-        });
-
-    },[functionCallFlag])
 
 
     return <View style={styles.container} >

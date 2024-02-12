@@ -607,6 +607,10 @@ function expenseForm({navigation,idForm}) {
                 Alert.alert('Problem with car damage', 'Car Roof not filled in or not selected that is ok');
                 setStateOfButton(false);
                 return;
+            }else if (formInputs['damage5'] == "." && formInputs['damageIsOkBtn5']) {
+                Alert.alert('Problem with Atv damage', 'Atv damage not filled in or not selected that is ok');
+                setStateOfButton(false);
+                return;
             }
         }
 
@@ -621,11 +625,17 @@ function expenseForm({navigation,idForm}) {
             // Alert.alert('Data problem', 'You must fill in some fields. Check the inputs');
             setStateOfButton(false);
         } else {
-            const answer = await formCtx.saveLocal(formInputs);
+            // if is from new form do the same if is from draft give the idForm
+            if(!idForm){
+                var answer = await formCtx.saveLocal(formInputs);
+            }else {
+                var answer  = await formCtx.updateLocalForm(formInputs,editedFormId,creationDate);
+            }
+
             if (answer) {
-                Alert.alert('Form Saved',"Form Saved Locally Succesful")
+                Alert.alert('Form Saved',"Form Saved Locally Successfully")
             } else {
-                Alert.alert('Unexepted error',"Something went wrong")
+                Alert.alert('Unexpected error',"Something went wrong")
             }
             // if (answer.hasOwnProperty('uploadedOk')) {
             //     if (answer['uploadedOk'] == '1') {
@@ -651,7 +661,7 @@ function expenseForm({navigation,idForm}) {
         } else {
             Alert.alert('Unexpected error draft',"Something went wrong")
         }
-        navigation.navigate('Forms');
+        await navigation.navigate('Forms');
     }
 
     async function saveChanges() {
@@ -1082,8 +1092,8 @@ function expenseForm({navigation,idForm}) {
                             </View>
 
                             <View style={styles.submitContainer}>
-                                {! idForm &&    <SubmitButton isDisabled={stateOfButton} onPress={checkInputs}
-                                                              buttonText={'Save Form In Device'}/>}
+                               <SubmitButton isDisabled={stateOfButton} onPress={checkInputs}
+                                                              buttonText={'Save Form In Device'}/>
 
                                 {! idForm &&         <SubmitButton  style={styles.draftBtn} onPress={saveDraft}
                                                                     buttonText={'Save Form As Draft'}/>}

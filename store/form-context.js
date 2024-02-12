@@ -6,12 +6,13 @@ import {Alert} from "react-native";
 
 
 export  const FormsContext = createContext({
-    numberOfForms :0,
+    numberOfForms :1,
     saveLocal : (isUploaded,data)=>{},
     getAdmin : ()=>{},
     upload : ()=>{},
     previewForm :(idForm) =>{},
     allForms : ()=>{},
+    deleteAllForms : ()=>{},
     deleteForm : (idForm)=>{},
     uploadOfflineForm :  (idForm)=>{},
     getForm :  (idForm)=>{},
@@ -19,7 +20,7 @@ export  const FormsContext = createContext({
 });
 
 function  FormsContextProvider({children}){
-    const [numberOfForm,setNumberOfForms] = useState(0)
+    const [numberOfForms,setNumberOfForms] = useState(1)
 
 
     async function saveLocal(data){
@@ -76,12 +77,16 @@ function  FormsContextProvider({children}){
     }
 
     async function getAllForms() {
-        // this is for remove keys in local storage
-        // await AsyncStorage.removeItem('numberOfForms');
-        // await AsyncStorage.removeItem('userForms');
         return AsyncStorage.getItem('userForms').then((res) => {
             return JSON.parse(res);
         });
+    }
+
+    async function deleteAllForms() {
+        // this is for remove keys in local storage
+        await AsyncStorage.removeItem('numberOfForms');
+        await AsyncStorage.removeItem('userForms');
+        console.log('All Forms Deleted !')
     }
 
     async function getAdmin() {
@@ -207,8 +212,9 @@ function  FormsContextProvider({children}){
 
     const value = {
         saveLocal :saveLocal,
-        numberOfForms :numberOfForm,
+        numberOfForms :numberOfForms,
         allForms : getAllForms,
+        deleteAllForms : deleteAllForms,
         getAdmin : getAdmin,
         deleteForm :deleteForm,
         getForm :getForm,

@@ -8,7 +8,7 @@ import {useContext} from "react";
 
 function HomeScreen (){
 
-
+    const formsCtx = useContext(FormsContext);
     const downloadTest = async () =>{
     const filename = 'test.json';
     const result = await  FileSystem.downloadAsync(
@@ -22,12 +22,12 @@ function HomeScreen (){
     shareAsync(uri)
     }
 
-    // async function all() {
-    //     const formsCtx = useContext(FormsContext);
-    //     const answer = await formsCtx.allForms()
-    //     console.log(answer)
-    // }
-     // all();
+    async function deleteAllForms() {
+
+        const answer = await formsCtx.deleteAllForms();
+
+    }
+
 
     return <View style={styles.container}>
 
@@ -35,7 +35,7 @@ function HomeScreen (){
             <ImageBackground resizeMode={'contain'} style={ styles.image}  source={ require('../assets/img/logo.png')}>
             </ImageBackground>
         </View>
-        {/*<Button title={'Test Download'} onPress={downloadTest}></Button>*/}
+        <Button title={'Delete All Forms'} onPress={deleteAllForms}></Button>
 
         <Text style={styles.title}>Welcome Back </Text>
     </View>
