@@ -47,6 +47,7 @@ function  FormsContextProvider({children}){
             if (idForm == null){
                 await AsyncStorage.mergeItem('userForms', jsonObj);
             }else {
+                // TODO : fix the update of the form we get // in the local object with all forms
                 const allForms = await getAllForms();
                 allForms[Number(idForm)] =  jsonObj;
                 await AsyncStorage.removeItem('userForms');
