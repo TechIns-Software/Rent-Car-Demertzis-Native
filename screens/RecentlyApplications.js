@@ -74,7 +74,6 @@ function RecentlyApplications({navigation}){
     useEffect(()=>{
         async function getRecentlyForms() {
          await   formsCtx.allForms().then((res) => {
-
                 if (res == null) {
                     setAllFormsSaved([]);
                 } else {
@@ -86,7 +85,6 @@ function RecentlyApplications({navigation}){
                         tempInnerObj.registrationNumber = value.data.registrationNumber
                         tempInnerObj.isSent = value.isUploaded;
                         tempInnerObj.date = value.date;
-                        // alreadyKeys.push(key);
                         newObj.push(tempInnerObj);
                     }
                     setAllFormsSaved(newObj);
@@ -100,6 +98,7 @@ function RecentlyApplications({navigation}){
 
 
     return <View style={styles.container} >
+        <Button title={'Ανανεωση'} onPress={onRefresh}></Button>
         {allFormsSaved.length > 0 ?      <FlatList
             refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

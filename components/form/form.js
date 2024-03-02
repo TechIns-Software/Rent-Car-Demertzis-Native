@@ -672,7 +672,7 @@ function expenseForm({navigation,idForm}) {
             Alert.alert('Unexpected error draft with  Form changes',"Something went wrong")
         }
 
-        await navigation.navigate('Forms');
+        await navigation.navigate('Device Forms');
 
     }
 

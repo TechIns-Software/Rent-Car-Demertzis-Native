@@ -23,37 +23,26 @@ function  FormsContextProvider({children}){
     const [numberOfForms,setNumberOfForms] = useState(1)
 
 
-    async function saveLocal(data){
+    async function saveLocal(data) {
         const currentDate = new Date();
-        const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth()+1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')} ${String(currentDate.getHours()).padStart(2, '0')}:${String(currentDate.getMinutes()).padStart(2, '0')}:${String(currentDate.getSeconds()).padStart(2, '0')}`;
+        const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')} ${String(currentDate.getHours()).padStart(2, '0')}:${String(currentDate.getMinutes()).padStart(2, '0')}:${String(currentDate.getSeconds()).padStart(2, '0')}`;
         var answer = {};
         answer.uploadedOk = 0;
         let lastId = await getLastId();
         const formInfo = {
             isUploaded: answer.uploadedOk ?? 0,
-            data :data,
-            date:formattedDate
+            data: data,
+            date: formattedDate
         }
-       const result =  await storeData({[lastId + 1]:formInfo},Number(lastId+1).toString(),null);
+        const result = await storeData({[lastId + 1]: formInfo});
         return result;
     }
 
-    async function storeData(obj, formNum,idForm) {
+    async function storeData(obj) {
 
         try {
             var jsonObj = JSON.stringify(obj);
-            await AsyncStorage.setItem('numberOfForms', formNum);
-            //When the form is not set we save local when idForm is set we update the draft
-            if (idForm == null){
-                await AsyncStorage.mergeItem('userForms', jsonObj);
-            }else {
-                // TODO : fix the update of the form we get // in the local object with all forms
-                const allForms = await getAllForms();
-                allForms[Number(idForm)] =  jsonObj;
-                await AsyncStorage.removeItem('userForms');
-                const obj = JSON.stringify(allForms);
-                await AsyncStorage.setItem('userForms', obj);
-            }
+            await AsyncStorage.mergeItem('userForms', jsonObj);
             return true;
         } catch (e) {
             console.log(e)
@@ -159,8 +148,6 @@ function  FormsContextProvider({children}){
         await AsyncStorage.removeItem('userForms');
         const obj = JSON.stringify(allForms);
         await AsyncStorage.setItem('userForms', obj);
-        setNumberOfForms((prevValue) => Number(prevValue - 1));
-        await AsyncStorage.setItem('numberOfForms', numberOfForm.toString());
     }
 
     async  function uploadOfflineForm(formId){
@@ -200,14 +187,13 @@ function  FormsContextProvider({children}){
     }
 
     async function updateLocalForm(data,idForm,currentDate){
-        var answer = {};
-        answer.uploadedOk = 0;
         const formInfo = {
-            isUploaded: answer.uploadedOk ?? 0,
+            isUploaded: 0,
             data :data,
             date:currentDate
         }
-        await storeData({[idForm]:formInfo},Number(idForm).toString(),idForm);
+        await deleteForm(idForm);
+        await storeData({[idForm]:formInfo});
         return true;
     }
 

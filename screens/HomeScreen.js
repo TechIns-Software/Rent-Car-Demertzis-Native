@@ -23,9 +23,7 @@ function HomeScreen (){
     }
 
     async function deleteAllForms() {
-
         const answer = await formsCtx.deleteAllForms();
-
     }
 
 
