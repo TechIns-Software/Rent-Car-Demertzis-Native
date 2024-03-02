@@ -4,7 +4,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {RFPercentage} from "react-native-responsive-fontsize";
 import {Appearance} from 'react-native';
 
-const DatePicker2 = ({style, label, type, customOnChange, objectKey, everythingOkValue }) => {
+const DatePicker2 = ({style, label, type, customOnChange, objectKey, everythingOkValue,value }) => {
     const newDate = new Date();
 
     const [time,setTime] = useState('-------')
@@ -51,7 +51,7 @@ const DatePicker2 = ({style, label, type, customOnChange, objectKey, everythingO
             <Pressable onPress={showDatePicker}
                        style={!everythingOkValue ? styles.dateWithoutValue : styles.dateWithValue}>
                 {
-                    !everythingOkValue ?<Text> -----</Text> :  <Text>{type === 'date' ? date.toString() : time.toString()}</Text>
+                    !everythingOkValue ?<Text> {value}</Text> :  <Text>{type === 'date' ? date.toString() : time.toString()}</Text>
                 }
 
             </Pressable>

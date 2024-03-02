@@ -681,6 +681,7 @@ function expenseForm({navigation,idForm}) {
         async function getDraftForm(idForm) {
             const form = await formCtx.getForm(idForm);
             setFormInputs(form.data);
+            console.log(form.data.checkInDate)
             setCreationDate(form.date)
         }
         if (idForm && !hasLoadedForm) {
@@ -737,6 +738,7 @@ function expenseForm({navigation,idForm}) {
                                              customOnChange={changeHandlerDatePicker} label={'Date of Birth'}
                                              type={'date'}
                                              everythingOkValue={everythingOk.driverDateOfBirth}
+                                             value={formInputs['driverDateOfBirth']}
 
                                 />
 
@@ -770,11 +772,17 @@ function expenseForm({navigation,idForm}) {
                                 <DatePicker2 style={styles.rowInput} objectKey={'driverRegistrationDateIssue'}
                                              customOnChange={changeHandlerDatePicker} label={'Date of issue'}
                                              type={'date'}
-                                             everythingOkValue={everythingOk.driverRegistrationDateIssue}/>
+                                             everythingOkValue={everythingOk.driverRegistrationDateIssue}
+                                             value={formInputs['driverRegistrationDateIssue']}
+                                />
                                 <DatePicker2 style={styles.rowInput} objectKey={'driverRegistrationExpirationDate'}
                                              customOnChange={changeHandlerDatePicker} label={'Exp. Date'}
                                              type={'date'}
-                                             everythingOkValue={everythingOk.driverRegistrationExpirationDate}/>
+                                             everythingOkValue={everythingOk.driverRegistrationExpirationDate}
+                                             value={formInputs['driverRegistrationExpirationDate']}
+
+
+                                />
                             </View>
                             <Input label={'Email'}
                                    onChangeText={changeHandlerInputs.bind(this, 'email')}
@@ -820,11 +828,14 @@ function expenseForm({navigation,idForm}) {
                                 <DatePicker2 style={styles.rowInput} objectKey={'checkInDate'}
                                              customOnChange={changeHandlerDatePicker} label={'Check in Date'}
                                              type={'date'}
-                                             everythingOkValue={everythingOk.checkInDate}/>
+                                             everythingOkValue={everythingOk.checkInDate}
+                                                value={formInputs['checkInDate']}
+                                />
                                 <DatePicker2 style={styles.rowInput} objectKey={'checkInTime'}
                                              customOnChange={changeHandlerDatePicker} label={'Check in Time'}
                                              type={'time'}
                                              everythingOkValue={everythingOk.checkInTime}
+                                                value={formInputs['checkInTime']}
                                 />
 
 
@@ -841,11 +852,13 @@ function expenseForm({navigation,idForm}) {
                                              customOnChange={changeHandlerDatePicker} label={'Check out Date'}
                                              type={'date'}
                                              everythingOkValue={everythingOk.checkOutDate}
+                                                value={formInputs['checkOutDate']}
                                 />
                                 <DatePicker2 style={styles.rowInput} objectKey={'checkOutTime'}
                                              customOnChange={changeHandlerDatePicker} label={'Check out Time'}
                                              type={'time'}
                                              everythingOkValue={everythingOk.checkOutTime}
+                                                value={formInputs['checkOutTime']}
                                 />
 
                                 <Input style={styles.rowInput}
@@ -1213,7 +1226,9 @@ function expenseForm({navigation,idForm}) {
                                         <DatePicker2 style={styles.rowInput} objectKey={'secondDriverBirthDate'}
                                                      customOnChange={changeHandlerDatePicker} label={'Date of Birth'}
                                                      type={'date'}
-                                                     everythingOkValue={everythingOk.secondDriverBirthDate}/>
+                                                     everythingOkValue={everythingOk.secondDriverBirthDate}
+                                                     value={formInputs['secondDriverBirthDate']}
+                                        />
                                     </View>
 
                                     <View style={[styles.inputRow, {marginTop: 30}]}>
@@ -1240,12 +1255,18 @@ function expenseForm({navigation,idForm}) {
                                     <DatePicker2 style={styles.rowInput} objectKey={'secondDriverRegistrationDateIssue'}
                                                  customOnChange={changeHandlerDatePicker} label={'Date of issue'}
                                                  type={'date'}
-                                                 everythingOkValue={everythingOk.secondDriverRegistrationDateIssue}/>
+                                                 everythingOkValue={everythingOk.secondDriverRegistrationDateIssue}
+                                                    value={formInputs['secondDriverRegistrationDateIssue']}
+
+                                    />
                                     <DatePicker2 style={styles.rowInput}
                                                  objectKey={'secondDriverRegistrationExpirationDate'}
                                                  customOnChange={changeHandlerDatePicker} label={'Exp. Date'}
                                                  type={'date'}
-                                                 everythingOkValue={everythingOk.secondDriverRegistrationExpirationDate}/>
+                                                 everythingOkValue={everythingOk.secondDriverRegistrationExpirationDate}
+                                                    value={formInputs['secondDriverRegistrationExpirationDate']}
+
+                                    />
                                 </View>
                                 <View style={{height: '30%', marginVertical: 35}}>
                                     <Pressable onPress={() => {
