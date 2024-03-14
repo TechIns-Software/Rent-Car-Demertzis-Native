@@ -1,6 +1,5 @@
 import {createContext, useContext, useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import NetInfo from "@react-native-community/netinfo";
 import axios from "axios";
 import {Alert} from "react-native";
 
@@ -20,7 +19,7 @@ export  const FormsContext = createContext({
 });
 
 function  FormsContextProvider({children}){
-    const [numberOfForms,setNumberOfForms] = useState(1)
+    const [numberOfForms,setNumberOfForms] = useState(0)
 
 
     async function saveLocal(data) {
@@ -34,12 +33,12 @@ function  FormsContextProvider({children}){
             data: data,
             date: formattedDate
         }
-        const result = await storeData({[lastId + 1]: formInfo});
+        const result = await storeData({[lastId + 1]: formInfo}, lastId + 1);
         return result;
     }
 
-    async function storeData(obj) {
-
+    async function storeData(obj,numberOfForms ) {
+        await AsyncStorage.setItem('numberOfForms', numberOfForms.toString());
         try {
             var jsonObj = JSON.stringify(obj);
             await AsyncStorage.mergeItem('userForms', jsonObj);
@@ -193,7 +192,8 @@ function  FormsContextProvider({children}){
             date:currentDate
         }
         await deleteForm(idForm);
-        await storeData({[idForm]:formInfo});
+        let lastId = await getLastId();
+        await storeData({[lastId + 1]:formInfo},lastId + 1);
         return true;
     }
 
