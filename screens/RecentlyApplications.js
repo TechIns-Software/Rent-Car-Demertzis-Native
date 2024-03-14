@@ -40,7 +40,8 @@ function RecentlyApplications({navigation}){
             date={applications.item.date}
             isSent={applications.item.isSent}
             onPressDelete = {OnDeleteForm.bind(this,{id:Number(applications.item.id) ,isSent:applications.item.isSent})}
-            onUploadForm = {onUploadForm.bind(this,{id:Number(applications.item.id) ,isSent:applications.item.isSent})}
+            onUploadForm = {onUploadForm.bind(this,{id:Number(applications.item.id) ,isSent:applications.item.isSent,
+                isReadyToUpload:applications.item.isReady})}
             onEdit = {onEditForm.bind(this,Number(applications.item.id))}
         />
 
@@ -66,8 +67,13 @@ function RecentlyApplications({navigation}){
     }
 
     async function onUploadForm(formInfos){
-        await  formsCtx.uploadOfflineForm(formInfos.id);
-        setFunctionCallFlag(prevFlag => !prevFlag);
+
+        if (formInfos.isReadyToUpload){
+            await  formsCtx.uploadOfflineForm(formInfos.id);
+            setFunctionCallFlag(prevFlag => !prevFlag);
+        }else {
+            alert('Πρέπει να συμπληρωθούν κάποια στοιχεία για να γίνει η αποστολή της φόρμας.')
+        }
     }
 
 
@@ -84,6 +90,7 @@ function RecentlyApplications({navigation}){
                         tempInnerObj.driverFullName = value.data.driverFullName
                         tempInnerObj.registrationNumber = value.data.registrationNumber
                         tempInnerObj.isSent = value.isUploaded;
+                        tempInnerObj.isReady = value.data.isReady;
                         tempInnerObj.date = value.date;
                         newObj.push(tempInnerObj);
                     }

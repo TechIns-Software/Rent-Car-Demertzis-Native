@@ -26,6 +26,7 @@ import DamageModal from "./DamageModal";
 
 function expenseForm({navigation,idForm}) {
     const initialState = {
+        isReady: false,
         driverFullName: "",
         driverDateOfBirth: "",
         driverPhone: "",
@@ -627,6 +628,12 @@ function expenseForm({navigation,idForm}) {
         } else {
             // if is from new form do the same if is from draft give the idForm
             if(!idForm){
+                setFormInputs((prevValues) => {
+                    return {
+                        ...prevValues,
+                        ['isReady']: true
+                    }
+                });
                 var answer = await formCtx.saveLocal(formInputs);
             }else {
                 var answer  = await formCtx.updateLocalForm(formInputs,editedFormId,creationDate);
