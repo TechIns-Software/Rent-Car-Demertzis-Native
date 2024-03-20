@@ -33,6 +33,7 @@ function HomeScreen (){
             <ImageBackground resizeMode={'contain'} style={ styles.image}  source={ require('../assets/img/logo.png')}>
             </ImageBackground>
         </View>
+        {/*FIXME TO BE REMOVED*/}
         <Button title={'Delete All Forms'} onPress={deleteAllForms}></Button>
 
         <Text style={styles.title}>Welcome Back </Text>

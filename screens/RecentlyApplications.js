@@ -3,6 +3,7 @@ import RecentlyBox from '../components/RecentlyBox';
 import React, {createContext, useContext, useEffect, useState} from "react";
 import {FormsContext} from "../store/form-context";
 import Form from "../components/form/form";
+import {useFocusEffect} from "@react-navigation/native";
 
 
 
@@ -26,7 +27,7 @@ function RecentlyApplications({navigation}){
         setRefreshing(true);
         setTimeout(() => {
             setRefreshing(false);
-        }, 2000);
+        }, 500);
         setFunctionCallFlag(prevFlag => !prevFlag);
     }, []);
 
@@ -84,7 +85,7 @@ function RecentlyApplications({navigation}){
                     setAllFormsSaved([]);
                 } else {
                     const newObj = [];
-                    for (const [key, value] of Object.entries(res)) {
+                    for (const [key, value] of Object.entries(res).reverse()) {
                         var tempInnerObj = {};
                         tempInnerObj.id = key
                         tempInnerObj.driverFullName = value.data.driverFullName
@@ -102,10 +103,14 @@ function RecentlyApplications({navigation}){
         getRecentlyForms();
     },[functionCallFlag]);
 
-
+    useFocusEffect(
+        React.useCallback(() => {
+            onRefresh();
+        }, [])
+    );
 
     return <View style={styles.container} >
-        <Button title={'Ανανεωση'} onPress={onRefresh}></Button>
+        <Button title={'Ανανέωση'} onPress={onRefresh}></Button>
         {allFormsSaved.length > 0 ?      <FlatList
             refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

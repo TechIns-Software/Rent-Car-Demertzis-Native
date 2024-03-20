@@ -664,9 +664,11 @@ function expenseForm({navigation,idForm}) {
     async function saveDraft() {
         const answer = await formCtx.saveLocal(formInputs);
         if (answer) {
-            Alert.alert('Form Saved As Draft',"Form Saved Locally Succesfuly")
+            Alert.alert('Form Saved As Draft',"Form Saved Locally Successfully");
+            resetForm();
+            setStateOfButton(false);
         } else {
-            Alert.alert('Unexpected error draft',"Something went wrong")
+            Alert.alert('Unexpected error draft',"Something went wrong");
         }
         await navigation.navigate('Forms');
     }
@@ -674,7 +676,7 @@ function expenseForm({navigation,idForm}) {
     async function saveChanges() {
         const answer = await formCtx.updateLocalForm(formInputs,editedFormId,creationDate);
         if (answer) {
-            Alert.alert('Form changes Saved ',"Form changes Saved  Succesfuly")
+            Alert.alert('Form changes Saved ',"Form changes Saved  Successfully")
         } else {
             Alert.alert('Unexpected error draft with  Form changes',"Something went wrong")
         }
@@ -1113,7 +1115,7 @@ function expenseForm({navigation,idForm}) {
 
                             <View style={styles.submitContainer}>
                                <SubmitButton isDisabled={stateOfButton} onPress={checkInputs}
-                                                              buttonText={'Save Form In Device'}/>
+                                                              buttonText={'Save ready form'}/>
 
                                 {! idForm &&         <SubmitButton  style={styles.draftBtn} onPress={saveDraft}
                                                                     buttonText={'Save Form As Draft'}/>}
