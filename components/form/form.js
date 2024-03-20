@@ -596,23 +596,22 @@ function expenseForm({navigation,idForm}) {
 
         // # We check if the damages are ok, or not mandatory
         if (formInputs['damage4'] == "." && formInputs['damageIsOkBtn4']) {
-            if (formInputs['damage1'] == "." && formInputs['damageIsOkBtn1']){
-                Alert.alert('Problem with car damage', 'Front and driver\'s side not filled in or not selected that is ok');
-                setStateOfButton(false);
-                return;
-            } else if (formInputs['damage2'] == "." && formInputs['damageIsOkBtn2']) {
-                Alert.alert('Problem with car damage', 'Real and passenger side not filled in or not selected that is ok');
-                setStateOfButton(false);
-                return;
-            } else if (formInputs['damage3'] == "." && formInputs['damageIsOkBtn3']) {
-                Alert.alert('Problem with car damage', 'Car Roof not filled in or not selected that is ok');
-                setStateOfButton(false);
-                return;
-            }else if (formInputs['damage5'] == "." && formInputs['damageIsOkBtn5']) {
-                Alert.alert('Problem with Atv damage', 'Atv damage not filled in or not selected that is ok');
-                setStateOfButton(false);
-                return;
+            if (formInputs['damage5'] == "." && formInputs['damageIsOkBtn5']) {
+                if (formInputs['damage1'] == "." && formInputs['damageIsOkBtn1']){
+                    Alert.alert('Problem with car damage', 'Front and driver\'s side not filled in or not selected that is ok');
+                    setStateOfButton(false);
+                    return;
+                } else if (formInputs['damage2'] == "." && formInputs['damageIsOkBtn2']) {
+                    Alert.alert('Problem with car damage', 'Real and passenger side not filled in or not selected that is ok');
+                    setStateOfButton(false);
+                    return;
+                } else if (formInputs['damage3'] == "." && formInputs['damageIsOkBtn3']) {
+                    Alert.alert('Problem with car damage', 'Car Roof not filled in or not selected that is ok');
+                    setStateOfButton(false);
+                    return;
+                }
             }
+
         }
 
         // Check if Check out Date is larger than Check In date
