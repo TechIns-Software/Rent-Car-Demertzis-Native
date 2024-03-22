@@ -69,6 +69,7 @@ function  FormsContextProvider({children}){
         return AsyncStorage.getItem('userForms').then((res) => {
             return JSON.parse(res);
         });
+
     }
 
     async function deleteAllForms() {
@@ -160,10 +161,14 @@ function  FormsContextProvider({children}){
         await AsyncStorage.removeItem('userForms');
         const obj = JSON.stringify(allForms);
         await AsyncStorage.setItem('userForms', obj);
+        var message = '';
         if (answer.uploadedOk){
-            Alert.alert('Successful Upload', 'Form has successfully uploaded in the web');
+            message = "Form has successfully uploaded in the web";
+        }else {
+            message = "Form has not been uploaded in the web";
         }
 
+        return message
     }
 
     async  function updateStatusWhenFormSubmittedSuccessfully(){

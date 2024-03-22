@@ -5,7 +5,8 @@ import {useContext} from "react";
 import {FormsContext} from "../store/form-context";
 
 
-function RecentlyBox({driverName,date,registrationNumber,isSent,id,onPressDelete,onUploadForm,onEdit}) {
+function RecentlyBox({driverName,date,registrationNumber,isSent,id,onPressDelete,onUploadForm,onEdit ,isReadyToUpload}) {
+
     return <View style={styles.container}>
         <View style={styles.editContainer}>
         {!isSent ? <Text onPress={onEdit} ><Ionicons name={'create'}  size={25} color={'red'}/></Text> : '' }
@@ -19,7 +20,7 @@ function RecentlyBox({driverName,date,registrationNumber,isSent,id,onPressDelete
                 <Text style={[styles.warningText]}>  Not uploaded</Text>}</Text>
         </View>
         <View style={styles.buttonsContainer}>
-            { !isSent ?
+            { isReadyToUpload && !isSent ?
                 <Pressable onPress={onUploadForm} style={({pressed}) => ({
                     backgroundColor: pressed
                         ? '#3b8fff'

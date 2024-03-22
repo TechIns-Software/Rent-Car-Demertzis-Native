@@ -4,8 +4,21 @@ import React, {createContext, useContext, useEffect, useState} from "react";
 import {FormsContext} from "../store/form-context";
 import Form from "../components/form/form";
 import {useFocusEffect} from "@react-navigation/native";
+import LoadingSpinner from "../components/LoadingSpinner";
 
+function sortByDate(objectsArray) {
+    // Sort the array of objects by date
+    objectsArray.sort(function(a, b) {
+        // Convert the date strings to Date objects for comparison
+        var dateA = new Date(a.date);
+        var dateB = new Date(b.date);
 
+        // Compare the dates
+        return dateA - dateB;
+    });
+
+    return objectsArray;
+}
 
 
 
@@ -17,6 +30,7 @@ function RecentlyApplications({navigation}){
     const [allFormsSaved, setAllFormsSaved] = useState([]);
     const [onEditPage,setonEditPage] = useState(false);
     const [editedIdForm,setEditedIdForm] = useState(0);
+    const [isLoading,setIsLoading] = useState(true);
     const formsCtx = useContext(FormsContext);
 
     const [refreshing, setRefreshing] = React.useState(false);
@@ -43,6 +57,7 @@ function RecentlyApplications({navigation}){
             onPressDelete = {OnDeleteForm.bind(this,{id:Number(applications.item.id) ,isSent:applications.item.isSent})}
             onUploadForm = {onUploadForm.bind(this,{id:Number(applications.item.id) ,isSent:applications.item.isSent,
                 isReadyToUpload:applications.item.isReady})}
+            isReadyToUpload={applications.item.isReady}
             onEdit = {onEditForm.bind(this,Number(applications.item.id))}
         />
 
@@ -68,9 +83,13 @@ function RecentlyApplications({navigation}){
     }
 
     async function onUploadForm(formInfos){
-
         if (formInfos.isReadyToUpload){
-            await  formsCtx.uploadOfflineForm(formInfos.id);
+            const message = await  formsCtx.uploadOfflineForm(formInfos.id);
+            setIsLoading(true);
+            setTimeout(function() {
+                setIsLoading(false);
+                alert(message);
+            }, 5000);
             setFunctionCallFlag(prevFlag => !prevFlag);
         }else {
             alert('Πρέπει να συμπληρωθούν κάποια στοιχεία για να γίνει η αποστολή της φόρμας.')
@@ -85,7 +104,7 @@ function RecentlyApplications({navigation}){
                     setAllFormsSaved([]);
                 } else {
                     const newObj = [];
-                    for (const [key, value] of Object.entries(res).reverse()) {
+                    for (const [key, value] of Object.entries(res)) {
                         var tempInnerObj = {};
                         tempInnerObj.id = key
                         tempInnerObj.driverFullName = value.data.driverFullName
@@ -94,8 +113,13 @@ function RecentlyApplications({navigation}){
                         tempInnerObj.isReady = value.data.isReady;
                         tempInnerObj.date = value.date;
                         newObj.push(tempInnerObj);
+                        // console.log(value.data)
                     }
-                    setAllFormsSaved(newObj);
+
+                    var sortedArray = sortByDate(newObj);
+                    setAllFormsSaved(sortedArray.reverse());
+                    setIsLoading(false);
+
 
                 }
             });
@@ -109,17 +133,18 @@ function RecentlyApplications({navigation}){
         }, [])
     );
 
-    return <View style={styles.container} >
-        <Button title={'Ανανέωση'} onPress={onRefresh}></Button>
-        {allFormsSaved.length > 0 ?      <FlatList
+    return <View style={styles.container}>{isLoading && <LoadingSpinner/>}
+        { !isLoading &&
+       <View>
+        {allFormsSaved.length > 0 ? <FlatList
             refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
             }
-            data={allFormsSaved.reverse()}
+            data={allFormsSaved}
             renderItem={renderApplications}
-            keyExtractor={(item) =>  item.id}
-        /> :<Text style={styles.text}>No forms available in the device !</Text> }
-
+            keyExtractor={(item) => item.id}
+        /> : <Text style={styles.text}>No forms available in the device !</Text>}
+       </View>}
 
         <Modal
             animationType = {"fade"}
@@ -144,6 +169,7 @@ function RecentlyApplications({navigation}){
 
             </View>
         </Modal>
+
     </View>
 }
 const styles = StyleSheet.create({

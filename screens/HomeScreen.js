@@ -9,14 +9,14 @@ import {useContext} from "react";
 function HomeScreen (){
 
     const formsCtx = useContext(FormsContext);
-    const downloadTest = async () =>{
-    const filename = 'test.json';
-    const result = await  FileSystem.downloadAsync(
-    'https://techins.gr/demo/test.json',FileSystem.documentDirectory + filename
-    );
-    console.log(result);
-    save(result.uri)
-    }
+    // const downloadTest = async () =>{
+    // const filename = 'test.json';
+    // const result = await  FileSystem.downloadAsync(
+    // 'https://techins.gr/demo/test.json',FileSystem.documentDirectory + filename
+    // );
+    //
+    // save(result.uri)
+    // }
 
     const save = async (uri) =>{
     shareAsync(uri)
@@ -33,9 +33,6 @@ function HomeScreen (){
             <ImageBackground resizeMode={'contain'} style={ styles.image}  source={ require('../assets/img/logo.png')}>
             </ImageBackground>
         </View>
-        {/*FIXME TO BE REMOVED*/}
-        <Button title={'Delete All Forms'} onPress={deleteAllForms}></Button>
-
         <Text style={styles.title}>Welcome Back </Text>
     </View>
 }
