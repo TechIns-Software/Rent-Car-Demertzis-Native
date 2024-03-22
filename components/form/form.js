@@ -23,6 +23,7 @@ import {StatusBar} from "expo-status-bar";
 import {cars, bike1, front_left1, rear_right1, top1,atv} from "./data";
 import SignatureModal from "./SignatureModal";
 import DamageModal from "./DamageModal";
+import LoadingSpinner from "../LoadingSpinner";
 
 function expenseForm({navigation,idForm}) {
     const initialState = {
@@ -140,6 +141,7 @@ function expenseForm({navigation,idForm}) {
     const [hasLoadedForm, setHasLoadedForm] = useState(false);
     const [creationDate, setCreationDate] = useState('');
     const [editedFormId, setEditedFormId] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
 
     const RULES_INPUTS = {
         driverFullName: {
@@ -405,12 +407,6 @@ function expenseForm({navigation,idForm}) {
                 [inputName]: inputValue
             }
         });
-        setFormInputs((prevValues) => {
-            return {
-                ...prevValues,
-                [inputName]: inputValue
-            }
-        });
         updateCalculatedDependentValuesAndChangeCriteria(inputName, inputValue);
     }
     function updateCalculatedDependentValuesAndChangeCriteria(inputName, inputValue) {
@@ -490,6 +486,7 @@ function expenseForm({navigation,idForm}) {
     }
 
     function changeStateOfEverythingOk(inputName = null, inputValue = null) {
+
         setEveryThingOk((oldValues) => {
             const setTrueObj = {};
             for (const [key, value] of Object.entries(oldValues)) {
@@ -591,6 +588,7 @@ function expenseForm({navigation,idForm}) {
         if (formInputs['signClient'] == "." || formInputs['signCard'] == "."){
             Alert.alert('Problem with signatures', 'Both signatures are mandatory.');
             setStateOfButton(false);
+            formInputs['isReady'] = false;
             return;
         }
 
@@ -617,6 +615,7 @@ function expenseForm({navigation,idForm}) {
         // Check if Check out Date is larger than Check In date
         if (checkIfDatesAreResponsive(formInputs['checkInDate'],formInputs['checkOutDate'])) {
             setStateOfButton(false);
+            formInputs['isReady'] = false;
             return;
         }
 
@@ -624,34 +623,25 @@ function expenseForm({navigation,idForm}) {
             Alert.alert('Data problem', `You must fill the ${labels[emptyInput]} Input. `);
             // Alert.alert('Data problem', 'You must fill in some fields. Check the inputs');
             setStateOfButton(false);
+            formInputs['isReady'] = false;
         } else {
+            formInputs['isReady'] = true;
             // if is from new form do the same if is from draft give the idForm
+            setIsLoading(true);
             if(!idForm){
-                setFormInputs((prevValues) => {
-                    return {
-                        ...prevValues,
-                        ['isReady']: true
-                    }
-                });
                 var answer = await formCtx.saveLocal(formInputs);
             }else {
                 var answer  = await formCtx.updateLocalForm(formInputs,editedFormId,creationDate);
             }
 
             if (answer) {
+
                 Alert.alert('Form Saved',"Form Saved Locally Successfully")
             } else {
                 Alert.alert('Unexpected error',"Something went wrong")
             }
-            // if (answer.hasOwnProperty('uploadedOk')) {
-            //     if (answer['uploadedOk'] == '1') {
-            //         Alert.alert('Form submission',"Successful Submission")
-            //     } else {
-            //         Alert.alert('Form submission', "Failed to submit online, but saved locally")
-            //     }
-            // } else {
-            //     Alert.alert('Unexepted error',"Something went wrong")
-            // }
+            setIsLoading(false);
+
             resetForm();
             setStateOfButton(false);
             await navigation.navigate('Homepage');
@@ -662,6 +652,7 @@ function expenseForm({navigation,idForm}) {
 
     async function saveDraft() {
         const answer = await formCtx.saveLocal(formInputs);
+        setIsLoading(true);
         if (answer) {
             Alert.alert('Form Saved As Draft',"Form Saved Locally Successfully");
             resetForm();
@@ -669,16 +660,21 @@ function expenseForm({navigation,idForm}) {
         } else {
             Alert.alert('Unexpected error draft',"Something went wrong");
         }
+        setIsLoading(false);
         await navigation.navigate('Forms');
     }
 
     async function saveChanges() {
+        formInputs['isReady'] = false;
+        setIsLoading(true);
+
         const answer = await formCtx.updateLocalForm(formInputs,editedFormId,creationDate);
         if (answer) {
             Alert.alert('Form changes Saved ',"Form changes Saved  Successfully")
         } else {
             Alert.alert('Unexpected error draft with  Form changes',"Something went wrong")
         }
+        setIsLoading(false);
 
         await navigation.navigate('Device Forms');
 
@@ -689,7 +685,6 @@ function expenseForm({navigation,idForm}) {
         async function getDraftForm(idForm) {
             const form = await formCtx.getForm(idForm);
             setFormInputs(form.data);
-            console.log(form.data.checkInDate)
             setCreationDate(form.date)
         }
         if (idForm && !hasLoadedForm) {
@@ -724,6 +719,8 @@ function expenseForm({navigation,idForm}) {
 
     return <SafeAreaView style={(backgroundStyle, {flex: 1})}>
         <StatusBar/>
+        { isLoading && <LoadingSpinner/>}
+        { !isLoading &&
         <KeyboardAvoidingView
             style={{flex: 1}}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -1114,13 +1111,13 @@ function expenseForm({navigation,idForm}) {
 
                             <View style={styles.submitContainer}>
                                <SubmitButton isDisabled={stateOfButton} onPress={checkInputs}
-                                                              buttonText={'Save ready form'}/>
+                                                              buttonText={'Check & Save'}/>
 
                                 {! idForm &&         <SubmitButton  style={styles.draftBtn} onPress={saveDraft}
                                                                     buttonText={'Save Form As Draft'}/>}
 
                                 {idForm && <SubmitButton  style={styles.draftBtn} onPress={saveChanges}
-                                                               buttonText={'Save Changes'}/> }
+                                                               buttonText={'Save Draft'}/> }
 
                             </View>
 
@@ -1291,6 +1288,7 @@ function expenseForm({navigation,idForm}) {
                 </View>
             </AutocompleteDropdownContextProvider>
         </KeyboardAvoidingView>
+        }
     </SafeAreaView>
 }
 
