@@ -1,15 +1,15 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, View, Text, StyleSheet, Pressable} from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {RFPercentage} from "react-native-responsive-fontsize";
 import {Appearance} from 'react-native';
 
 const DatePicker2 = ({style, label, type, customOnChange, objectKey, everythingOkValue,value }) => {
-    const newDate = new Date();
+    console.log(value)
 
-    const [time,setTime] = useState('-------')
-    const [date,setDate] = useState('-------')
-    const [isDateSet,setIsDateSet] = useState('')
+    const [time,setTime] = useState(value)
+    const [date,setDate] = useState(value)
+    const [isDateSet,setIsDateSet] = useState(value)
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const showDatePicker = () => {
         setDatePickerVisibility(true);
@@ -51,7 +51,7 @@ const DatePicker2 = ({style, label, type, customOnChange, objectKey, everythingO
             <Pressable onPress={showDatePicker}
                        style={!everythingOkValue ? styles.dateWithoutValue : styles.dateWithValue}>
                 {
-                    !everythingOkValue ?<Text> {value}</Text> :  <Text>{type === 'date' ? date.toString() : time.toString()}</Text>
+                  <Text>{value} </Text>
                 }
 
             </Pressable>
