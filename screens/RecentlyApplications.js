@@ -2,26 +2,47 @@ import {Button, FlatList, Modal, Pressable, StyleSheet, Text, View,RefreshContro
 import RecentlyBox from '../components/RecentlyBox';
 import React, {createContext, useContext, useEffect, useState} from "react";
 import {FormsContext} from "../store/form-context";
+import Form from "../components/form/form";
+import {useFocusEffect} from "@react-navigation/native";
+import LoadingSpinner from "../components/LoadingSpinner";
+
+function sortByDate(objectsArray) {
+    // Sort the array of objects by date
+    objectsArray.sort(function(a, b) {
+        // Convert the date strings to Date objects for comparison
+        var dateA = new Date(a.date);
+        var dateB = new Date(b.date);
+
+        // Compare the dates
+        return dateA - dateB;
+    });
+
+    return objectsArray;
+}
 
 
 
 
-
-
-function RecentlyApplications(){
+function RecentlyApplications({navigation}){
     var [modalVisible, setModalVisible] = useState(false);
     var [RecentlyId,setRecentlyId] = useState(99);
     var [RecentlyIsSent,setRecentlyIsSent] = useState(false);
     const [allFormsSaved, setAllFormsSaved] = useState([]);
+    const [onEditPage,setonEditPage] = useState(false);
+    const [editedIdForm,setEditedIdForm] = useState(0);
+    const [isLoading,setIsLoading] = useState(true);
     const formsCtx = useContext(FormsContext);
 
     const [refreshing, setRefreshing] = React.useState(false);
+    const [functionCallFlag, setFunctionCallFlag] = useState(false);
+
 
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
         setTimeout(() => {
             setRefreshing(false);
-        }, 2000);
+        }, 500);
+        setFunctionCallFlag(prevFlag => !prevFlag);
     }, []);
 
     function renderApplications(applications){
@@ -34,67 +55,96 @@ function RecentlyApplications(){
             date={applications.item.date}
             isSent={applications.item.isSent}
             onPressDelete = {OnDeleteForm.bind(this,{id:Number(applications.item.id) ,isSent:applications.item.isSent})}
-            onUploadForm = {onUploadForm.bind(this,{id:Number(applications.item.id) ,isSent:applications.item.isSent})}
+            onUploadForm = {onUploadForm.bind(this,{id:Number(applications.item.id) ,isSent:applications.item.isSent,
+                isReadyToUpload:applications.item.isReady})}
+            isReadyToUpload={applications.item.isReady}
+            onEdit = {onEditForm.bind(this,Number(applications.item.id))}
         />
 
     }
+
 
     function OnDeleteForm(formInfos){
         setRecentlyId(formInfos.id)
         setRecentlyIsSent(formInfos.isSent)
         setModalVisible(!modalVisible)
+        setFunctionCallFlag(prevFlag => !prevFlag);
+    }
+
+    function onEditForm(idForm){
+        navigation.navigate('EditFormScreen',{idForm:idForm});
+        setFunctionCallFlag(prevFlag => !prevFlag);
     }
 
     async function deleteForm(formid){
       await  formsCtx.deleteForm(formid)
-        setModalVisible(!modalVisible)
+        setModalVisible(!modalVisible);
+        setFunctionCallFlag(prevFlag => !prevFlag);
     }
 
     async function onUploadForm(formInfos){
-        await  formsCtx.uploadOfflineForm(formInfos.id);
+        if (formInfos.isReadyToUpload){
+            const message = await  formsCtx.uploadOfflineForm(formInfos.id);
+            setIsLoading(true);
+            setTimeout(function() {
+                setIsLoading(false);
+                alert(message);
+            }, 5000);
+            setFunctionCallFlag(prevFlag => !prevFlag);
+        }else {
+            alert('Πρέπει να συμπληρωθούν κάποια στοιχεία για να γίνει η αποστολή της φόρμας.')
+        }
     }
 
 
-
-
     useEffect(()=>{
-        function  getAllForms(){
+        async function getRecentlyForms() {
+         await   formsCtx.allForms().then((res) => {
+                if (res == null) {
+                    setAllFormsSaved([]);
+                } else {
+                    const newObj = [];
+                    for (const [key, value] of Object.entries(res)) {
+                        var tempInnerObj = {};
+                        tempInnerObj.id = key
+                        tempInnerObj.driverFullName = value.data.driverFullName
+                        tempInnerObj.registrationNumber = value.data.registrationNumber
+                        tempInnerObj.isSent = value.isUploaded;
+                        tempInnerObj.isReady = value.data.isReady;
+                        tempInnerObj.date = value.date;
+                        newObj.push(tempInnerObj);
+                        // console.log(value.data)
+                    }
 
-        formsCtx.allForms().then((res) => {
-            if (res == null){
-                setAllFormsSaved([]);
-            } else {
-                const newObj = [];
-                for (const [key, value] of Object.entries(res)) {
-                    var tempInnerObj = {};
+                    var sortedArray = sortByDate(newObj);
+                    setAllFormsSaved(sortedArray.reverse());
+                    setIsLoading(false);
 
-                    tempInnerObj.id = key
-                    tempInnerObj.driverFullName = value.data.driverFullName
-                    tempInnerObj.registrationNumber = value.data.registrationNumber
-                    tempInnerObj.isSent = value.isUploaded;
-                    tempInnerObj.date = value.date;
-                    // alreadyKeys.push(key);
-                    newObj.push(tempInnerObj);
+
                 }
-                setAllFormsSaved(newObj);
-
-            }
-        });
+            });
         }
-        getAllForms();
-    },[formsCtx.numberOfForms,onUploadForm])
+        getRecentlyForms();
+    },[functionCallFlag]);
 
+    useFocusEffect(
+        React.useCallback(() => {
+            onRefresh();
+        }, [])
+    );
 
-    return <View style={styles.container} >
-        {allFormsSaved.length > 0 ?      <FlatList
+    return <View style={styles.container}>{isLoading && <LoadingSpinner/>}
+        { !isLoading &&
+       <View>
+        {allFormsSaved.length > 0 ? <FlatList
             refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
             }
-            data={allFormsSaved.reverse()}
+            data={allFormsSaved}
             renderItem={renderApplications}
-            keyExtractor={(item) =>  item.id}
-        /> :<Text style={styles.text}>No forms available in the device !</Text> }
-
+            keyExtractor={(item) => item.id}
+        /> : <Text style={styles.text}>No forms available in the device !</Text>}
+       </View>}
 
         <Modal
             animationType = {"fade"}
@@ -104,7 +154,7 @@ function RecentlyApplications(){
             {/*All views of Modal*/}
             <View style = {styles.modal}>
                 {/*{View1 When form is uploaded}*/}
-                {RecentlyIsSent == true ?  <Text style = {styles.text}>Είσαι σίγουρος οτι θέλεις να διαγράψεις την φόρμα με id {RecentlyId} ? </Text> :
+                {RecentlyIsSent === true ?  <Text style = {styles.text}>Είσαι σίγουρος οτι θέλεις να διαγράψεις την φόρμα με id {RecentlyId} ? </Text> :
                 <Text style = {styles.text}>Η φόρμα με αριθμό :{RecentlyId} έχει αποθηκευτεί μόνο τοπικά. Θέλετε σίγουρα να το διαγράψετε ? </Text>}
 
                 <View style={styles.buttonsContainer}>
@@ -119,6 +169,7 @@ function RecentlyApplications(){
 
             </View>
         </Modal>
+
     </View>
 }
 const styles = StyleSheet.create({

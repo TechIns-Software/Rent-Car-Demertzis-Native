@@ -1,66 +1,51 @@
 import {createContext, useContext, useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import NetInfo from "@react-native-community/netinfo";
 import axios from "axios";
 import {Alert} from "react-native";
 
 
 export  const FormsContext = createContext({
-    numberOfForms :0,
+    numberOfForms :1,
     saveLocal : (isUploaded,data)=>{},
     getAdmin : ()=>{},
     upload : ()=>{},
     previewForm :(idForm) =>{},
     allForms : ()=>{},
+    deleteAllForms : ()=>{},
     deleteForm : (idForm)=>{},
-    uploadOfflineForm :  (idForm)=>{}
+    uploadOfflineForm :  (idForm)=>{},
+    getForm :  (idForm)=>{},
+    updateLocalForm : (formInputs,editedFormId,creationDate)=>{}
 });
 
 function  FormsContextProvider({children}){
-    const [numberOfForm,setNumberOfForms] = useState(0)
+    const [numberOfForms,setNumberOfForms] = useState(0)
 
 
-    async function saveLocal(data){
-        // we check the connection START
-        // const hasInternet = await NetInfo.fetch().then(state => {
-        //     return state.isConnected;
-        // });
-        // we check the connection END
+    async function saveLocal(data) {
         const currentDate = new Date();
-        const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth()+1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')} ${String(currentDate.getHours()).padStart(2, '0')}:${String(currentDate.getMinutes()).padStart(2, '0')}:${String(currentDate.getSeconds()).padStart(2, '0')}`;
+        const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')} ${String(currentDate.getHours()).padStart(2, '0')}:${String(currentDate.getMinutes()).padStart(2, '0')}:${String(currentDate.getSeconds()).padStart(2, '0')}`;
         var answer = {};
         answer.uploadedOk = 0;
         let lastId = await getLastId();
         const formInfo = {
             isUploaded: answer.uploadedOk ?? 0,
-            data :data,
-            date:formattedDate
+            data: data,
+            date: formattedDate
         }
-
-        await storeData({[lastId + 1]:formInfo},Number(lastId+1).toString());
-        // if (hasInternet) {
-        //     answer = await sendForm(data, formattedDate);
-        //     if (answer.uploadedOk == 1) {
-        //         await updateStatusWhenFormSubmittedSuccessfully();
-        //     }
-        // } else {
-        //     answer.uploadedOk = 0;
-        // }
-        return true;
-
+        const result = await storeData({[lastId + 1]: formInfo}, lastId + 1);
+        return result;
     }
 
-    async function storeData(obj, formNum) {
-
+    async function storeData(obj,numberOfForms ) {
+        await AsyncStorage.setItem('numberOfForms', numberOfForms.toString());
         try {
-            const jsonObj = JSON.stringify(obj);
-
-            await AsyncStorage.setItem('numberOfForms', formNum);
+            var jsonObj = JSON.stringify(obj);
             await AsyncStorage.mergeItem('userForms', jsonObj);
-
-
+            return true;
         } catch (e) {
             console.log(e)
+            return false;
         }
     }
     async function getLastId() {
@@ -81,12 +66,17 @@ function  FormsContextProvider({children}){
     }
 
     async function getAllForms() {
-        // this is for remove keys in local storage
-        // await AsyncStorage.removeItem('numberOfForms');
-        // await AsyncStorage.removeItem('userForms');
         return AsyncStorage.getItem('userForms').then((res) => {
             return JSON.parse(res);
         });
+
+    }
+
+    async function deleteAllForms() {
+        // this is for remove keys in local storage
+        await AsyncStorage.removeItem('numberOfForms');
+        await AsyncStorage.removeItem('userForms');
+        console.log('All Forms Deleted !')
     }
 
     async function getAdmin() {
@@ -154,13 +144,10 @@ function  FormsContextProvider({children}){
 
     async function deleteForm(idForm){
         const allForms = await getAllForms();
-
         delete allForms[Number(idForm)];
         await AsyncStorage.removeItem('userForms');
         const obj = JSON.stringify(allForms);
         await AsyncStorage.setItem('userForms', obj);
-        setNumberOfForms((prevValue) => Number(prevValue - 1));
-        await AsyncStorage.setItem('numberOfForms', numberOfForm.toString());
     }
 
     async  function uploadOfflineForm(formId){
@@ -174,10 +161,14 @@ function  FormsContextProvider({children}){
         await AsyncStorage.removeItem('userForms');
         const obj = JSON.stringify(allForms);
         await AsyncStorage.setItem('userForms', obj);
+        var message = '';
         if (answer.uploadedOk){
-            Alert.alert('Successful Upload', 'Form has successfully uploaded in the web');
+            message = "Form has successfully uploaded in the web";
+        }else {
+            message = "Form has not been uploaded in the web";
         }
 
+        return message
     }
 
     async  function updateStatusWhenFormSubmittedSuccessfully(){
@@ -193,13 +184,34 @@ function  FormsContextProvider({children}){
         //fixme: when the form statusis updates, the status shown is not updated
     }
 
+    async function getForm(idForm){
+        const allForms = await getAllForms();
+        const myForm = allForms[Number(idForm)];
+        return myForm;
+    }
+
+    async function updateLocalForm(data,idForm,currentDate){
+        const formInfo = {
+            isUploaded: 0,
+            data :data,
+            date:currentDate
+        }
+        await deleteForm(idForm);
+        let lastId = await getLastId();
+        await storeData({[lastId + 1]:formInfo},lastId + 1);
+        return true;
+    }
+
     const value = {
         saveLocal :saveLocal,
-        numberOfForms :numberOfForm,
+        numberOfForms :numberOfForms,
         allForms : getAllForms,
+        deleteAllForms : deleteAllForms,
         getAdmin : getAdmin,
         deleteForm :deleteForm,
-        uploadOfflineForm : uploadOfflineForm
+        getForm :getForm,
+        uploadOfflineForm : uploadOfflineForm,
+        updateLocalForm :updateLocalForm
     }
 
     return <FormsContext.Provider value={value}>{children}</FormsContext.Provider>

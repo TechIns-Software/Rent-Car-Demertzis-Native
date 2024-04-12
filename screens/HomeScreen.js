@@ -1,23 +1,31 @@
-import {Button, Image, ImageBackground, StyleSheet, Text, View} from 'react-native';
+import {Alert, Button, Image, ImageBackground, StyleSheet, Text, View} from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as FileSystem from 'expo-file-system';
 import {shareAsync} from  'expo-sharing';
+import {FormsContext} from "../store/form-context";
+import {useContext} from "react";
 
 
 function HomeScreen (){
 
-    const downloadTest = async () =>{
-    const filename = 'test.json';
-    const result = await  FileSystem.downloadAsync(
-    'https://techins.gr/demo/test.json',FileSystem.documentDirectory + filename
-    );
-    console.log(result);
-    save(result.uri)
-    }
+    const formsCtx = useContext(FormsContext);
+    // const downloadTest = async () =>{
+    // const filename = 'test.json';
+    // const result = await  FileSystem.downloadAsync(
+    // 'https://techins.gr/demo/test.json',FileSystem.documentDirectory + filename
+    // );
+    //
+    // save(result.uri)
+    // }
 
     const save = async (uri) =>{
     shareAsync(uri)
     }
+
+    async function deleteAllForms() {
+        const answer = await formsCtx.deleteAllForms();
+    }
+
 
     return <View style={styles.container}>
 
@@ -25,8 +33,6 @@ function HomeScreen (){
             <ImageBackground resizeMode={'contain'} style={ styles.image}  source={ require('../assets/img/logo.png')}>
             </ImageBackground>
         </View>
-        <Button title={'Test Download'} onPress={downloadTest}></Button>
-
         <Text style={styles.title}>Welcome Back </Text>
     </View>
 }

@@ -20,13 +20,16 @@ import { AutoComplete } from 'react-native-element-textinput';
 import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-dropdown'
 import {LocalDataSetExample} from "./LocalDataSetExample";
 import {StatusBar} from "expo-status-bar";
-import {cars, bike1, front_left1, rear_right1, top1, recommendedList} from "./data";
+import {cars, bike1, front_left1, rear_right1, top1,atv} from "./data";
+import SignatureModal from "./SignatureModal";
+import DamageModal from "./DamageModal";
+import LoadingSpinner from "../LoadingSpinner";
 import SelectDropdown from 'react-native-select-dropdown'
 import {Icon} from "react-native-paper";
 
-export default function ExpenseForm({navigation}) {
-
+function expenseForm({navigation,idForm}) {
     const initialState = {
+        isReady: false,
         driverFullName: "",
         driverDateOfBirth: "",
         driverPhone: "",
@@ -69,10 +72,12 @@ export default function ExpenseForm({navigation}) {
         damage2: ".",
         damage3: ".",
         damage4: ".",
+        damage5: ".",
         damageIsOkBtn1: true,
         damageIsOkBtn2: true,
         damageIsOkBtn3: true,
         damageIsOkBtn4: true,
+        damageIsOkBtn5: true,
         fuel:""
     };
     const initialState2 = {
@@ -119,6 +124,7 @@ export default function ExpenseForm({navigation}) {
         damage2: false,
         damage3: false,
         damage4: false,
+        damage5: false,
         fuel: false,
         notes:false
     }
@@ -131,7 +137,13 @@ export default function ExpenseForm({navigation}) {
     const [modalVisibleDamage2, setModalVisibleDamage2] = useState(false);
     const [modalVisibleDamage3, setModalVisibleDamage3] = useState(false);
     const [modalVisibleDamage4, setModalVisibleDamage4] = useState(false);
+    const [modalVisibleDamage5, setModalVisibleDamage5] = useState(false);
     const [stateOfButton,setStateOfButton] = useState(false);
+
+    const [hasLoadedForm, setHasLoadedForm] = useState(false);
+    const [creationDate, setCreationDate] = useState('');
+    const [editedFormId, setEditedFormId] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
     const [value, setValue] = useState('');
     const [synergates, setSynergates] = useState([
         {title:'DIRECT'},
@@ -474,6 +486,7 @@ export default function ExpenseForm({navigation}) {
         damage2: "Damage Rear & Passenger-side",
         damage3: "Damage Car Roof",
         damage4: "Damage Motto",
+        damage5: "Damage Atv",
         fuel: "Fuel",
         notes :"Notes"
     }
@@ -522,12 +535,6 @@ export default function ExpenseForm({navigation}) {
                 [inputName]: inputValue
             }
         });
-        setFormInputs((prevValues) => {
-            return {
-                ...prevValues,
-                [inputName]: inputValue
-            }
-        });
         updateCalculatedDependentValuesAndChangeCriteria(inputName, inputValue);
     }
     function updateCalculatedDependentValuesAndChangeCriteria(inputName, inputValue) {
@@ -535,7 +542,7 @@ export default function ExpenseForm({navigation}) {
         var _subTotal = 0;
         let flagDaysChangedByDates = false;
         if (inputName === 'checkInDate' || inputName === 'checkOutDate') {
-            console.log('im in');
+
             let checkInDateTemp;
             let checkOutDateTemp;
             if (inputName === 'checkInDate') {
@@ -596,7 +603,6 @@ export default function ExpenseForm({navigation}) {
                 }
             });
         } else if (inputName === 'registrationNumber') {
-            console.log(inputValue, inputValue != '', formInputs);
             setEveryThingOk((oldValues) => {
                 return {
                     ...oldValues,
@@ -608,6 +614,7 @@ export default function ExpenseForm({navigation}) {
     }
 
     function changeStateOfEverythingOk(inputName = null, inputValue = null) {
+
         setEveryThingOk((oldValues) => {
             const setTrueObj = {};
             for (const [key, value] of Object.entries(oldValues)) {
@@ -709,55 +716,60 @@ export default function ExpenseForm({navigation}) {
         if (formInputs['signClient'] == "." || formInputs['signCard'] == "."){
             Alert.alert('Problem with signatures', 'Both signatures are mandatory.');
             setStateOfButton(false);
+            formInputs['isReady'] = false;
             return;
         }
 
         // # We check if the damages are ok, or not mandatory
         if (formInputs['damage4'] == "." && formInputs['damageIsOkBtn4']) {
-            if (formInputs['damage1'] == "." && formInputs['damageIsOkBtn1']){
-                Alert.alert('Problem with car damage', 'Front and driver\'s side not filled in or not selected that is ok');
-                setStateOfButton(false);
-                return;
-            } else if (formInputs['damage2'] == "." && formInputs['damageIsOkBtn2']) {
-                Alert.alert('Problem with car damage', 'Real and passenger side not filled in or not selected that is ok');
-                setStateOfButton(false);
-                return;
-            } else if (formInputs['damage3'] == "." && formInputs['damageIsOkBtn3']) {
-                Alert.alert('Problem with car damage', 'Car Roof not filled in or not selected that is ok');
-                setStateOfButton(false);
-                return;
+            if (formInputs['damage5'] == "." && formInputs['damageIsOkBtn5']) {
+                if (formInputs['damage1'] == "." && formInputs['damageIsOkBtn1']){
+                    Alert.alert('Problem with car damage', 'Front and driver\'s side not filled in or not selected that is ok');
+                    setStateOfButton(false);
+                    return;
+                } else if (formInputs['damage2'] == "." && formInputs['damageIsOkBtn2']) {
+                    Alert.alert('Problem with car damage', 'Real and passenger side not filled in or not selected that is ok');
+                    setStateOfButton(false);
+                    return;
+                } else if (formInputs['damage3'] == "." && formInputs['damageIsOkBtn3']) {
+                    Alert.alert('Problem with car damage', 'Car Roof not filled in or not selected that is ok');
+                    setStateOfButton(false);
+                    return;
+                }
             }
+
         }
 
         // Check if Check out Date is larger than Check In date
         if (checkIfDatesAreResponsive(formInputs['checkInDate'],formInputs['checkOutDate'])) {
             setStateOfButton(false);
+            formInputs['isReady'] = false;
             return;
         }
 
         if (!flag) {
-            console.log('=============================');
-            console.log(everythingOk);
             Alert.alert('Data problem', `You must fill the ${labels[emptyInput]} Input. `);
             // Alert.alert('Data problem', 'You must fill in some fields. Check the inputs');
             setStateOfButton(false);
+            formInputs['isReady'] = false;
         } else {
-            console.log(formInputs);
-            const answer = await formCtx.saveLocal(formInputs);
-            if (answer) {
-                Alert.alert('Form Saved',"Form Saved Locally Succesful")
-            } else {
-                Alert.alert('Unexepted error',"Something went wrong")
+            formInputs['isReady'] = true;
+            // if is from new form do the same if is from draft give the idForm
+            setIsLoading(true);
+            if(!idForm){
+                var answer = await formCtx.saveLocal(formInputs);
+            }else {
+                var answer  = await formCtx.updateLocalForm(formInputs,editedFormId,creationDate);
             }
-            // if (answer.hasOwnProperty('uploadedOk')) {
-            //     if (answer['uploadedOk'] == '1') {
-            //         Alert.alert('Form submission',"Successful Submission")
-            //     } else {
-            //         Alert.alert('Form submission', "Failed to submit online, but saved locally")
-            //     }
-            // } else {
-            //     Alert.alert('Unexepted error',"Something went wrong")
-            // }
+
+            if (answer) {
+
+                Alert.alert('Form Saved',"Form Saved Locally Successfully")
+            } else {
+                Alert.alert('Unexpected error',"Something went wrong")
+            }
+            setIsLoading(false);
+
             resetForm();
             setStateOfButton(false);
             await navigation.navigate('Homepage');
@@ -765,6 +777,53 @@ export default function ExpenseForm({navigation}) {
         }
 
     }
+
+    async function saveDraft() {
+        const answer = await formCtx.saveLocal(formInputs);
+        setIsLoading(true);
+        if (answer) {
+            Alert.alert('Form Saved As Draft',"Form Saved Locally Successfully");
+            resetForm();
+            setStateOfButton(false);
+        } else {
+            Alert.alert('Unexpected error draft',"Something went wrong");
+        }
+        setIsLoading(false);
+        await navigation.navigate('Forms');
+    }
+
+    async function saveChanges() {
+        formInputs['isReady'] = false;
+        setIsLoading(true);
+
+        const answer = await formCtx.updateLocalForm(formInputs,editedFormId,creationDate);
+        if (answer) {
+            Alert.alert('Form changes Saved ',"Form changes Saved  Successfully")
+        } else {
+            Alert.alert('Unexpected error draft with  Form changes',"Something went wrong")
+        }
+        setIsLoading(false);
+
+        await navigation.navigate('Device Forms');
+
+    }
+
+
+    useEffect(() => {
+        async function getDraftForm(idForm) {
+            const form = await formCtx.getForm(idForm);
+            setFormInputs(form.data);
+            setCreationDate(form.date)
+        }
+        if (idForm && !hasLoadedForm) {
+            getDraftForm(idForm);
+            setEditedFormId(idForm);
+        }
+        if (idForm){
+            setHasLoadedForm(true)
+        }
+    }, [idForm, hasLoadedForm]); // Only re-run the effect when idForm or hasLoadedForm changes
+
 
 
     function RadioPressHandler(val) {
@@ -788,6 +847,8 @@ export default function ExpenseForm({navigation}) {
 
     return <SafeAreaView style={(backgroundStyle, {flex: 1})}>
         <StatusBar/>
+        { isLoading && <LoadingSpinner/>}
+        { !isLoading &&
         <KeyboardAvoidingView
             style={{flex: 1}}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -810,6 +871,7 @@ export default function ExpenseForm({navigation}) {
                                              customOnChange={changeHandlerDatePicker} label={'Date of Birth'}
                                              type={'date'}
                                              everythingOkValue={everythingOk.driverDateOfBirth}
+                                             value={formInputs['driverDateOfBirth']}
 
                                 />
 
@@ -843,11 +905,17 @@ export default function ExpenseForm({navigation}) {
                                 <DatePicker2 style={styles.rowInput} objectKey={'driverRegistrationDateIssue'}
                                              customOnChange={changeHandlerDatePicker} label={'Date of issue'}
                                              type={'date'}
-                                             everythingOkValue={everythingOk.driverRegistrationDateIssue}/>
+                                             everythingOkValue={everythingOk.driverRegistrationDateIssue}
+                                             value={formInputs['driverRegistrationDateIssue']}
+                                />
                                 <DatePicker2 style={styles.rowInput} objectKey={'driverRegistrationExpirationDate'}
                                              customOnChange={changeHandlerDatePicker} label={'Exp. Date'}
                                              type={'date'}
-                                             everythingOkValue={everythingOk.driverRegistrationExpirationDate}/>
+                                             everythingOkValue={everythingOk.driverRegistrationExpirationDate}
+                                             value={formInputs['driverRegistrationExpirationDate']}
+
+
+                                />
                             </View>
                             <Input label={'Email'}
                                    onChangeText={changeHandlerInputs.bind(this, 'email')}
@@ -893,11 +961,14 @@ export default function ExpenseForm({navigation}) {
                                 <DatePicker2 style={styles.rowInput} objectKey={'checkInDate'}
                                              customOnChange={changeHandlerDatePicker} label={'Check in Date'}
                                              type={'date'}
-                                             everythingOkValue={everythingOk.checkInDate}/>
+                                             everythingOkValue={everythingOk.checkInDate}
+                                                value={formInputs['checkInDate']}
+                                />
                                 <DatePicker2 style={styles.rowInput} objectKey={'checkInTime'}
                                              customOnChange={changeHandlerDatePicker} label={'Check in Time'}
                                              type={'time'}
                                              everythingOkValue={everythingOk.checkInTime}
+                                                value={formInputs['checkInTime']}
                                 />
 
 
@@ -914,11 +985,13 @@ export default function ExpenseForm({navigation}) {
                                              customOnChange={changeHandlerDatePicker} label={'Check out Date'}
                                              type={'date'}
                                              everythingOkValue={everythingOk.checkOutDate}
+                                                value={formInputs['checkOutDate']}
                                 />
                                 <DatePicker2 style={styles.rowInput} objectKey={'checkOutTime'}
                                              customOnChange={changeHandlerDatePicker} label={'Check out Time'}
                                              type={'time'}
                                              everythingOkValue={everythingOk.checkOutTime}
+                                                value={formInputs['checkOutTime']}
                                 />
 
                                 <Input style={styles.rowInput}
@@ -1186,6 +1259,7 @@ export default function ExpenseForm({navigation}) {
                                 <Text style={styles.titleText}>
                                     Car Damages
                                 </Text>
+                                <View style={styles.damagesContainer} >
 
                                 <SubmitButton style={styles.damagesButton} buttonText={'Front and driver`s side '}
                                               onPress={() => {
@@ -1200,6 +1274,7 @@ export default function ExpenseForm({navigation}) {
                                 <SubmitButton style={styles.damagesButton} buttonText={' Car Roof'} onPress={() => {
                                     setModalVisibleDamage3(!modalVisibleDamage3)
                                 }}/>
+                                </View>
 
                             </View>
 
@@ -1214,128 +1289,115 @@ export default function ExpenseForm({navigation}) {
 
                             </View>
 
+                            <View>
+                                <Text style={styles.titleText}>
+                                    Atv Damages
+                                </Text>
 
-                            <SubmitButton isDisabled={stateOfButton} onPress={checkInputs} buttonText={'Save Form In Device'}/>
+                                <SubmitButton style={styles.damagesButton} buttonText={' Atv'} onPress={() => {
+                                    setModalVisibleDamage5(!modalVisibleDamage5)
+                                }}/>
+
+                            </View>
+
+                            <View style={styles.submitContainer}>
+                               <SubmitButton isDisabled={stateOfButton} onPress={checkInputs}
+                                                              buttonText={'Check & Save'}/>
+
+                                {! idForm &&         <SubmitButton  style={styles.draftBtn} onPress={saveDraft}
+                                                                    buttonText={'Save Form As Draft'}/>}
+
+                                {idForm && <SubmitButton  style={styles.draftBtn} onPress={saveChanges}
+                                                               buttonText={'Save Draft'}/> }
+
+                            </View>
 
                         </View>
 
                     </ScrollView>
+                    <SignatureModal
+                        modalTitle={'Client Signature'}
+                        defaultSignature={formInputs.signClient}
+                        styles={styles}
+                        modalVisible={modalVisible}
+                        setModalVisibility={() => { setModalVisible(!modalVisible); }}
+                        onOK={changeHandlerInputs.bind(this, 'signClient')}
+                    />
 
-                    <Modal
-                        animationType="slide"
-                        transparent={false}
-                        visible={modalVisible}
-                        onRequestClose={() => {
-                            setModalVisible(!modalVisible);
-                        }}>
+                    <SignatureModal
+                        modalTitle={'Signature for the card'}
+                        defaultSignature={formInputs.signCard}
+                        styles={styles}
+                        modalVisible={modalVisible2}
+                        setModalVisibility={() => { setModalVisible2(!modalVisible2); }}
+                        onOK={changeHandlerInputs.bind(this, 'signCard')}
+                    />
 
-                        <View style={styles.generalContainer}>
-                            <Text style={styles.titleText}> Client Signature</Text>
-                            <Sign onOK={changeHandlerInputs.bind(this, 'signClient')} value={formInputs.signClient}
-                                  onBack={() => setModalVisible(!modalVisible)}/>
-                        </View>
-                    </Modal>
+                    <DamageModal
+                        modalTitle={'Damage Record 1'}
+                        defaultDamage={formInputs.damage1}
+                        styles={styles}
+                        modalVisible={modalVisibleDamage1}
+                        setModalVisibility={() => { setModalVisibleDamage1(!modalVisibleDamage1); }}
+                        onOK={changeHandlerInputs.bind(this, 'damage1')}
+                        bgImage={front_left1}
+                        hasDamage={formInputs.damageIsOkBtn1}
+                        onchangeRadioButton={changeHandlerInputs.bind(this, 'damageIsOkBtn1')}
 
-                    <Modal
-                        animationType="slide"
-                        transparent={false}
-                        visible={modalVisible2}
-                        onRequestClose={() => {
-                            setModalVisible2(!modalVisible2);
-                        }}>
+                    />
 
-                        <View style={styles.generalContainer}>
-                            <Text style={styles.titleText}> Signature for the card</Text>
-                            <Sign onOK={changeHandlerInputs.bind(this, 'signCard')} value={formInputs.signCard}
-                                  onBack={() => setModalVisible2(!modalVisible2)}/>
+                    <DamageModal
+                        modalTitle={'Damage Record 2'}
+                        defaultDamage={formInputs.damage2}
+                        styles={styles}
+                        modalVisible={modalVisibleDamage2}
+                        setModalVisibility={() => { setModalVisibleDamage2(!modalVisibleDamage2); }}
+                        onOK={changeHandlerInputs.bind(this, 'damage2')}
+                        bgImage={rear_right1}
+                        hasDamage={formInputs.damageIsOkBtn2}
+                        onchangeRadioButton={changeHandlerInputs.bind(this, 'damageIsOkBtn2')}
 
-                        </View>
-                    </Modal>
+                    />
 
-                    <Modal
-                        animationType="slide"
-                        transparent={false}
-                        visible={modalVisibleDamage1}
-                        onRequestClose={() => {
-                            setModalVisibleDamage1(!modalVisibleDamage1);
-                        }}>
+                    <DamageModal
+                        modalTitle={'Damage Record 3'}
+                        defaultDamage={formInputs.damage3}
+                        styles={styles}
+                        modalVisible={modalVisibleDamage3}
+                        setModalVisibility={() => { setModalVisibleDamage3(!modalVisibleDamage3); }}
+                        onOK={changeHandlerInputs.bind(this, 'damage3')}
+                        bgImage={top1}
+                        hasDamage={formInputs.damageIsOkBtn3}
+                        onchangeRadioButton={changeHandlerInputs.bind(this, 'damageIsOkBtn3')}
 
-                        <View style={styles.generalContainer}>
-                            <Text style={styles.titleText}>Damage Record 1</Text>
-                            <Sign onOK={changeHandlerInputs.bind(this, 'damage1')}
-                                  bgImage={front_left1}
-                                  value={formInputs.damage1}
-                                  onBack={() => setModalVisibleDamage1(!modalVisibleDamage1)}
-                                  onDamage
-                                  hasDamage={formInputs.damageIsOkBtn1}
-                                  onchangeRadioButton={changeHandlerInputs.bind(this, 'damageIsOkBtn1')}
-                            />
+                    />
 
-                        </View>
-                    </Modal>
+                    <DamageModal
+                        modalTitle={'Damage Record Motto'}
+                        defaultDamage={formInputs.damage4}
+                        styles={styles}
+                        modalVisible={modalVisibleDamage4}
+                        setModalVisibility={() => { setModalVisibleDamage4(!modalVisibleDamage4); }}
+                        onOK={changeHandlerInputs.bind(this, 'damage4')}
+                        bgImage={bike1}
+                        hasDamage={formInputs.damageIsOkBtn4}
+                        onchangeRadioButton={changeHandlerInputs.bind(this, 'damageIsOkBtn4')}
 
-                    <Modal
-                        animationType="slide"
-                        transparent={false}
-                        visible={modalVisibleDamage2}
-                        onRequestClose={() => {
-                            setModalVisibleDamage2(!modalVisibleDamage2);
-                        }}>
+                    />
 
-                        <View style={styles.generalContainer}>
-                            <Text style={styles.titleText}>Damage Record 2</Text>
-                            <Sign onOK={changeHandlerInputs.bind(this, 'damage2')}
-                                  bgImage={rear_right1}
-                                  value={formInputs.damage2}
-                                  onBack={() => setModalVisibleDamage2(!modalVisibleDamage2)}
-                                  hasDamage={formInputs.damageIsOkBtn2}
-                                  onchangeRadioButton={changeHandlerInputs.bind(this, 'damageIsOkBtn2')}
-                            />
+                    <DamageModal
+                        modalTitle={'Damage Record Atv'}
+                        defaultDamage={formInputs.damage5}
+                        styles={styles}
+                        modalVisible={modalVisibleDamage5}
+                        setModalVisibility={() => { setModalVisibleDamage5(!modalVisibleDamage5); }}
+                        onOK={changeHandlerInputs.bind(this, 'damage5')}
+                        bgImage={atv}
+                        hasDamage={formInputs.damageIsOkBtn5}
+                        onchangeRadioButton={changeHandlerInputs.bind(this, 'damageIsOkBtn5')}
 
-                        </View>
-                    </Modal>
+                    />
 
-                    <Modal
-                        animationType="slide"
-                        transparent={false}
-                        visible={modalVisibleDamage3}
-                        onRequestClose={() => {
-                            setModalVisibleDamage3(!modalVisibleDamage3);
-                        }}>
-                        <View style={styles.generalContainer}>
-                            <Text style={styles.titleText}>Damage Record 3</Text>
-                            <Sign onOK={changeHandlerInputs.bind(this, 'damage3')}
-                                  bgImage={top1}
-                                  value={formInputs.damage3}
-                                  onBack={() => setModalVisibleDamage3(!modalVisibleDamage3)}
-                                  hasDamage={formInputs.damageIsOkBtn3}
-                                  onchangeRadioButton={changeHandlerInputs.bind(this, 'damageIsOkBtn3')}
-
-                            />
-
-                        </View>
-                    </Modal>
-
-                    <Modal
-                        animationType="slide"
-                        transparent={false}
-                        visible={modalVisibleDamage4}
-                        onRequestClose={() => {
-                            setModalVisibleDamage4(!modalVisibleDamage4);
-                        }}>
-                        <View style={styles.generalContainer}>
-                            <Text style={styles.titleText}>Damage Record Motto</Text>
-                            <Sign
-                                onOK={changeHandlerInputs.bind(this, 'damage4')}
-                                bgImage={bike1}
-                                value={formInputs.damage4}
-                                onBack={() => setModalVisibleDamage4(!modalVisibleDamage4)}
-                                hasDamage={formInputs.damageIsOkBtn4}
-                                onchangeRadioButton={changeHandlerInputs.bind(this, 'damageIsOkBtn4')}
-                            />
-
-                        </View>
-                    </Modal>
 
 
                     <Modal
@@ -1360,7 +1422,9 @@ export default function ExpenseForm({navigation}) {
                                         <DatePicker2 style={styles.rowInput} objectKey={'secondDriverBirthDate'}
                                                      customOnChange={changeHandlerDatePicker} label={'Date of Birth'}
                                                      type={'date'}
-                                                     everythingOkValue={everythingOk.secondDriverBirthDate}/>
+                                                     everythingOkValue={everythingOk.secondDriverBirthDate}
+                                                     value={formInputs['secondDriverBirthDate']}
+                                        />
                                     </View>
 
                                     <View style={[styles.inputRow, {marginTop: 30}]}>
@@ -1387,12 +1451,18 @@ export default function ExpenseForm({navigation}) {
                                     <DatePicker2 style={styles.rowInput} objectKey={'secondDriverRegistrationDateIssue'}
                                                  customOnChange={changeHandlerDatePicker} label={'Date of issue'}
                                                  type={'date'}
-                                                 everythingOkValue={everythingOk.secondDriverRegistrationDateIssue}/>
+                                                 everythingOkValue={everythingOk.secondDriverRegistrationDateIssue}
+                                                    value={formInputs['secondDriverRegistrationDateIssue']}
+
+                                    />
                                     <DatePicker2 style={styles.rowInput}
                                                  objectKey={'secondDriverRegistrationExpirationDate'}
                                                  customOnChange={changeHandlerDatePicker} label={'Exp. Date'}
                                                  type={'date'}
-                                                 everythingOkValue={everythingOk.secondDriverRegistrationExpirationDate}/>
+                                                 everythingOkValue={everythingOk.secondDriverRegistrationExpirationDate}
+                                                    value={formInputs['secondDriverRegistrationExpirationDate']}
+
+                                    />
                                 </View>
                                 <View style={{height: '30%', marginVertical: 35}}>
                                     <Pressable onPress={() => {
@@ -1409,6 +1479,7 @@ export default function ExpenseForm({navigation}) {
                 </View>
             </AutocompleteDropdownContextProvider>
         </KeyboardAvoidingView>
+        }
     </SafeAreaView>
 }
 
@@ -1509,8 +1580,16 @@ const styles = StyleSheet.create({
         width: '35%',
         backgroundColor: '#ec6512',
     },
+    damagesContainer:{
+      display:'flex',
+      justifyContent:'space-between',
+        flexDirection:'row',
+        flexWrap:'wrap'
+    },
     damagesButton :{
-        width: '100%',
+        width: 180,
+        flex:1,
+        margin:"auto",
         backgroundColor: '#12015d',
         color:'white',
         marginVertical:5
@@ -1540,6 +1619,15 @@ const styles = StyleSheet.create({
     labelStyle: { fontSize: 14 },
     placeholderStyle: { fontSize: 16 },
     textErrorStyle: { fontSize: 16 },
+    submitContainer :{
+        display:'flex',
+        justifyContent:'space-between',
+        flexDirection:'row'
+    },
+    draftBtn: {
+        backgroundColor: 'rgba(218,8,8,0.8)',
+    }
+
     dropdownButtonStyle: {
         width: 200,
         height: 50,
