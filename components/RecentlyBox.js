@@ -48,7 +48,7 @@ function RecentlyBox({driverName,date,registrationNumber,isSent,id,onPressDelete
             })}>
                 <View style={styles.deleteContainer}>
 
-                    <Ionicons name={'ios-trash'} size={25} color={'red'}/>
+                    <Ionicons name={'trash'} size={25} color={'red'}/>
                 </View>
             </Pressable>
 

@@ -1,4 +1,4 @@
-import {Text, TextInput, View,StyleSheet,KeyboardAvoidingView} from "react-native";
+import {Text, TextInput, View, StyleSheet, KeyboardAvoidingView, Platform} from "react-native";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
 function Input({label,style,TextInputConfig,name,onChangeText,inputStyle,onSubmit,editable=true,value}){

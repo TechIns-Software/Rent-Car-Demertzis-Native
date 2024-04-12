@@ -6,7 +6,7 @@ import {
     ScrollView,
     Modal,
     Pressable,
-    LogBox, SafeAreaView, useColorScheme, KeyboardAvoidingView
+    LogBox, SafeAreaView, useColorScheme, KeyboardAvoidingView, Platform
 } from "react-native";
 import Input from "./input";
 import RadioButtonCustom from "./radioButton";
@@ -21,8 +21,10 @@ import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-d
 import {LocalDataSetExample} from "./LocalDataSetExample";
 import {StatusBar} from "expo-status-bar";
 import {cars, bike1, front_left1, rear_right1, top1, recommendedList} from "./data";
+import SelectDropdown from 'react-native-select-dropdown'
+import {Icon} from "react-native-paper";
 
-function expenseForm({navigation}) {
+export default function ExpenseForm({navigation}) {
 
     const initialState = {
         driverFullName: "",
@@ -131,6 +133,131 @@ function expenseForm({navigation}) {
     const [modalVisibleDamage4, setModalVisibleDamage4] = useState(false);
     const [stateOfButton,setStateOfButton] = useState(false);
     const [value, setValue] = useState('');
+    const [synergates, setSynergates] = useState([
+        {title:'DIRECT'},
+        {title:'WEBSITE'},
+        {title:'A MYTH HOTEL'},
+        {title:'ADORNO'},
+        {title:'AEGON'},
+        {title:'AKKADIAN'},
+        {title:'ALISSACHNI'},
+        {title:'ALKISTIS HOTEL'},
+        {title:'AMAZON'},
+        {title:'ANDRONIKOS'},
+        {title:'ARA'},
+        {title:'AST TOURISM'},
+        {title:'BEST ANGOLA'},
+        {title:'BILL & COO'},
+        {title:'BILL & COO COAST'},
+        {title:'BLUE VILLAS'},
+        {title:'BOHEME'},
+        {title:'BRANCO'},
+        {title:'CACTUS'},
+        {title:'CASA DEL MAR'},
+        {title:'COVA'},
+        {title:'CROCO'},
+        {title:'DANIELLE GIOVANNI'},
+        {title:'DIVINE'},
+        {title:'DONJON'},
+        {title:'DONTAS'},
+        {title:'DORION'},
+        {title:'DREAM BOX'},
+        {title:'DUE MARI'},
+        {title:'EREZ'},
+        {title:'EUGENE'},
+        {title:'EVITA'},
+        {title:'EZIO BO'},
+        {title:'FANTASIA VILLAS'},
+        {title:'FELIX'},
+        {title:'GEORGAKLIS'},
+        {title:'GIOVANNI ILLARIA'},
+        {title:'GOLDEN HOME'},
+        {title:'GRACE'},
+        {title:'HERMES TOURISM'},
+        {title:'HIPPIE CHIC'},
+        {title:'I MOVE '},
+        {title:'I TRAVEL HOME'},
+        {title:'IKIES'},
+        {title:'ISLE BLUE'},
+        {title:'JENNY'},
+        {title:'KALESMA'},
+        {title:'KATOIKIES'},
+        {title:'KEVIN ROCKS'},
+        {title:'KINGLIKE'},
+        {title:'KORALI'},
+        {title:'KOUROS'},
+        {title:'KYMA'},
+        {title:'LUXURY KEY'},
+        {title:'MAERA VILLAS'},
+        {title:'MATHA'},
+        {title:'MAZI TRAVEL'},
+        {title:'MERHIA BAY'},
+        {title:'MILEO '},
+        {title:'MINA\'s STUDIO'},
+        {title:'MLV'},
+        {title:'MY MYKONOS'},
+        {title:'MYKONAKI HOTEL'},
+        {title:'MYKONOS 4 ISLAND'},
+        {title:'MYKONOS AGENDA'},
+        {title:'MYKONOS BEST'},
+        {title:'MYKONOS EARTTH'},
+        {title:'MYKONOS RIVIERA'},
+        {title:'N HOTEL'},
+        {title:'NAIA'},
+        {title:'NASTAYA'},
+        {title:'NEREUS'},
+        {title:'NIKOS ROOMS'},
+        {title:'NOIMA LUXURY SUITES'},
+        {title:'NOMIA ΑΓ.ΣΟΦΙΑ'},
+        {title:'NUR'},
+        {title:'ONCE IN MYKONOS'},
+        {title:'PANORMOS BAY'},
+        {title:'PANORMOS VILLAGE'},
+        {title:'PANORMOS VILLAS'},
+        {title:'PAOLAS TOWN'},
+        {title:'PETINOS'},
+        {title:'PETINOS BEACH'},
+        {title:'PRINCESS'},
+        {title:'RICCARDO LUXURY'},
+        {title:'ROCABELLA'},
+        {title:'ROCHARI'},
+        {title:'SAN MARCO'},
+        {title:'SARAH'},
+        {title:'SOHO'},
+        {title:'STELIOS JO'},
+        {title:'SUMMIT'},
+        {title:'SUPER PARADISE SUITES'},
+        {title:'SUPERIOR AIR'},
+        {title:'TAGOO BLACK'},
+        {title:'THALIA MYKONOS'},
+        {title:'THARROE'},
+        {title:'THEO PANORMOS'},
+        {title:'YI'},
+        {title:'ΑΙΒΑΖΙΔΗΣ'},
+        {title:'ΑΙΒΑΛΙΩΤΗΣ'},
+        {title:'Α-Ω'},
+        {title:'ΒΑΓΓΕΛΗΣ'},
+        {title:'ΒΑΣΙΛΗΣ ΚΙΝΟΣ'},
+        {title:'ΒΑΤΣΗΣ BEACHFRONT'},
+        {title:'ΗΡΩ ΡΑΛΛΗ'},
+        {title:'ΘΑΝΟΣ ΜΟΤΟSPEED'},
+        {title:'ΚΩΣΤΑΣ ΧΡΥΣΑΦΗΣ'},
+        {title:'ΛΑΙΣ'},
+        {title:'ΜΑΝΟΣ ΡΑΛΛΗΣ'},
+        {title:'ΜΑΡΓΑΡΙΤΑ'},
+        {title:'ΜΕΝΤΗΣ'},
+        {title:'ΜΥΤΑΚΙΔΗ'},
+        {title:'ΝΤΟΥΣΚΑΣ'},
+        {title:'ΠΕΤΡΟΣ ΑΘΗΝΑΙΟΣ'},
+        {title:'ΣΤΑΥΡΟΥΛΑ ΠΕΙΡΑΙΩΣ'},
+        {title:'ΤΑΣΟΣ ΑΘΗΝΑ'},
+        {title:'ΤΑΣΟΣ ΚΩΣΤΟΠΟΥΛΟΣ'},
+        {title:'ΤΙΝΑ ΛΕΟΝΤΙΟΥ'},
+        {title:'ΦΑΝΙΑ'},
+        {title:'ΧΡΗΣΤΟΣ ΜΑΝΟΣ'},
+        {title:'ΧΡΥΣΟΥΛΑ PAOLA\'S'},
+    ]);
+    const [tempSynergaths, setTempSynergaths] = useState();
 
     const RULES_INPUTS = {
         driverFullName: {
@@ -803,6 +930,68 @@ function expenseForm({navigation}) {
                             </View>
 
                             <View style={[styles.inputRow, {marginTop: 40}]}>
+                                <SelectDropdown
+                                    data={synergates}
+                                    onSelect={(selectedItem, index) => {
+                                        console.log(selectedItem.title, index);
+
+                                        if (selectedItem.title !== 'ΑΛΛΟ') {
+                                            setTempSynergaths(selectedItem.title);
+                                            setFormInputs((prevValues) => {
+                                                return {
+                                                    ...prevValues,
+                                                    ['realRecommendedBy']: selectedItem.title
+                                                }
+                                            });
+                                            setEveryThingOk((oldValues) => {
+                                                return {
+                                                    ...oldValues,
+                                                    ['realRecommendedBy']: true
+                                                }
+                                            });
+                                        }else {
+                                            setFormInputs((prevValues) => {
+                                                return {
+                                                    ...prevValues,
+                                                    ['realRecommendedBy']: ''
+                                                }
+                                            });
+                                            setEveryThingOk((oldValues) => {
+                                                return {
+                                                    ...oldValues,
+                                                    ['realRecommendedBy']: false
+                                                }
+                                            });
+                                        }
+
+
+                                    }}
+                                    renderButton={(selectedItem, isOpened) => {
+                                        return (
+                                            <View style={styles.dropdownButtonStyle}>
+                                                {selectedItem && (
+                                                    <Icon source={selectedItem.icon} style={styles.dropdownButtonIconStyle}  size={15}/>
+                                                )}
+                                                <Text style={styles.dropdownButtonTxtStyle}>
+                                                    {(selectedItem && selectedItem.title) || 'Select Recommended By'}
+                                                </Text>
+                                                <Icon source={isOpened ? 'chevron-up' : 'chevron-down'} size={15} style={styles.dropdownButtonArrowStyle} />
+                                            </View>
+                                        );
+                                    }}
+                                    renderItem={(item, index, isSelected) => {
+                                        return (
+                                            <View style={{...styles.dropdownItemStyle, ...(isSelected && {backgroundColor: '#D2D9DF'})}}>
+                                                <Icon name={item.icon} style={styles.dropdownItemIconStyle} />
+                                                <Text style={styles.dropdownItemTxtStyle}>{item.title}</Text>
+                                            </View>
+                                        );
+                                    }}
+                                    showsVerticalScrollIndicator={true}
+                                    dropdownStyle={styles.dropdownMenuStyle}
+                                    search={true}
+                                />
+
 
                                 <Input style={styles.rowInput}
                                        onChangeText={changeHandlerInputs.bind(this, 'realRecommendedBy')}
@@ -812,6 +1001,7 @@ function expenseForm({navigation}) {
                                 />
 
                             </View>
+
 
                             <View style={[styles.inputRow, {marginBottom: 60}]}>
                                 <Input style={styles.rowInput}
@@ -1350,7 +1540,52 @@ const styles = StyleSheet.create({
     labelStyle: { fontSize: 14 },
     placeholderStyle: { fontSize: 16 },
     textErrorStyle: { fontSize: 16 },
+    dropdownButtonStyle: {
+        width: 200,
+        height: 50,
+        backgroundColor: '#E9ECEF',
+        borderRadius: 12,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 12,
+    },
+    dropdownButtonTxtStyle: {
+        flex: 1,
+        fontSize: 13,
+        fontWeight: '500',
+        color: '#151E26',
+    },
+    dropdownButtonArrowStyle: {
+        fontSize: 28,
+    },
+    dropdownButtonIconStyle: {
+        fontSize: 28,
+        marginRight: 8,
+    },
+    dropdownMenuStyle: {
+        backgroundColor: '#E9ECEF',
+        borderRadius: 8,
+    },
+    dropdownItemStyle: {
+        width: '100%',
+        flexDirection: 'row',
+        paddingHorizontal: 12,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 8,
+    },
+    dropdownItemTxtStyle: {
+        flex: 1,
+        fontSize: 18,
+        fontWeight: '500',
+        color: '#151E26',
+    },
+    dropdownItemIconStyle: {
+        fontSize: 28,
+        marginRight: 8,
+    },
 
 
 })
-export default expenseForm
+
