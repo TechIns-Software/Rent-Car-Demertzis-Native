@@ -27,7 +27,7 @@ import LoadingSpinner from "../LoadingSpinner";
 import SelectDropdown from 'react-native-select-dropdown'
 import {Icon} from "react-native-paper";
 
-function expenseForm({navigation,idForm}) {
+export  default function ExpenseForm({navigation,idForm}) {
     const initialState = {
         isReady: false,
         driverFullName: "",
@@ -268,6 +268,7 @@ function expenseForm({navigation,idForm}) {
         {title:'ΦΑΝΙΑ'},
         {title:'ΧΡΗΣΤΟΣ ΜΑΝΟΣ'},
         {title:'ΧΡΥΣΟΥΛΑ PAOLA\'S'},
+        {title:'ΑΛΛΟ'},
     ]);
     const [tempSynergaths, setTempSynergaths] = useState();
 
@@ -1626,8 +1627,7 @@ const styles = StyleSheet.create({
     },
     draftBtn: {
         backgroundColor: 'rgba(218,8,8,0.8)',
-    }
-
+    },
     dropdownButtonStyle: {
         width: 200,
         height: 50,

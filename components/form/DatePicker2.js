@@ -5,7 +5,7 @@ import {RFPercentage} from "react-native-responsive-fontsize";
 import {Appearance} from 'react-native';
 
 const DatePicker2 = ({style, label, type, customOnChange, objectKey, everythingOkValue,value }) => {
-    console.log(value)
+
 
     const [time,setTime] = useState(value)
     const [date,setDate] = useState(value)
