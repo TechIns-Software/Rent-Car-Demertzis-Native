@@ -1,7 +1,7 @@
- {
+{
   "expo": {
-    "name": "Form App Vehicle",
-    "slug": "form-app-vehicle",
+    "name": "Rent Car Demo",
+    "slug": "rent-car-demo",
     "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -20,7 +20,7 @@
     "ios": {
       "supportsTablet": true,
       "buildNumber": "2.0.0",
-      "bundleIdentifier": "gr.techins.formAppVehicle"
+      "bundleIdentifier": "gr.techins.rentCarDemo"
     },
     "android": {
       "adaptiveIcon": {
@@ -28,16 +28,16 @@
         "backgroundColor": "#FFFFFF"
       },
       "versionCode": 8,
-      "package": "gr.techins.formAppVehicle"
+      "package": "gr.techins.rentCarDemo"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "owner": "baztekas",
     "extra": {
       "eas": {
-        "projectId": "04292570-019a-4722-bbb6-395eb2870ece"
+        "projectId": "bc01f832-86fd-4aef-bcea-3b66e6bdbbd3"
       }
-    },
-    "owner": "baztekas"
+    }
   }
 }

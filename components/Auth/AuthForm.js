@@ -62,7 +62,7 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
                     isInvalid={passwordIsInvalid}
                 />
 
-                <Pressable onPress={() => Linking.openURL('https://a-omega.com.gr/admin/publicDocs/appPolicy.pdf')} >
+                <Pressable onPress={() => Linking.openURL('https://aswell.gr/rentcar/publicDocs/appPolicy.pdf')} >
                     <Text style={styles.termsText} >Terms and conditions</Text>
                 </Pressable>
                 <View style={styles.buttons}>

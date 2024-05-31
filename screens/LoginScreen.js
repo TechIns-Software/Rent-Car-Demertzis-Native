@@ -26,7 +26,7 @@ function LoginScreen() {
         myHeaders.append('Accept', 'application/json');
 
         try {
-            fetch('https://a-omega.com.gr/admin/request/', {
+            fetch('https://aswell.gr/rentcar/request/', {
                 method: 'POST',
                 mode: 'cors', // no-cors, *cors, same-origin
                 cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached

@@ -122,7 +122,7 @@ function  FormsContextProvider({children}){
         console.log('test_4');
         try {
             console.log('test_5');
-            answer = await axios.post('https://a-omega.com.gr/admin/request/', data)
+            answer = await axios.post('https://aswell.gr/rentcar/request/', data)
                 .then(function (response) {
                     console.log('test_6');
                 return response.data
