@@ -118,10 +118,8 @@ function RecentlyApplications({navigation}){
 
                     var sortedArray = sortByDate(newObj);
                     setAllFormsSaved(sortedArray.reverse());
-                    setIsLoading(false);
-
-
                 }
+                setIsLoading(false);
             });
         }
         getRecentlyForms();
