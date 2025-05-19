@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "Rent-Car-Demertzis-Native",
-    "slug": "Rent-Car-Demertzis-Native",
-    "version": "1.0.0",
+    "name": "Form App Vehicle",
+    "slug": "form-app-vehicle",
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "rentcardemertzisnative",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true

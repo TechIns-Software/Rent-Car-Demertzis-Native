@@ -1,0 +1,225 @@
+import {Button, FlatList, Modal, Pressable, StyleSheet, Text, View,RefreshControl} from 'react-native';
+import RecentlyBox from '../components/RecentlyBox';
+import React, {createContext, useContext, useEffect, useState} from "react";
+import {FormsContext} from "../store/form-context";
+import Form from "../components/form/form";
+import {useFocusEffect} from "@react-navigation/native";
+import LoadingSpinner from "../components/LoadingSpinner";
+
+function sortByDate(objectsArray) {
+    // Sort the array of objects by date
+    objectsArray.sort(function(a, b) {
+        // Convert the date strings to Date objects for comparison
+        var dateA = new Date(a.date);
+        var dateB = new Date(b.date);
+
+        // Compare the dates
+        return dateA - dateB;
+    });
+
+    return objectsArray;
+}
+
+
+
+
+function RecentlyApplications({navigation}){
+    var [modalVisible, setModalVisible] = useState(false);
+    var [RecentlyId,setRecentlyId] = useState(99);
+    var [RecentlyIsSent,setRecentlyIsSent] = useState(false);
+    const [allFormsSaved, setAllFormsSaved] = useState([]);
+    const [onEditPage,setonEditPage] = useState(false);
+    const [editedIdForm,setEditedIdForm] = useState(0);
+    const [isLoading,setIsLoading] = useState(true);
+    const formsCtx = useContext(FormsContext);
+
+    const [refreshing, setRefreshing] = React.useState(false);
+    const [functionCallFlag, setFunctionCallFlag] = useState(false);
+
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 500);
+        setFunctionCallFlag(prevFlag => !prevFlag);
+    }, []);
+
+    function renderApplications(applications){
+
+
+        return <RecentlyBox
+            driverName={applications.item.driverFullName}
+            registrationNumber={applications.item.registrationNumber}
+            id={Number(applications.item.id)}
+            date={applications.item.date}
+            isSent={applications.item.isSent}
+            onPressDelete = {OnDeleteForm.bind(this,{id:Number(applications.item.id) ,isSent:applications.item.isSent})}
+            onUploadForm = {onUploadForm.bind(this,{id:Number(applications.item.id) ,isSent:applications.item.isSent,
+                isReadyToUpload:applications.item.isReady})}
+            isReadyToUpload={applications.item.isReady}
+            onEdit = {onEditForm.bind(this,Number(applications.item.id))}
+        />
+
+    }
+
+
+    function OnDeleteForm(formInfos){
+        setRecentlyId(formInfos.id)
+        setRecentlyIsSent(formInfos.isSent)
+        setModalVisible(!modalVisible)
+        setFunctionCallFlag(prevFlag => !prevFlag);
+    }
+
+    function onEditForm(idForm){
+        navigation.navigate('EditFormScreen',{idForm:idForm});
+        setFunctionCallFlag(prevFlag => !prevFlag);
+    }
+
+    async function deleteForm(formid){
+      await  formsCtx.deleteForm(formid)
+        setModalVisible(!modalVisible);
+        setFunctionCallFlag(prevFlag => !prevFlag);
+    }
+
+    async function onUploadForm(formInfos){
+        if (formInfos.isReadyToUpload){
+            const message = await  formsCtx.uploadOfflineForm(formInfos.id);
+            setIsLoading(true);
+            setTimeout(function() {
+                setIsLoading(false);
+                alert(message);
+            }, 5000);
+            setFunctionCallFlag(prevFlag => !prevFlag);
+        }else {
+            alert('Πρέπει να συμπληρωθούν κάποια στοιχεία για να γίνει η αποστολή της φόρμας.')
+        }
+    }
+
+
+    useEffect(()=>{
+        async function getRecentlyForms() {
+         await   formsCtx.allForms().then((res) => {
+                if (res == null) {
+                    setAllFormsSaved([]);
+                } else {
+                    const newObj = [];
+                    for (const [key, value] of Object.entries(res)) {
+                        var tempInnerObj = {};
+                        tempInnerObj.id = key
+                        tempInnerObj.driverFullName = value.data.driverFullName
+                        tempInnerObj.registrationNumber = value.data.registrationNumber
+                        tempInnerObj.isSent = value.isUploaded;
+                        tempInnerObj.isReady = value.data.isReady;
+                        tempInnerObj.date = value.date;
+                        newObj.push(tempInnerObj);
+                        // console.log(value.data)
+                    }
+
+                    var sortedArray = sortByDate(newObj);
+                    setAllFormsSaved(sortedArray.reverse());
+                }
+                setIsLoading(false);
+            });
+        }
+        getRecentlyForms();
+    },[functionCallFlag]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            onRefresh();
+        }, [])
+    );
+
+    return <View style={styles.container}>{isLoading && <LoadingSpinner/>}
+        { !isLoading &&
+       <View>
+        {allFormsSaved.length > 0 ? <FlatList
+            refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+            }
+            data={allFormsSaved}
+            renderItem={renderApplications}
+            keyExtractor={(item) => item.id}
+        /> : <Text style={styles.text}>No forms available in the device !</Text>}
+       </View>}
+
+        <Modal
+            animationType = {"fade"}
+            transparent = {false}
+            visible = {modalVisible}
+            onRequestClose = {() =>{ console.log("Modal has been closed.") } }>
+            {/*All views of Modal*/}
+            <View style = {styles.modal}>
+                {/*{View1 When form is uploaded}*/}
+                {RecentlyIsSent === true ?  <Text style = {styles.text}>Είσαι σίγουρος οτι θέλεις να διαγράψεις την φόρμα με id {RecentlyId} ? </Text> :
+                <Text style = {styles.text}>Η φόρμα με αριθμό :{RecentlyId} έχει αποθηκευτεί μόνο τοπικά. Θέλετε σίγουρα να το διαγράψετε ? </Text>}
+
+                <View style={styles.buttonsContainer}>
+                    <Pressable onPress={deleteForm.bind(this,RecentlyId)} style={styles.deleteButtonForm} >
+                        <Text style={styles.deleteButtonText}>Διαγραφή Φόρμας</Text>
+                    </Pressable>
+                    <Pressable style={styles.goBackButton} onPress={() => setModalVisible(!modalVisible)}>
+                        <Text style={styles.goBackText}> Πήγαινε Πίσω </Text>
+                    </Pressable>
+
+                </View>
+
+            </View>
+        </Modal>
+
+    </View>
+}
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+
+    },
+    modal: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor : "rgba(196,199,199,0.62)",
+        height: '70%' ,
+        width: '100%',
+        borderRadius:10,
+        borderWidth: 1,
+        borderColor: '#fff',
+        marginTop: 80,
+    },
+    text: {
+        color: '#3f2949',
+        marginTop: 10,
+        fontSize:28,
+        textAlign:'center'
+    },
+    deleteButtonForm:{
+        backgroundColor:'red',
+        width:'80%',
+        padding:10,
+        borderRadius:10,
+        marginVertical:5
+    },
+    deleteButtonText:{
+        color:'white',
+        fontSize:20,
+        textAlign:'center'
+    },
+    buttonsContainer:{
+        alignItems:'center',
+        width:'100%',
+    },
+    goBackButton:{
+        backgroundColor:'orange',
+        width:'80%',
+        padding:10,
+        borderRadius:10,
+        marginVertical:5
+    },
+    goBackText:{
+        color:'black',
+        fontSize:20,
+        textAlign:'center'
+    }
+});
+
+export default RecentlyApplications;
