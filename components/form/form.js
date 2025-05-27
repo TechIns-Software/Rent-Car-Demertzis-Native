@@ -20,7 +20,7 @@ import { AutoComplete } from 'react-native-element-textinput';
 import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-dropdown'
 import {LocalDataSetExample} from "./LocalDataSetExample";
 import {StatusBar} from "expo-status-bar";
-import {cars, bike1, front_left1, rear_right1, top1,atv} from "./data";
+import {cars, bike1, damage_car, atv} from "./data";
 import SignatureModal from "./SignatureModal";
 import DamageModal from "./DamageModal";
 import LoadingSpinner from "../LoadingSpinner";
@@ -68,9 +68,9 @@ export  default function ExpenseForm({navigation,idForm}) {
         cvv: "",
         signCard: ".",
         notes :"",
-        damage1: ".",
-        damage2: ".",
-        damage3: ".",
+        damageCar: ".",
+        // damage2: ".",
+        // damage3: ".",
         damage4: ".",
         damage5: ".",
         damageIsOkBtn1: true,
@@ -120,9 +120,9 @@ export  default function ExpenseForm({navigation,idForm}) {
         cardExpirationDate: false,
         cvv: false,
         signCard: false,
-        damage1: false,
-        damage2: false,
-        damage3: false,
+        damageCar: false,
+        // damage2: false,
+        // damage3: false,
         damage4: false,
         damage5: false,
         fuel: false,
@@ -132,10 +132,10 @@ export  default function ExpenseForm({navigation,idForm}) {
     const [scrollEnabled, setScrollEnabled] = useState(true);
     const [modalVisibleSecondDriver, setmodalVisibleSecondDriver] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
-    const [modalVisible2, setModalVisible2] = useState(false);
-    const [modalVisibleDamage1, setModalVisibleDamage1] = useState(false);
-    const [modalVisibleDamage2, setModalVisibleDamage2] = useState(false);
-    const [modalVisibleDamage3, setModalVisibleDamage3] = useState(false);
+    // const [modalVisible2, setModalVisible2] = useState(false);
+    const [modalVisibledamageCar, setModalVisibledamageCar] = useState(false);
+    // const [modalVisibleDamage2, setModalVisibleDamage2] = useState(false);
+    // const [modalVisibleDamage3, setModalVisibleDamage3] = useState(false);
     const [modalVisibleDamage4, setModalVisibleDamage4] = useState(false);
     const [modalVisibleDamage5, setModalVisibleDamage5] = useState(false);
     const [stateOfButton,setStateOfButton] = useState(false);
@@ -483,9 +483,9 @@ export  default function ExpenseForm({navigation,idForm}) {
         cardExpirationDate: "Card Expiration Date",
         cvv: "CVV",
         signCard: "Sign Card",
-        damage1: "Damage Front & Driver-side",
-        damage2: "Damage Rear & Passenger-side",
-        damage3: "Damage Car Roof",
+        damageCar: "Damage Car",
+        // damage2: "Damage Rear & Passenger-side",
+        // damage3: "Damage Car Roof",
         damage4: "Damage Motto",
         damage5: "Damage Atv",
         fuel: "Fuel",
@@ -714,8 +714,8 @@ export  default function ExpenseForm({navigation,idForm}) {
             }
         }
         // We check if the two signatures are not null
-        if (formInputs['signClient'] == "." || formInputs['signCard'] == "."){
-            Alert.alert('Problem with signatures', 'Both signatures are mandatory.');
+        if (formInputs['signClient'] == "."){
+            Alert.alert('Problem with signature', 'Please sign');
             setStateOfButton(false);
             formInputs['isReady'] = false;
             return;
@@ -724,18 +724,18 @@ export  default function ExpenseForm({navigation,idForm}) {
         // # We check if the damages are ok, or not mandatory
         if (formInputs['damage4'] == "." && formInputs['damageIsOkBtn4']) {
             if (formInputs['damage5'] == "." && formInputs['damageIsOkBtn5']) {
-                if (formInputs['damage1'] == "." && formInputs['damageIsOkBtn1']){
-                    Alert.alert('Problem with car damage', 'Front and driver\'s side not filled in or not selected that is ok');
+                if (formInputs['damageCar'] == "." && formInputs['damageIsOkBtn1']){
+                    Alert.alert('Problem with car damage', 'Car damage is not filled in or not selected that is ok');
                     setStateOfButton(false);
                     return;
-                } else if (formInputs['damage2'] == "." && formInputs['damageIsOkBtn2']) {
-                    Alert.alert('Problem with car damage', 'Real and passenger side not filled in or not selected that is ok');
-                    setStateOfButton(false);
-                    return;
-                } else if (formInputs['damage3'] == "." && formInputs['damageIsOkBtn3']) {
-                    Alert.alert('Problem with car damage', 'Car Roof not filled in or not selected that is ok');
-                    setStateOfButton(false);
-                    return;
+                // } else if (formInputs['damage2'] == "." && formInputs['damageIsOkBtn2']) {
+                //     Alert.alert('Problem with car damage', 'Real and passenger side not filled in or not selected that is ok');
+                //     setStateOfButton(false);
+                //     return;
+                // } else if (formInputs['damage3'] == "." && formInputs['damageIsOkBtn3']) {
+                //     Alert.alert('Problem with car damage', 'Car Roof not filled in or not selected that is ok');
+                //     setStateOfButton(false);
+                //     return;
                 }
             }
 
@@ -1211,14 +1211,14 @@ export  default function ExpenseForm({navigation,idForm}) {
                                 />
                             </View>
 
-                            <View>
-                                <SubmitButton style={styles.signatureButton} buttonText={' Signature'} onPress={() => {
-                                    setModalVisible2(!modalVisible2)
-                                }}
+                            {/*<View>*/}
+                            {/*    <SubmitButton style={styles.signatureButton} buttonText={' Signature'} onPress={() => {*/}
+                            {/*        setModalVisible2(!modalVisible2)*/}
+                            {/*    }}*/}
 
-                                />
+                            {/*    />*/}
 
-                            </View>
+                            {/*</View>*/}
                             <View>
                                 <View>
                                     <Text style={styles.titleText}>
@@ -1262,19 +1262,19 @@ export  default function ExpenseForm({navigation,idForm}) {
                                 </Text>
                                 <View style={styles.damagesContainer} >
 
-                                <SubmitButton style={styles.damagesButton} buttonText={'Front and driver`s side '}
+                                <SubmitButton style={styles.damagesButton} buttonText={'Car'}
                                               onPress={() => {
-                                                  setModalVisibleDamage1(!modalVisibleDamage1)
+                                                  setModalVisibledamageCar(!modalVisibledamageCar)
                                               }}/>
 
-                                <SubmitButton style={styles.damagesButton} buttonText={' Rear and passenger side'}
-                                              onPress={() => {
-                                                  setModalVisibleDamage2(!modalVisibleDamage2)
-                                              }}/>
+                                {/*<SubmitButton style={styles.damagesButton} buttonText={' Rear and passenger side'}*/}
+                                {/*              onPress={() => {*/}
+                                {/*                  setModalVisibleDamage2(!modalVisibleDamage2)*/}
+                                {/*              }}/>*/}
 
-                                <SubmitButton style={styles.damagesButton} buttonText={' Car Roof'} onPress={() => {
-                                    setModalVisibleDamage3(!modalVisibleDamage3)
-                                }}/>
+                                {/*<SubmitButton style={styles.damagesButton} buttonText={' Car Roof'} onPress={() => {*/}
+                                {/*    setModalVisibleDamage3(!modalVisibleDamage3)*/}
+                                {/*}}/>*/}
                                 </View>
 
                             </View>
@@ -1325,53 +1325,53 @@ export  default function ExpenseForm({navigation,idForm}) {
                         onOK={changeHandlerInputs.bind(this, 'signClient')}
                     />
 
-                    <SignatureModal
-                        modalTitle={'Signature for the card'}
-                        defaultSignature={formInputs.signCard}
-                        styles={styles}
-                        modalVisible={modalVisible2}
-                        setModalVisibility={() => { setModalVisible2(!modalVisible2); }}
-                        onOK={changeHandlerInputs.bind(this, 'signCard')}
-                    />
+                    {/*<SignatureModal*/}
+                    {/*    modalTitle={'Signature for the card'}*/}
+                    {/*    defaultSignature={formInputs.signCard}*/}
+                    {/*    styles={styles}*/}
+                    {/*    modalVisible={modalVisible2}*/}
+                    {/*    setModalVisibility={() => { setModalVisible2(!modalVisible2); }}*/}
+                    {/*    onOK={changeHandlerInputs.bind(this, 'signCard')}*/}
+                    {/*/>*/}
 
                     <DamageModal
-                        modalTitle={'Damage Record 1'}
-                        defaultDamage={formInputs.damage1}
+                        modalTitle={'Damage Record Car'}
+                        defaultDamage={formInputs.damageCar}
                         styles={styles}
-                        modalVisible={modalVisibleDamage1}
-                        setModalVisibility={() => { setModalVisibleDamage1(!modalVisibleDamage1); }}
-                        onOK={changeHandlerInputs.bind(this, 'damage1')}
-                        bgImage={front_left1}
+                        modalVisible={modalVisibledamageCar}
+                        setModalVisibility={() => { setModalVisibledamageCar(!modalVisibledamageCar); }}
+                        onOK={changeHandlerInputs.bind(this, 'damageCar')}
+                        bgImage={damage_car}
                         hasDamage={formInputs.damageIsOkBtn1}
                         onchangeRadioButton={changeHandlerInputs.bind(this, 'damageIsOkBtn1')}
 
                     />
 
-                    <DamageModal
-                        modalTitle={'Damage Record 2'}
-                        defaultDamage={formInputs.damage2}
-                        styles={styles}
-                        modalVisible={modalVisibleDamage2}
-                        setModalVisibility={() => { setModalVisibleDamage2(!modalVisibleDamage2); }}
-                        onOK={changeHandlerInputs.bind(this, 'damage2')}
-                        bgImage={rear_right1}
-                        hasDamage={formInputs.damageIsOkBtn2}
-                        onchangeRadioButton={changeHandlerInputs.bind(this, 'damageIsOkBtn2')}
+                    {/*<DamageModal*/}
+                    {/*    modalTitle={'Damage Record 2'}*/}
+                    {/*    defaultDamage={formInputs.damage2}*/}
+                    {/*    styles={styles}*/}
+                    {/*    modalVisible={modalVisibleDamage2}*/}
+                    {/*    setModalVisibility={() => { setModalVisibleDamage2(!modalVisibleDamage2); }}*/}
+                    {/*    onOK={changeHandlerInputs.bind(this, 'damage2')}*/}
+                    {/*    bgImage={rear_right1}*/}
+                    {/*    hasDamage={formInputs.damageIsOkBtn2}*/}
+                    {/*    onchangeRadioButton={changeHandlerInputs.bind(this, 'damageIsOkBtn2')}*/}
 
-                    />
+                    {/*/>*/}
 
-                    <DamageModal
-                        modalTitle={'Damage Record 3'}
-                        defaultDamage={formInputs.damage3}
-                        styles={styles}
-                        modalVisible={modalVisibleDamage3}
-                        setModalVisibility={() => { setModalVisibleDamage3(!modalVisibleDamage3); }}
-                        onOK={changeHandlerInputs.bind(this, 'damage3')}
-                        bgImage={top1}
-                        hasDamage={formInputs.damageIsOkBtn3}
-                        onchangeRadioButton={changeHandlerInputs.bind(this, 'damageIsOkBtn3')}
+                    {/*<DamageModal*/}
+                    {/*    modalTitle={'Damage Record 3'}*/}
+                    {/*    defaultDamage={formInputs.damage3}*/}
+                    {/*    styles={styles}*/}
+                    {/*    modalVisible={modalVisibleDamage3}*/}
+                    {/*    setModalVisibility={() => { setModalVisibleDamage3(!modalVisibleDamage3); }}*/}
+                    {/*    onOK={changeHandlerInputs.bind(this, 'damage3')}*/}
+                    {/*    bgImage={top1}*/}
+                    {/*    hasDamage={formInputs.damageIsOkBtn3}*/}
+                    {/*    onchangeRadioButton={changeHandlerInputs.bind(this, 'damageIsOkBtn3')}*/}
 
-                    />
+                    {/*/>*/}
 
                     <DamageModal
                         modalTitle={'Damage Record Motto'}
