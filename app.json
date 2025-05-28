@@ -2,14 +2,18 @@
   "expo": {
     "name": "Form App Vehicle",
     "slug": "form-app-vehicle",
-    "version": "1.0.0",
+    "version": "3.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "rentcar",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "gr.techins.formAppVehicle",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -42,7 +46,7 @@
     "extra": {
       "router": {},
       "eas": {
-         "projectId": "04292570-019a-4722-bbb6-395eb2870ece"
+        "projectId": "04292570-019a-4722-bbb6-395eb2870ece"
       }
     }
   }
