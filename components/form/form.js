@@ -146,129 +146,181 @@ export  default function ExpenseForm({navigation,idForm}) {
     const [isLoading, setIsLoading] = useState(false);
     const [value, setValue] = useState('');
     const [synergates, setSynergates] = useState([
-        {title:'DIRECT'},
-        {title:'WEBSITE'},
-        {title:'A MYTH HOTEL'},
-        {title:'ADORNO'},
-        {title:'AEGON'},
-        {title:'AKKADIAN'},
-        {title:'ALISSACHNI'},
-        {title:'ALKISTIS HOTEL'},
-        {title:'AMAZON'},
-        {title:'ANDRONIKOS'},
-        {title:'ARA'},
-        {title:'AST TOURISM'},
-        {title:'BEST ANGOLA'},
-        {title:'BILL & COO'},
-        {title:'BILL & COO COAST'},
-        {title:'BLUE VILLAS'},
-        {title:'BOHEME'},
-        {title:'BRANCO'},
-        {title:'CACTUS'},
-        {title:'CASA DEL MAR'},
-        {title:'COVA'},
-        {title:'CROCO'},
-        {title:'DANIELLE GIOVANNI'},
-        {title:'DIVINE'},
-        {title:'DONJON'},
-        {title:'DONTAS'},
-        {title:'DORION'},
-        {title:'DREAM BOX'},
-        {title:'DUE MARI'},
-        {title:'EREZ'},
-        {title:'EUGENE'},
-        {title:'EVITA'},
-        {title:'EZIO BO'},
-        {title:'FANTASIA VILLAS'},
-        {title:'FELIX'},
-        {title:'GEORGAKLIS'},
-        {title:'GIOVANNI ILLARIA'},
-        {title:'GOLDEN HOME'},
-        {title:'GRACE'},
-        {title:'HERMES TOURISM'},
-        {title:'HIPPIE CHIC'},
-        {title:'I MOVE '},
-        {title:'I TRAVEL HOME'},
-        {title:'IKIES'},
-        {title:'ISLE BLUE'},
-        {title:'JENNY'},
-        {title:'KALESMA'},
-        {title:'KATOIKIES'},
-        {title:'KEVIN ROCKS'},
-        {title:'KINGLIKE'},
-        {title:'KORALI'},
-        {title:'KOUROS'},
-        {title:'KYMA'},
-        {title:'LUXURY KEY'},
-        {title:'MAERA VILLAS'},
-        {title:'MATHA'},
-        {title:'MAZI TRAVEL'},
-        {title:'MERHIA BAY'},
-        {title:'MILEO '},
-        {title:'MINA\'s STUDIO'},
-        {title:'MLV'},
-        {title:'MY MYKONOS'},
-        {title:'MYKONAKI HOTEL'},
-        {title:'MYKONOS 4 ISLAND'},
-        {title:'MYKONOS AGENDA'},
-        {title:'MYKONOS BEST'},
-        {title:'MYKONOS EARTTH'},
-        {title:'MYKONOS RIVIERA'},
-        {title:'N HOTEL'},
-        {title:'NAIA'},
-        {title:'NASTAYA'},
-        {title:'NEREUS'},
-        {title:'NIKOS ROOMS'},
-        {title:'NOIMA LUXURY SUITES'},
-        {title:'NOMIA ΑΓ.ΣΟΦΙΑ'},
-        {title:'NUR'},
-        {title:'ONCE IN MYKONOS'},
-        {title:'PANORMOS BAY'},
-        {title:'PANORMOS VILLAGE'},
-        {title:'PANORMOS VILLAS'},
-        {title:'PAOLAS TOWN'},
-        {title:'PETINOS'},
-        {title:'PETINOS BEACH'},
-        {title:'PRINCESS'},
-        {title:'RICCARDO LUXURY'},
-        {title:'ROCABELLA'},
-        {title:'ROCHARI'},
-        {title:'SAN MARCO'},
-        {title:'SARAH'},
-        {title:'SOHO'},
-        {title:'STELIOS JO'},
-        {title:'SUMMIT'},
-        {title:'SUPER PARADISE SUITES'},
-        {title:'SUPERIOR AIR'},
-        {title:'TAGOO BLACK'},
-        {title:'THALIA MYKONOS'},
-        {title:'THARROE'},
-        {title:'THEO PANORMOS'},
-        {title:'YI'},
-        {title:'ΑΙΒΑΖΙΔΗΣ'},
-        {title:'ΑΙΒΑΛΙΩΤΗΣ'},
-        {title:'Α-Ω'},
-        {title:'ΒΑΓΓΕΛΗΣ'},
-        {title:'ΒΑΣΙΛΗΣ ΚΙΝΟΣ'},
-        {title:'ΒΑΤΣΗΣ BEACHFRONT'},
-        {title:'ΗΡΩ ΡΑΛΛΗ'},
-        {title:'ΘΑΝΟΣ ΜΟΤΟSPEED'},
-        {title:'ΚΩΣΤΑΣ ΧΡΥΣΑΦΗΣ'},
-        {title:'ΛΑΙΣ'},
-        {title:'ΜΑΝΟΣ ΡΑΛΛΗΣ'},
-        {title:'ΜΑΡΓΑΡΙΤΑ'},
-        {title:'ΜΕΝΤΗΣ'},
-        {title:'ΜΥΤΑΚΙΔΗ'},
-        {title:'ΝΤΟΥΣΚΑΣ'},
-        {title:'ΠΕΤΡΟΣ ΑΘΗΝΑΙΟΣ'},
-        {title:'ΣΤΑΥΡΟΥΛΑ ΠΕΙΡΑΙΩΣ'},
-        {title:'ΤΑΣΟΣ ΑΘΗΝΑ'},
-        {title:'ΤΑΣΟΣ ΚΩΣΤΟΠΟΥΛΟΣ'},
-        {title:'ΤΙΝΑ ΛΕΟΝΤΙΟΥ'},
-        {title:'ΦΑΝΙΑ'},
-        {title:'ΧΡΗΣΤΟΣ ΜΑΝΟΣ'},
-        {title:'ΧΡΥΣΟΥΛΑ PAOLA\'S'},
-        {title:'ΑΛΛΟ'},
+        {title: 'A MYTH AG.STEFANOS'},
+        {title: 'A MYTH SUPER PARADISE'},
+        {title: 'ABSOLUTE'},
+        {title: 'ADAMA'},
+        {title: 'ADORNO'},
+        {title: 'AEGEAN HOSPITALITY'},
+        {title: 'AKKADIAN'},
+        {title: 'ALBATROSS'},
+        {title: 'ALETRO'},
+        {title: 'ALIRENE'},
+        {title: 'ALISSACHNI'},
+        {title: 'ALKISTIS HOTEL'},
+        {title: 'AMARELO'},
+        {title: 'AMARIS '},
+        {title: 'AMAZON'},
+        {title: 'AMBASSADOR'},
+        {title: 'AMPERIAN'},
+        {title: 'ANANDES'},
+        {title: 'ANDRONIKOS'},
+        {title: 'ARA'},
+        {title: 'ARCHIPELAGOS'},
+        {title: 'AST TOURISM'},
+        {title: 'B BOUTIQUE'},
+        {title: 'BELVEDERE'},
+        {title: 'BESPOKE'},
+        {title: 'BESPOKERS'},
+        {title: 'BEST ANGOLA'},
+        {title: 'BILL & COO'},
+        {title: 'BILL & COO COAST'},
+        {title: 'BLISS TRAVEL'},
+        {title: 'BLUE VILLAS'},
+        {title: 'BOHEME'},
+        {title: 'BRANCO'},
+        {title: 'CACTUS'},
+        {title: 'CASA DEL MAR'},
+        {title: 'CAVO TAGOO'},
+        {title: 'COVA'},
+        {title: 'CROCO'},
+        {title: 'DANIELLE GIOVANNI'},
+        {title: 'DIRECT'},
+        {title: 'DIVINE'},
+        {title: 'DONJON'},
+        {title: 'DONTAS'},
+        {title: 'DORION'},
+        {title: 'DREAM BOX'},
+        {title: 'DUE MARI'},
+        {title: 'ENIGMA SUITES'},
+        {title: 'EREZ'},
+        {title: 'ETESSIANS'},
+        {title: 'EUGENE'},
+        {title: 'EVITA'},
+        {title: 'EZIO BO'},
+        {title: 'FANTASIA VILLAS'},
+        {title: 'FELIX'},
+        {title: 'FTELIA BAY '},
+        {title: 'FTELIA BLACK VILLAS'},
+        {title: 'GEORGAKLIS'},
+        {title: 'GIOVANNI ILLARIA'},
+        {title: 'GOLDEN HOME'},
+        {title: 'GRACE'},
+        {title: 'HARMONY'},
+        {title: 'HERMES TOURISM'},
+        {title: 'HIPPIE CHIC'},
+        {title: 'I MOVE '},
+        {title: 'I TRAVEL HOME'},
+        {title: 'IKIES'},
+        {title: 'ISLE BLUE'},
+        {title: 'JENNY'},
+        {title: 'KALESMA'},
+        {title: 'KATIKIES'},
+        {title: 'KEVIN ROCKS'},
+        {title: 'KINGLIKE'},
+        {title: 'KORALI'},
+        {title: 'KOUROS'},
+        {title: 'KYMA'},
+        {title: 'LUXURY KEY'},
+        {title: 'MAERA VILLAS'},
+        {title: 'MARY PANAGIOTOPOULOU'},
+        {title: 'MATHA'},
+        {title: 'MAZI TRAVEL'},
+        {title: 'MERHIA BAY'},
+        {title: 'MILEO '},
+        {title: 'MINA\'s STUDIO'},
+        {title: 'MLV'},
+        {title: 'MY AKTIS'},
+        {title: 'MY AKTIS'},
+        {title: 'MY MYKONOS'},
+        {title: 'MYKONAKI HOTEL'},
+        {title: 'MYKONOS 4 ISLAND'},
+        {title: 'MYKONOS AGENDA'},
+        {title: 'MYKONOS BEST'},
+        {title: 'MYKONOS EARTTH'},
+        {title: 'MYKONOS ESSENCE'},
+        {title: 'MYKONOS RESIDENCE'},
+        {title: 'MYKONOS RIVIERA'},
+        {title: 'N HOTEL'},
+        {title: 'NAIA'},
+        {title: 'NANA AMMA'},
+        {title: 'NASTAYA'},
+        {title: 'NEREUS'},
+        {title: 'NIKOS ROOMS'},
+        {title: 'NIMBUS LUMEN'},
+        {title: 'NIMBUS ΑΓ.ΣΤΕΦΑΝΟΣ'},
+        {title: 'NOIMA LUXURY SUITES'},
+        {title: 'NOMIA ΑΓ.ΣΟΦΙΑ'},
+        {title: 'NUR'},
+        {title: 'OLVOS'},
+        {title: 'ONCE IN MYKONOS'},
+        {title: 'ORIGINAL SENSES'},
+        {title: 'OSTRACO'},
+        {title: 'PANORMOS BAY'},
+        {title: 'PANORMOS VILLAGE'},
+        {title: 'PANORMOS VILLAS'},
+        {title: 'PAOLAS TOWN'},
+        {title: 'PETINOS'},
+        {title: 'PETINOS BEACH'},
+        {title: 'PORTO'},
+        {title: 'PORTOBELLO'},
+        {title: 'PRINCESS'},
+        {title: 'RICCARDO LUXURY'},
+        {title: 'ROCABELLA'},
+        {title: 'ROCHARI'},
+        {title: 'SAN MARCO'},
+        {title: 'SARA'},
+        {title: 'SIDORELA'},
+        {title: 'SOHO'},
+        {title: 'STELIOS JO'},
+        {title: 'SUMMIT'},
+        {title: 'SUPER PARADISE SUITES'},
+        {title: 'SUPERIOR AIR'},
+        {title: 'TAGOO BLACK'},
+        {title: 'THALIA MYKONOS'},
+        {title: 'THARROE'},
+        {title: 'THEO PANORMOS'},
+        {title: 'TINA LEONTIOU'},
+        {title: 'TOMER'},
+        {title: 'VIENNOULAS GARDEN'},
+        {title: 'VIENOULAS GARDEN'},
+        {title: 'WEBSITE'},
+        {title: 'WHITE ART LUXURY SUITES'},
+        {title: 'YI'},
+        {title: 'ΑΙΒΑΖΙΔΗΣ'},
+        {title: 'ΑΙΒΑΛΙΩΤΗΣ'},
+        {title: 'ΆΛΛΟ'},
+        {title: 'ΑΝΝΑ ΣΩΤΗΡΙΑΔΗ'},
+        {title: 'Α-Ω'},
+        {title: 'ΒΑΓΓΕΛΗΣ'},
+        {title: 'ΒΑΣΙΛΗΣ ΕΥΑΓΓΕΛΙΔΗΣ'},
+        {title: 'ΒΑΣΙΛΗΣ ΚΙΝΟΣ'},
+        {title: 'ΒΑΤΣΗΣ BEACHFRONT'},
+        {title: 'ΓΙΑΝΝΗΣ ΔΟΥΡΑΣ'},
+        {title: 'ΕΥΗ ΚΑΡΑΓΚΟΥΝΗ'},
+        {title: 'ΗΡΩ ΡΑΛΛΗ'},
+        {title: 'ΘΑΝΟΣ ΜΟΤΟSPEED'},
+        {title: 'ΚΩΣΤΑΣ ΧΡΥΣΑΦΗΣ'},
+        {title: 'ΚΩΝΣΤΑΝΤΙΝΑ'},
+        {title: 'ΛΑΙΣ'},
+        {title: 'ΜΑΝΟΣ ΡΑΛΛΗΣ'},
+        {title: 'ΜΑΡΓΑΡΙΤΑ'},
+        {title: 'ΜΑΡΚΑΚΗΣ'},
+        {title: 'ΜΕΝΤΗΣ'},
+        {title: 'ΜΥΤΑΚΙΔΗ'},
+        {title: 'ΝΙΗΡΙΔΕΣ'},
+        {title: 'ΝΙΚΟΣ ΣΥΝΕΤΟΣ'},
+        {title: 'ΝΤΟΥΣΚΑΣ'},
+        {title: 'ΠΕΤΡΟΣ ΑΘΗΝΑΙΟΣ'},
+        {title: 'ΣΙΣΜΑΝΙΔΗΣ'},
+        {title: 'ΣΤΑΥΡΟΥΛΑ ΠΕΙΡΑΙΩΣ'},
+        {title: 'ΣΥΝΕΤΟΣ'},
+        {title: 'ΤΑΣΟΣ ΑΘΗΝΑ'},
+        {title: 'ΤΑΣΟΣ ΚΩΣΤΟΠΟΥΛΟΣ'},
+        {title: 'ΦΑΝΙΑ'},
+        {title: 'ΧΡΗΣΤΟΣ ΚΑΖΑΚΗΣ'},
+        {title: 'ΧΡΗΣΤΟΣ ΜΑΝΟΣ'},
+        {title: 'ΧΡΥΣΟΥΛΑ PAOLA\'S'}
     ]);
     const [tempSynergaths, setTempSynergaths] = useState();
 
@@ -486,7 +538,7 @@ export  default function ExpenseForm({navigation,idForm}) {
         damageCar: "Damage Car",
         // damage2: "Damage Rear & Passenger-side",
         // damage3: "Damage Car Roof",
-        damage4: "Damage Motto",
+        damage4: "Damage Moto",
         damage5: "Damage Atv",
         fuel: "Fuel",
         notes :"Notes"
@@ -1257,34 +1309,34 @@ export  default function ExpenseForm({navigation,idForm}) {
                                 </View>
 
 
-                                <Text style={styles.titleText}>
-                                    Car Damages
-                                </Text>
-                                <View style={styles.damagesContainer} >
-
-                                <SubmitButton style={styles.damagesButton} buttonText={'Car'}
-                                              onPress={() => {
-                                                  setModalVisibledamageCar(!modalVisibledamageCar)
-                                              }}/>
-
-                                {/*<SubmitButton style={styles.damagesButton} buttonText={' Rear and passenger side'}*/}
-                                {/*              onPress={() => {*/}
-                                {/*                  setModalVisibleDamage2(!modalVisibleDamage2)*/}
-                                {/*              }}/>*/}
-
-                                {/*<SubmitButton style={styles.damagesButton} buttonText={' Car Roof'} onPress={() => {*/}
-                                {/*    setModalVisibleDamage3(!modalVisibleDamage3)*/}
-                                {/*}}/>*/}
-                                </View>
-
                             </View>
 
                             <View>
                                 <Text style={styles.titleText}>
-                                    Motto Damages
+                                    Car Damages
+                                </Text>
+                                {/*<View style={styles.damagesContainer} >*/}
+                                <View>
+
+                                    <SubmitButton style={styles.damagesButton} buttonText={'Car'}
+                                                  onPress={() => {
+                                                      setModalVisibledamageCar(!modalVisibledamageCar)
+                                                  }}/>
+
+                                    {/*<SubmitButton style={styles.damagesButton} buttonText={' Rear and passenger side'}*/}
+                                    {/*              onPress={() => {*/}
+                                    {/*                  setModalVisibleDamage2(!modalVisibleDamage2)*/}
+                                    {/*              }}/>*/}
+
+                                    {/*<SubmitButton style={styles.damagesButton} buttonText={' Car Roof'} onPress={() => {*/}
+                                    {/*    setModalVisibleDamage3(!modalVisibleDamage3)*/}
+                                    {/*}}/>*/}
+                                </View>
+                                <Text style={styles.titleText}>
+                                    Moto Damages
                                 </Text>
 
-                                <SubmitButton style={styles.damagesButton} buttonText={' Motto'} onPress={() => {
+                                <SubmitButton style={styles.damagesButton} buttonText={' Moto'} onPress={() => {
                                     setModalVisibleDamage4(!modalVisibleDamage4)
                                 }}/>
 
@@ -1374,7 +1426,7 @@ export  default function ExpenseForm({navigation,idForm}) {
                     {/*/>*/}
 
                     <DamageModal
-                        modalTitle={'Damage Record Motto'}
+                        modalTitle={'Damage Record Moto'}
                         defaultDamage={formInputs.damage4}
                         styles={styles}
                         modalVisible={modalVisibleDamage4}
