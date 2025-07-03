@@ -71,13 +71,10 @@ export const cars = [
     { registrationNumber: "ΧΗΑ 4126", brand: "MINI", model: "COUNTRYMAN" },
     { registrationNumber: "ΧΗΑ 5684", brand: "VW", model: "T-ROC CABRIO" },
     { registrationNumber: "ΧΗΒ 1736", brand: "FIAT ", model: "PANDA" },
-    { registrationNumber: "ΧΗΕ 5894", brand: "RANGE ROVER ", model: "SPORT 24" },
     { registrationNumber: "ΧΗΙ 5741", brand: "RENAULT", model: "CLIO" },
     { registrationNumber: "ΧΗΚ 7221", brand: "TOYOTA ", model: "AYGO X" },
     { registrationNumber: "ΧΗΚ 7535", brand: "TOYOTA ", model: "AYGO X" },
     { registrationNumber: "ΧΗΚ 7570", brand: "TOYOTA ", model: "AYGO X" },
-    { registrationNumber: "ΧΗΚ 7572", brand: "TOYOTA ", model: "AYGO X" },
-    { registrationNumber: "ΧΗΥ 2787", brand: "PEUGEOT", model: "3008" },
     { registrationNumber: "ΧΡΒ 1589", brand: "JEEP WRANGLER", model: "RUBICON" },
     { registrationNumber: "ΧΡΙ 5873", brand: "HYUNDAI", model: "I10" },
     { registrationNumber: "ΧΡΙ 5908", brand: "HYUNDAI", model: "I10" },
@@ -168,7 +165,12 @@ export const cars = [
     { registrationNumber: "ΧΜΥ 829", brand: "HONDA", model: "SH" },
     { registrationNumber: "ΧΜΥ 830", brand: "HONDA", model: "SH" },
     { registrationNumber: "ΧΜΥ 831", brand: "HONDA", model: "SH" },
-    { registrationNumber: "ΧΜΥ 832", brand: "HONDA", model: "SH" }
+    { registrationNumber: "ΧΜΥ 832", brand: "HONDA", model: "SH" },
+    { registrationNumber: "ΒΚΧ 5226", brand: "TOYOTA", model: "AYGO X" },
+    { registrationNumber: "ΧΖΜ 7338", brand: "AUDI", model: "Q3" },
+    { registrationNumber: "ΧΗΥ 2789", brand: "PEUGEOT", model: "3008" },
+    { registrationNumber: "ΧΡΑ 1720", brand: "MINI", model: "COUNTRYMAN" },
+    { registrationNumber: "ΧΡΚ 5693", brand: "BMW", model: "X1" },
 ];
 
 export  const recommendedList = [
