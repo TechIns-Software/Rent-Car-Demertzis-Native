@@ -168,9 +168,22 @@ export const cars = [
     { registrationNumber: "ΧΜΥ 832", brand: "HONDA", model: "SH" },
     { registrationNumber: "ΒΚΧ 5226", brand: "TOYOTA", model: "AYGO X" },
     { registrationNumber: "ΧΖΜ 7338", brand: "AUDI", model: "Q3" },
-    { registrationNumber: "ΧΗΥ 2789", brand: "PEUGEOT", model: "3008" },
     { registrationNumber: "ΧΡΑ 1720", brand: "MINI", model: "COUNTRYMAN" },
     { registrationNumber: "ΧΡΚ 5693", brand: "BMW", model: "X1" },
+
+
+    { registrationNumber: "ΡΑΜ 435", brand: "GOES", model: "45Occ" },
+    { registrationNumber: "ΒΥΥ 168", brand: "C FORCE", model: "625cc" },
+    { registrationNumber: "ΒΥΥ 169", brand: "C FORCE", model: "625cc" },
+    { registrationNumber: "ΒΥΥ 170", brand: "C FORCE", model: "625cc" },
+    { registrationNumber: "ΒΥΥ 171", brand: "C FORCE", model: "625cc" },
+    { registrationNumber: "ΒΥΥ 172", brand: "C FORCE", model: "625cc" },
+    { registrationNumber: "ΧΖΤ 3884", brand: "RANGE ROVER", model: "SPORT" },
+    { registrationNumber: "ΧΡΗ 1460", brand: "RANGE ROVER", model: "SPORT" },
+    { registrationNumber: "ΧΡΑ 1720", brand: "MINI COOPER", model: "COUNTRYMAN" },
+    { registrationNumber: "ΧΖΧ 3573", brand: "AUDI", model: "Q3" },
+    { registrationNumber: "ΧΕΧ 6757", brand: "JEEP WRANGLER", model: "SAHARA" },
+
 ];
 
 export  const recommendedList = [
