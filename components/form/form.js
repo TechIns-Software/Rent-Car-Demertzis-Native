@@ -231,11 +231,11 @@ export  default function ExpenseForm({navigation,idForm}) {
         {title: 'MINA\'s STUDIO'},
         {title: 'MLV'},
         {title: 'MY AKTIS'},
-        {title: 'MY AKTIS'},
         {title: 'MY MYKONOS'},
         {title: 'MYKONAKI HOTEL'},
         {title: 'MYKONOS 4 ISLAND'},
         {title: 'MYKONOS AGENDA'},
+        {title: 'MYKONOS BAY'},
         {title: 'MYKONOS BEST'},
         {title: 'MYKONOS EARTTH'},
         {title: 'MYKONOS ESSENCE'},
@@ -247,6 +247,7 @@ export  default function ExpenseForm({navigation,idForm}) {
         {title: 'NASTAYA'},
         {title: 'NEREUS'},
         {title: 'NIKOS ROOMS'},
+        {title: 'NIMBUS EDEN'},
         {title: 'NIMBUS LUMEN'},
         {title: 'NIMBUS ΑΓ.ΣΤΕΦΑΝΟΣ'},
         {title: 'NOIMA LUXURY SUITES'},
@@ -297,6 +298,7 @@ export  default function ExpenseForm({navigation,idForm}) {
         {title: 'ΒΑΣΙΛΗΣ ΚΙΝΟΣ'},
         {title: 'ΒΑΤΣΗΣ BEACHFRONT'},
         {title: 'ΓΙΑΝΝΗΣ ΔΟΥΡΑΣ'},
+        {title: 'ΕΥΗ ΚΑΣΤΑΝΙΩΤΗ'},
         {title: 'ΕΥΗ ΚΑΡΑΓΚΟΥΝΗ'},
         {title: 'ΗΡΩ ΡΑΛΛΗ'},
         {title: 'ΘΑΝΟΣ ΜΟΤΟSPEED'},
@@ -1143,7 +1145,7 @@ export  default function ExpenseForm({navigation,idForm}) {
                                        inputStyle={!everythingOk.rateCode ? styles.nullInput : ''}
                                 />
                             </View>
-                            <View style={styles.inputRow}>
+                            <View>
                                 <View style={{minWidth: '50%'}}></View>
                                 <View style={styles.rowInput}>
                                     <RadioButtonCustom value={formInputs['cdwAgree']} onPress={RadioPressHandler}

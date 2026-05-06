@@ -2,7 +2,7 @@
   "expo": {
     "name": "Form App Vehicle",
     "slug": "form-app-vehicle",
-    "version": "3.0.3",
+    "version": "3.0.4",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "rentcar",
@@ -11,7 +11,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "gr.techins.formAppVehicle",
-      "buildNumber": "3.0.3",
+      "buildNumber": "3.0.4",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -23,7 +23,7 @@
       },
       "edgeToEdgeEnabled": true,
       "package": "gr.techins.formAppVehicle",
-      "versionCode": 12
+      "versionCode": 13
     },
     "web": {
       "bundler": "metro",
@@ -41,7 +41,9 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "expo-web-browser"
+      "expo-web-browser",
+      "@react-native-community/datetimepicker",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
