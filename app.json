@@ -2,7 +2,7 @@
   "expo": {
     "name": "Form App Vehicle",
     "slug": "form-app-vehicle",
-    "version": "3.0.4",
+    "version": "3.0.5",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "rentcar",
@@ -11,7 +11,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "gr.techins.formAppVehicle",
-      "buildNumber": "3.0.4",
+      "buildNumber": "3.0.5",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -23,7 +23,7 @@
       },
       "edgeToEdgeEnabled": true,
       "package": "gr.techins.formAppVehicle",
-      "versionCode": 13
+      "versionCode": 14
     },
     "web": {
       "bundler": "metro",
